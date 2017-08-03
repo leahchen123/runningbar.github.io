@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		body {
+			margin: 0px;
+		}
+		.header {
+			background-color: blue;
+			width: 100vw;/*宽度为100%视窗宽度，即水平铺满视窗*/
+			height: 64px;/*高度为64px*/
+			top: 0px; /*fixed定位下，使用top进行偏移*/
+			position: fixed;/*header固定*/
+		}
+		.sider {
+			background-color: green;
+			width: 200px;
+			height: calc( 100vh - 64px );/*除去header已占的64px， 高度铺满视窗*/
+			position: fixed;/*固定侧边栏，脱离文档流*/
+		}
+		.content {
+			margin-top: 64px;
+			margin-left: 200px;
+			background: linear-gradient( 0deg, #5AA271, #A2A166);/*从下到上，由#5AA271渐变到#A2A166*/
+			height: 2000px;/*模拟长内容*/
+		}
+	</style>
+</head>
+<body>
+	<div class="header"></div>
+	<div class="sider"></div>
+	<div class="content"></div>
+</body>
+</html>
