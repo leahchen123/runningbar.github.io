@@ -267,7 +267,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/05/10/Linux常用命令积累/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/05/Ubuntu-NFS使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -286,7 +286,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/05/10/Linux常用命令积累/" itemprop="url">Linux常用命令积累</a></h1>
+                <a class="post-title-link" href="/2017/06/05/Ubuntu-NFS使用/" itemprop="url">Ubuntu NFS使用</a></h1>
         
 
         <div class="post-meta">
@@ -298,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-10T21:37:00+08:00">
-                2017-05-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-05T14:22:01+08:00">
+                2017-06-05
               </time>
             
 
@@ -338,7 +338,7 @@
 
           
           
-             <span id="/2017/05/10/Linux常用命令积累/" class="leancloud_visitors" data-flag-title="Linux常用命令积累">
+             <span id="/2017/06/05/Ubuntu-NFS使用/" class="leancloud_visitors" data-flag-title="Ubuntu NFS使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -368,38 +368,62 @@
       
         
           
-            <ul>
-<li>向<code>test</code>用户添加<code>sudo</code>权限的方法：</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> whereis sudoers 		//一般都在/etc/sudoers文件中</span></div><div class="line"><span class="meta">$</span><span class="bash"> su - root 			//切换到root用户，以进行后续修改</span></div><div class="line"><span class="meta">$</span><span class="bash"> chmod u+w /etc/sudoers 	//该文件默认没有写权限，需要添加</span></div><div class="line"><span class="meta">$</span><span class="bash"> vim /etc/sudoers</span></div><div class="line">	找到root ALL=(ALL)ALL行</div><div class="line">	在其下方添加test ALL=(ALL)ALL</div><div class="line">	:wq</div><div class="line"><span class="meta">$</span><span class="bash"> chmod u-w /etc/sudoers 	//将该文件权限恢复为默认值</span></div></pre></td></tr></table></figure>
+            <blockquote>
+<p>在<code>Ubuntu16.04</code>下测试通过</p>
+</blockquote>
+<h2 id="NFS安装"><a href="#NFS安装" class="headerlink" title="NFS安装"></a>NFS安装</h2><p>CentOS下查看NFS是否已经安装：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -<span class="keyword">qa</span> | <span class="keyword">grep</span> <span class="string">"nfs"</span></div></pre></td></tr></table></figure>
+<p>Ubuntu下安装NFS服务器：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt <span class="keyword">install</span> nfs-kernel-<span class="keyword">server</span></div></pre></td></tr></table></figure>
+<p>Ubuntu下安装NFS客户端：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">sudo</span> apt install nfs-<span class="meta">common</span></div></pre></td></tr></table></figure>
+<h2 id="在NFS服务器上指定共享目录"><a href="#在NFS服务器上指定共享目录" class="headerlink" title="在NFS服务器上指定共享目录"></a>在NFS服务器上指定共享目录</h2><p>指定共享目录有2种方式，分别有不同的目的：一种适用于通用的文件存储；另一种则适用于带权限管理的文件存储。</p>
+<p>root用户可以在系统的任何位置做任何事情。然而，NFS挂载的目录不是这个系统的一部分，所以默认情况下，NFS服务器会拒绝执行需要超级用户权限的操作。这个默认的限制意味着，客户端系统的root用户无法在NFS挂载目录下，以root角色写文件，重新指定文件拥有者，或者执行其它超级用户操作。</p>
+<p>这里先介绍默认方式的共享目录配置方法，它适用于大多数场景，比如作为内容管理系统存储上传的文件，或者为用户开辟空间共享项目文件。</p>
+<p>首先，创建一个待共享的目录：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> -p /<span class="built_in">home</span>/mine/nfs</div></pre></td></tr></table></figure>
+<p><strong>由于是默认的共享方式，NFS会将客户机上的所有<code>root</code>操作都映射为<code>nobody:nogroup</code>身份，因此，我们需要修改该目录的拥有权，以便匿名身份可以读写该目录</strong>：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chown <span class="string">nobody:</span>nogroup <span class="regexp">/home/</span>mine/nfs</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在下文的<code>/etc/exports</code>配置中，我们可以使用<code>all_squash</code>选项，将客户机上的所有用户都映射为匿名用户，这样就保证了所有人都能够存取该目录。</p>
+</blockquote>
+<p>接下来，配置NFS导出：</p>
+<p>使用root权限打开<code>/etc/exports</code>文件：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim <span class="regexp">/etc/</span>exports</div></pre></td></tr></table></figure>
+<p>这个文件有一段注释内容，展示了每一个配置行的基本结构，语法大致是这样的：</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">directory_to_share</span></span> client(share_option1,...,share_optionN)</div></pre></td></tr></table></figure>
+<p>对于每一个要共享的目录都要配置一行：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/mine/nfs <span class="number">192.168</span><span class="number">.100</span><span class="number">.180</span>(rw,sync,all_squash,insecure)</div></pre></td></tr></table></figure>
+<p>这意味着将<code>/home/mine/nfs</code>目录共享给<code>192.168.100.180</code>机器使用，如果想共享给所有主机，也可以换成<code>*</code>：</p>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/home/mine/nfs *(rw,sync,all_squash,insecure) </div><div class="line">/*<span class="built_in">option</span> <span class="built_in">list</span>之间不能有空格，否则会报错：bad <span class="built_in">option</span> <span class="built_in">list</span>*/</div></pre></td></tr></table></figure>
+<p>共享设置一览：</p>
 <ul>
-<li>添加<code>test</code>账户：</li>
+<li>rw： 允许客户端对卷有读写权限</li>
+<li>sync： 强制NFS在回复之前将改变写入磁盘。因为回复反映了远程卷的实际状态，所以这样可以产生更加稳定一致的环境。然而，它也降低了文件操作的速度。</li>
+<li>all_squash：客户机上的任何用户读写该共享目录时，都映射成匿名用户，这样就<strong>便于所有用户对文件的存取</strong>。</li>
+<li>insecure：允许客户机从大于等于<code>1024</code>的端口来访问NFS，如果不写明此选项，有时候客户机<code>mount</code>时会报错<code>access denied</code>。</li>
 </ul>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo adduser test</div><div class="line"><span class="regexp">//</span>添加test账户</div><div class="line"><span class="regexp">//</span>并创建对应的<span class="regexp">/home/u</span>sername文件夹</div><div class="line"><span class="regexp">//</span>以及指定shell版本为<span class="regexp">/bin/</span>bash</div></pre></td></tr></table></figure>
-<ul>
-<li>为<code>test</code>账户设置密码：</li>
+<p>Ubuntu下操作NFS服务器：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl <span class="keyword">start</span>/<span class="keyword">stop</span>/restart/<span class="keyword">status</span> nfs-kernel-server.service</div></pre></td></tr></table></figure>
+<h2 id="在客户端创建挂载点"><a href="#在客户端创建挂载点" class="headerlink" title="在客户端创建挂载点"></a>在客户端创建挂载点</h2><p>为了在客户端机器上使用远程共享目录，我们需要将该目录挂载到本地一个空目录上。</p>
+<blockquote>
+<p>如果待挂载目录下已经有文件或文件夹，那么一旦你挂载了NFS共享目录，原有的文件就会被隐藏掉。所以要确保你的挂载目录若已存在，那么它得是一个空目录。</p>
+</blockquote>
+<p>创建挂载目录：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> -p /<span class="built_in">home</span>/client/nfs</div></pre></td></tr></table></figure>
+<p>挂载NFS共享目录：</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo mount <span class="number">192.168</span>.<span class="number">1.100</span><span class="symbol">:/home/mine/nfs</span> /home/client/nfs /<span class="regexp">/192.168.1.100是NFS服务器IP</span></div></pre></td></tr></table></figure>
+<p>检查挂载情况：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">df -h</span></div></pre></td></tr></table></figure>
+<p>卸载共享目录的挂载：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo umount /<span class="built_in">home</span>/client/nfs</div></pre></td></tr></table></figure>
+<p>okay，现在无论在NFS服务器，还是客户机上，任何人都能对<code>nfs</code>共享目录进行读写操作了。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a href="https://help.ubuntu.com/lts/serverguide/network-file-system.html" target="_blank" rel="external">NFS</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04" target="_blank" rel="external">How To Set Up an NFS Mount on Ubuntu 16.04</a></li>
+<li><a href="https://linux.die.net/man/5/exports" target="_blank" rel="external">exports(5) - Linux man page</a></li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo passwd <span class="built_in">test</span></div></pre></td></tr></table></figure>
-<ul>
-<li>切换账户：</li>
-</ul>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">su</span> - <span class="keyword">test</span> <span class="comment">//切换到test账户，并同时切换到test账户的工作环境中</span></div><div class="line"><span class="keyword">su</span> - root <span class="comment">//切换到root账户</span></div><div class="line"><span class="keyword">su</span> - <span class="comment">//省略root，也同样可以切换到root账户</span></div></pre></td></tr></table></figure>
-<ul>
-<li>系统安装好后，默认没有root密码，设置或修改方式如下：</li>
-</ul>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">sudo passwd</span></div></pre></td></tr></table></figure>
-<ul>
-<li>返回上次所在路径：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> -</div></pre></td></tr></table></figure>
-<ul>
-<li>生成SSH公私钥：一般来说，SSH公私钥为<code>id_rsa</code>和<code>id_rsa.pub</code>这2个文件，位于<code>~/.ssh</code>目录下，如果想要使用这对公私钥，可以把<code>id_rsa.pub</code>文件内容提供给服务器，这样就可以使用自己的私钥文件，进行SSH连接了。</li>
-</ul>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ssh-keygen </div><div class="line"><span class="string">//</span>一路默认下去，即可在~<span class="string">/.ssh</span>目录下生成一对公私钥文件</div></pre></td></tr></table></figure>
-<ul>
-<li>使用私钥进行SSH连接。</li>
-</ul>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -i ~/.ssh/id_rsa root@<span class="number">192.168</span><span class="number">.9</span><span class="number">.100</span></div></pre></td></tr></table></figure>
+
           
         
       
@@ -442,7 +466,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/05/06/Git常用命令积累/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/01/Mac常用命令积累/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -461,7 +485,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/05/06/Git常用命令积累/" itemprop="url">Git常用命令积累</a></h1>
+                <a class="post-title-link" href="/2017/06/01/Mac常用命令积累/" itemprop="url">Mac常用命令积累</a></h1>
         
 
         <div class="post-meta">
@@ -473,8 +497,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-06T16:47:34+08:00">
-                2017-05-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-01T16:24:28+08:00">
+                2017-06-01
               </time>
             
 
@@ -496,8 +520,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index">
-                    <span itemprop="name">Git</span>
+                  <a href="/categories/经验/" itemprop="url" rel="index">
+                    <span itemprop="name">经验</span>
                   </a>
                 </span>
 
@@ -513,7 +537,7 @@
 
           
           
-             <span id="/2017/05/06/Git常用命令积累/" class="leancloud_visitors" data-flag-title="Git常用命令积累">
+             <span id="/2017/06/01/Mac常用命令积累/" class="leancloud_visitors" data-flag-title="Mac常用命令积累">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -544,29 +568,21 @@
         
           
             <ul>
-<li>配置用户名和邮箱</li>
+<li><p>Mac自带的<code>terminal</code>，新建标签页快捷键：<code>command</code> + <code>T</code></p>
+</li>
+<li><p>Mac自带的<code>terminal</code>，关闭标签页快捷键：<code>command</code> + <code>W</code></p>
+</li>
+<li><p>Mac自带的<code>terminal</code>，显示上一个标签页快捷键：<code>control</code> + <code>shift</code> + <code>tab</code></p>
+</li>
+<li><p>Mac自带的<code>terminal</code>，显示下一个标签页快捷键：<code>control</code> + <code>tab</code></p>
+</li>
+<li><p>Mac剪切粘贴文件，Mac Finder剪切快捷键默认被禁用，需要采用如下2步骤才能实现剪贴：</p>
+<ol>
+<li><code>command</code> + <code>C</code> 复制源文件</li>
+<li><code>command</code> + <code>option</code> + <code>V</code> 在目的地剪贴</li>
+</ol>
+</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//全局配置</div><div class="line"><span class="meta">$</span><span class="bash"> git config --global user.name <span class="string">"xxx"</span></span></div><div class="line"><span class="meta">$</span><span class="bash"> git config --global user.email <span class="string">"test@xxx.com"</span></span></div><div class="line"></div><div class="line">//清除配置</div><div class="line"><span class="meta">$</span><span class="bash"> git config --<span class="built_in">unset</span> --global user.name</span></div><div class="line"><span class="meta">$</span><span class="bash"> git config --<span class="built_in">unset</span> --global user.email</span></div><div class="line"></div><div class="line">//查看配置</div><div class="line"><span class="meta">$</span><span class="bash"> git config --list</span></div></pre></td></tr></table></figure>
-<ul>
-<li>修改最近一次的commit message：</li>
-</ul>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit <span class="params">--amend</span> <span class="string">//</span>会进入一个编辑器，可以对最近一次的commit message进行修改</div></pre></td></tr></table></figure>
-<ul>
-<li>丢弃掉<code>test.txt</code>文件在工作区的修改：</li>
-</ul>
-<figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout <span class="comment">-- test.txt</span></div></pre></td></tr></table></figure>
-<ul>
-<li>切换到本地的<code>dev</code>分支：</li>
-</ul>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">git checkout dev</span></div></pre></td></tr></table></figure>
-<ul>
-<li>将<code>dev</code>分支上的指定文件<code>./main.go</code>合并到当前分支中：</li>
-</ul>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout dev ./main<span class="selector-class">.go</span> <span class="comment">//在当前分支运行该命令</span></div></pre></td></tr></table></figure>
-<ul>
-<li>回退版本号为<code>fde6085a</code>的提交，这会完全撤销<code>fde6085a</code>的改动，在本地产生一次撤销改动的commit，将这个commit push上去即可完成回退全过程：</li>
-</ul>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">revert</span> fde6085a</div><div class="line">git <span class="built_in">push</span> <span class="built_in">origin</span> master</div></pre></td></tr></table></figure>
 
           
         
@@ -605,7 +621,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -650,7 +666,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -661,7 +677,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

@@ -267,7 +267,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/07/14/Git多仓库追踪更新的方法/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/22/golang注意点/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -286,7 +286,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/14/Git多仓库追踪更新的方法/" itemprop="url">Git多仓库追踪更新的方法</a></h1>
+                <a class="post-title-link" href="/2017/11/22/golang注意点/" itemprop="url">golang注意点</a></h1>
         
 
         <div class="post-meta">
@@ -298,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-14T15:53:24+08:00">
-                2017-07-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T14:20:47+08:00">
+                2017-11-22
               </time>
             
 
@@ -309,28 +309,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index">
-                    <span itemprop="name">Git</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -338,7 +316,7 @@
 
           
           
-             <span id="/2017/07/14/Git多仓库追踪更新的方法/" class="leancloud_visitors" data-flag-title="Git多仓库追踪更新的方法">
+             <span id="/2017/11/22/golang注意点/" class="leancloud_visitors" data-flag-title="golang注意点">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -371,31 +349,9 @@
             <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
-<p>有时候，我们在github上看到特别棒的项目，忍不住想要深入的研究，对代码进行一些自己的修改，同时又想保持和本源项目的同步更新，此时就面临着两全的问题：既要有自己的修改，又要有作者的更新。</p>
-<p>Git多仓库正好可以解决这个问题，能够在保持修改的同时，追踪本源的更新。下面是解决步骤：</p>
 <ul>
-<li>假如有本源项目仓库：<code>source</code>，首先，需要在github页面，<code>fork</code>一份代码。</li>
+<li>数组名不再表示地址，需要使用<code>&amp;</code>取得地址</li>
 </ul>
-<p><img src="/source_code/image/github-fork.png" alt="Alt text"></p>
-<ul>
-<li>对于<code>fork</code>生成的仓库：<code>mine</code>，将代码<code>clone</code>到本地：</li>
-</ul>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="keyword">clone</span> <span class="title">mine</span>.git</div></pre></td></tr></table></figure>
-<ul>
-<li>本地做一些自己的修改，保持修改很简单，就是普通的<code>push</code>：</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> git add .</span></div><div class="line"><span class="meta">$</span><span class="bash"> git commit -m <span class="string">"commit my change"</span></span></div><div class="line"><span class="meta">$</span><span class="bash"> git push origin master</span></div></pre></td></tr></table></figure>
-<ul>
-<li>如果本源仓库<code>source</code>有更新，想要将更新运用到<code>mine</code>仓库中，需要做如下几步操作：</li>
-</ul>
-<ol>
-<li><p>首先需要将<code>source</code>加入到远程仓库列表中，比如取名为<code>upstream</code>。</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git remote add upstream source<span class="selector-class">.git</span> <span class="comment">//只需做一次</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>每次需要追踪并应用<code>source</code>更新的时候，都需要在<code>origin/master</code>分支上做一些操作，当然，如果你想将<code>source</code>的更新应用到其它分支上，也可以在其它分支上做如下操作。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> git fetch upstream //从<span class="built_in">source</span>仓库拉取所有更新</span></div><div class="line"><span class="meta">$</span><span class="bash"> git merge upstream/master //将更新合并到origin/master上</span></div><div class="line"><span class="meta">$</span><span class="bash"> git add . //merge时可能会冲突，解决完所有冲突，使用add消除MERGIG状态</span></div><div class="line"><span class="meta">$</span><span class="bash"> git commit -m <span class="string">"track source update"</span></span></div><div class="line"><span class="meta">$</span><span class="bash"> git push origin master //将应用后的更新提交到mine仓库</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
 <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
@@ -442,7 +398,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/22/juju-kubernetes修改运行配置的方法/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/22/Kubernetes构建高可用集群/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -461,7 +417,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/06/22/juju-kubernetes修改运行配置的方法/" itemprop="url">juju kubernetes修改运行配置的方法</a></h1>
+                <a class="post-title-link" href="/2017/11/22/Kubernetes构建高可用集群/" itemprop="url">Kubernetes构建高可用集群</a></h1>
         
 
         <div class="post-meta">
@@ -473,8 +429,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T16:44:34+08:00">
-                2017-06-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T14:15:38+08:00">
+                2017-11-22
               </time>
             
 
@@ -496,8 +452,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
-                    <span itemprop="name">Kubernetes</span>
+                  <a href="/categories/kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">kubernetes</span>
                   </a>
                 </span>
 
@@ -513,7 +469,7 @@
 
           
           
-             <span id="/2017/06/22/juju-kubernetes修改运行配置的方法/" class="leancloud_visitors" data-flag-title="juju kubernetes修改运行配置的方法">
+             <span id="/2017/11/22/Kubernetes构建高可用集群/" class="leancloud_visitors" data-flag-title="Kubernetes构建高可用集群">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -544,46 +500,11 @@
         
           
             <blockquote>
-<p>转载请注明出处：www.huamo.online</p>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
-<p>使用<code>conjure-up</code> + <code>juju</code> + <code>lxd</code>部署的<code>kubernetes</code>集群，如果需要修改<code>master</code>或者<code>worker</code>上的服务运行配置，知道以下几点将会很有帮助。</p>
+<h2 id="构建高可用集群"><a href="#构建高可用集群" class="headerlink" title="构建高可用集群"></a>构建高可用集群</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>本文叙述了如何构建一个高可用的Kubernetes集群。</p>
 <blockquote>
-<ul>
-<li><p><strong>$SNAP_DATA指的就是<code>/var/snap/...</code>路径</strong></p>
-</li>
-<li><p><strong>所有的服务配置都在节点系统中的<code>/var/snap/$app/.../args</code>文件中</strong></p>
-</li>
-<li><p><strong>修改完配置后，直接<code>reboot</code>重启节点系统，就会使改变生效</strong></p>
-</li>
-</ul>
-</blockquote>
-<p>例如，在初始部署的时候，集群的<code>--allow-privileged</code>没有设置为<code>true</code>，在实际使用中，发现需要容器特权，此时就需要修改服务配置。</p>
-<p><strong>解决方法</strong></p>
-<ol>
-<li>需要修改所有<code>worker</code>节点的<code>kubelet</code>运行参数，使其<code>--allow-privileged true</code>。</li>
-<li>同时，需要修改<code>master</code>节点的<code>kube-apiserver</code>运行参数，使其<code>--allow-privileged true</code></li>
-</ol>
-<p><strong>步骤</strong></p>
-<ul>
-<li><code>juju status</code>查看集群状态信息，有类似下文的输出</li>
-</ul>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Unit                      Workload  Agent  Machine  Public address  Ports           Message</div><div class="line">easyrsa/<span class="number">0</span>*                active    idle   <span class="number">0</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.3</span>                        Certificate Authority connected.</div><div class="line">etcd/<span class="number">0</span>*                   active    idle   <span class="number">1</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.203</span>      <span class="number">2379</span>/tcp        Healthy with <span class="number">3</span> known peers</div><div class="line">etcd/<span class="number">1</span>                    active    idle   <span class="number">2</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.14</span>       <span class="number">2379</span>/tcp        Healthy with <span class="number">3</span> known peers</div><div class="line">etcd/<span class="number">2</span>                    active    idle   <span class="number">3</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.133</span>      <span class="number">2379</span>/tcp        Healthy with <span class="number">3</span> known peers</div><div class="line">kubeapi-load-balancer/<span class="number">0</span>*  active    idle   <span class="number">4</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.234</span>      <span class="number">443</span>/tcp         Loadbalancer ready.</div><div class="line">kubernetes-master/<span class="number">0</span>*      waiting   idle   <span class="number">5</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.77</span>       <span class="number">6443</span>/tcp        Waiting for kube-system pods to start</div><div class="line">  flannel/<span class="number">0</span>*              active    idle            <span class="number">10.0</span><span class="number">.8</span><span class="number">.77</span>                       Flannel subnet <span class="number">10.1</span><span class="number">.66</span><span class="number">.1</span>/<span class="number">24</span></div><div class="line">kubernetes-worker/<span class="number">0</span>       active    idle   <span class="number">6</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.240</span>      <span class="number">80</span>/tcp,<span class="number">443</span>/tcp  Kubernetes worker running.</div><div class="line">  flannel/<span class="number">3</span>               active    idle            <span class="number">10.0</span><span class="number">.8</span><span class="number">.240</span>                      Flannel subnet <span class="number">10.1</span><span class="number">.84</span><span class="number">.1</span>/<span class="number">24</span></div><div class="line">kubernetes-worker/<span class="number">1</span>*      active    idle   <span class="number">7</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.138</span>      <span class="number">80</span>/tcp,<span class="number">443</span>/tcp  Kubernetes worker running.</div><div class="line">  flannel/<span class="number">2</span>               active    idle            <span class="number">10.0</span><span class="number">.8</span><span class="number">.138</span>                      Flannel subnet <span class="number">10.1</span><span class="number">.16</span><span class="number">.1</span>/<span class="number">24</span></div><div class="line">kubernetes-worker/<span class="number">2</span>       active    idle   <span class="number">8</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.139</span>      <span class="number">80</span>/tcp,<span class="number">443</span>/tcp  Kubernetes worker running.</div><div class="line">  flannel/<span class="number">1</span>               active    idle            <span class="number">10.0</span><span class="number">.8</span><span class="number">.139</span>                      Flannel subnet <span class="number">10.1</span><span class="number">.46</span><span class="number">.1</span>/<span class="number">24</span></div></pre></td></tr></table></figure>
-<ul>
-<li><p><code>juju ssh 6</code> 进入<code>kuberneter-worker/0</code>节点中</p>
-</li>
-<li><p>修改<code>worker</code>节点的<code>kubelet</code>运行参数</p>
-</li>
-</ul>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo -s</div><div class="line">vim <span class="regexp">/var/</span>snap<span class="regexp">/kubelet/</span><span class="number">27</span>/args</div><div class="line">添加一行后保存退出： --allow-privileged <span class="literal">true</span></div><div class="line">reboot </div><div class="line"><span class="comment">//改完配置后，直接reboot重启系统，即可使worker节点修改生效。</span></div></pre></td></tr></table></figure>
-<ul>
-<li>同样的方式，修改<code>master</code>节点的<code>kube-apiserver</code>运行参数</li>
-</ul>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">juju ssh <span class="number">5</span></div><div class="line">sudo -s</div><div class="line">vim <span class="regexp">/var/</span>snap<span class="regexp">/kube-apiserver/</span><span class="number">27</span>/args</div><div class="line">添加一行后保存退出： --allow-privileged <span class="literal">true</span></div><div class="line">reboot <span class="comment">//重启master节点使改变生效</span></div></pre></td></tr></table></figure>
-<ul>
-<li>这样，整个集群就支持容器特权了。OKay！</li>
-</ul>
-<blockquote>
-<p>转载请注明出处：www.huamo.online</p>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
 
           
@@ -623,7 +544,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -668,7 +589,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -679,7 +600,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

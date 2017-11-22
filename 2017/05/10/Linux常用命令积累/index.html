@@ -93,16 +93,16 @@
 
 
 
-<meta name="description" content="向test用户添加sudo权限的方法：  12345678$ whereis sudoers 		//一般都在/etc/sudoers文件中$ su - root 			//切换到root用户，以进行后续修改$ chmod u+w /etc/sudoers 	//该文件默认没有写权限，需要添加$ vim /etc/sudoers	找到root ALL=(ALL)ALL行	在其下方添加test A">
+<meta name="description" content="Ubuntu下安装make:  1sudo apt-get install build-essential  Ubuntu下快速安装最新版Docker:  123apt-get updateapt-get install -y curlcurl -sSL https://get.daocloud.io/docker | sh  向test用户添加sudo权限的方法：  12345678$ whe">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux常用命令积累">
 <meta property="og:url" content="http://www.huamo.online/2017/05/10/Linux常用命令积累/index.html">
 <meta property="og:site_name" content="花木兰">
-<meta property="og:description" content="向test用户添加sudo权限的方法：  12345678$ whereis sudoers 		//一般都在/etc/sudoers文件中$ su - root 			//切换到root用户，以进行后续修改$ chmod u+w /etc/sudoers 	//该文件默认没有写权限，需要添加$ vim /etc/sudoers	找到root ALL=(ALL)ALL行	在其下方添加test A">
-<meta property="og:updated_time" content="2017-07-14T04:55:03.000Z">
+<meta property="og:description" content="Ubuntu下安装make:  1sudo apt-get install build-essential  Ubuntu下快速安装最新版Docker:  123apt-get updateapt-get install -y curlcurl -sSL https://get.daocloud.io/docker | sh  向test用户添加sudo权限的方法：  12345678$ whe">
+<meta property="og:updated_time" content="2017-08-19T03:51:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux常用命令积累">
-<meta name="twitter:description" content="向test用户添加sudo权限的方法：  12345678$ whereis sudoers 		//一般都在/etc/sudoers文件中$ su - root 			//切换到root用户，以进行后续修改$ chmod u+w /etc/sudoers 	//该文件默认没有写权限，需要添加$ vim /etc/sudoers	找到root ALL=(ALL)ALL行	在其下方添加test A">
+<meta name="twitter:description" content="Ubuntu下安装make:  1sudo apt-get install build-essential  Ubuntu下快速安装最新版Docker:  123apt-get updateapt-get install -y curlcurl -sSL https://get.daocloud.io/docker | sh  向test用户添加sudo权限的方法：  12345678$ whe">
 
 
 
@@ -364,6 +364,14 @@
 
       
         <ul>
+<li>Ubuntu下安装<code>make</code>:</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-<span class="builtin-name">get</span> install build-essential</div></pre></td></tr></table></figure>
+<ul>
+<li>Ubuntu下快速安装最新版<code>Docker</code>:</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">apt-<span class="built_in">get</span> <span class="keyword">update</span></div><div class="line">apt-<span class="built_in">get</span> install -<span class="keyword">y</span> curl</div><div class="line">curl -sSL http<span class="variable">s:</span>//<span class="built_in">get</span>.daocloud.io/docker | <span class="keyword">sh</span></div></pre></td></tr></table></figure>
+<ul>
 <li>向<code>test</code>用户添加<code>sudo</code>权限的方法：</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> whereis sudoers 		//一般都在/etc/sudoers文件中</span></div><div class="line"><span class="meta">$</span><span class="bash"> su - root 			//切换到root用户，以进行后续修改</span></div><div class="line"><span class="meta">$</span><span class="bash"> chmod u+w /etc/sudoers 	//该文件默认没有写权限，需要添加</span></div><div class="line"><span class="meta">$</span><span class="bash"> vim /etc/sudoers</span></div><div class="line">	找到root ALL=(ALL)ALL行</div><div class="line">	在其下方添加test ALL=(ALL)ALL</div><div class="line">	:wq</div><div class="line"><span class="meta">$</span><span class="bash"> chmod u-w /etc/sudoers 	//将该文件权限恢复为默认值</span></div></pre></td></tr></table></figure>
@@ -525,7 +533,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -536,7 +544,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

@@ -267,7 +267,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/05/Ubuntu-NFS使用/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/22/一些不错的网站/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -286,7 +286,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/06/05/Ubuntu-NFS使用/" itemprop="url">Ubuntu NFS使用</a></h1>
+                <a class="post-title-link" href="/2017/06/22/一些不错的网站/" itemprop="url">一些不错的网站</a></h1>
         
 
         <div class="post-meta">
@@ -298,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-05T14:22:01+08:00">
-                2017-06-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T13:22:33+08:00">
+                2017-06-22
               </time>
             
 
@@ -321,8 +321,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/经验/" itemprop="url" rel="index">
-                    <span itemprop="name">经验</span>
+                  <a href="/categories/分享/" itemprop="url" rel="index">
+                    <span itemprop="name">分享</span>
                   </a>
                 </span>
 
@@ -338,7 +338,7 @@
 
           
           
-             <span id="/2017/06/05/Ubuntu-NFS使用/" class="leancloud_visitors" data-flag-title="Ubuntu NFS使用">
+             <span id="/2017/06/22/一些不错的网站/" class="leancloud_visitors" data-flag-title="一些不错的网站">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -368,62 +368,10 @@
       
         
           
-            <blockquote>
-<p>在<code>Ubuntu16.04</code>下测试通过</p>
-</blockquote>
-<h2 id="NFS安装"><a href="#NFS安装" class="headerlink" title="NFS安装"></a>NFS安装</h2><p>CentOS下查看NFS是否已经安装：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -<span class="keyword">qa</span> | <span class="keyword">grep</span> <span class="string">"nfs"</span></div></pre></td></tr></table></figure>
-<p>Ubuntu下安装NFS服务器：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt <span class="keyword">install</span> nfs-kernel-<span class="keyword">server</span></div></pre></td></tr></table></figure>
-<p>Ubuntu下安装NFS客户端：</p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">sudo</span> apt install nfs-<span class="meta">common</span></div></pre></td></tr></table></figure>
-<h2 id="在NFS服务器上指定共享目录"><a href="#在NFS服务器上指定共享目录" class="headerlink" title="在NFS服务器上指定共享目录"></a>在NFS服务器上指定共享目录</h2><p>指定共享目录有2种方式，分别有不同的目的：一种适用于通用的文件存储；另一种则适用于带权限管理的文件存储。</p>
-<p>root用户可以在系统的任何位置做任何事情。然而，NFS挂载的目录不是这个系统的一部分，所以默认情况下，NFS服务器会拒绝执行需要超级用户权限的操作。这个默认的限制意味着，客户端系统的root用户无法在NFS挂载目录下，以root角色写文件，重新指定文件拥有者，或者执行其它超级用户操作。</p>
-<p>这里先介绍默认方式的共享目录配置方法，它适用于大多数场景，比如作为内容管理系统存储上传的文件，或者为用户开辟空间共享项目文件。</p>
-<p>首先，创建一个待共享的目录：</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> -p /<span class="built_in">home</span>/mine/nfs</div></pre></td></tr></table></figure>
-<p><strong>由于是默认的共享方式，NFS会将客户机上的所有<code>root</code>操作都映射为<code>nobody:nogroup</code>身份，因此，我们需要修改该目录的拥有权，以便匿名身份可以读写该目录</strong>：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chown <span class="string">nobody:</span>nogroup <span class="regexp">/home/</span>mine/nfs</div></pre></td></tr></table></figure>
-<blockquote>
-<p>在下文的<code>/etc/exports</code>配置中，我们可以使用<code>all_squash</code>选项，将客户机上的所有用户都映射为匿名用户，这样就保证了所有人都能够存取该目录。</p>
-</blockquote>
-<p>接下来，配置NFS导出：</p>
-<p>使用root权限打开<code>/etc/exports</code>文件：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim <span class="regexp">/etc/</span>exports</div></pre></td></tr></table></figure>
-<p>这个文件有一段注释内容，展示了每一个配置行的基本结构，语法大致是这样的：</p>
-<figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">directory_to_share</span></span> client(share_option1,...,share_optionN)</div></pre></td></tr></table></figure>
-<p>对于每一个要共享的目录都要配置一行：</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/mine/nfs <span class="number">192.168</span><span class="number">.100</span><span class="number">.180</span>(rw,sync,all_squash,insecure)</div></pre></td></tr></table></figure>
-<p>这意味着将<code>/home/mine/nfs</code>目录共享给<code>192.168.100.180</code>机器使用，如果想共享给所有主机，也可以换成<code>*</code>：</p>
-<figure class="highlight sml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/home/mine/nfs *(rw,sync,all_squash,insecure) </div><div class="line">/*<span class="built_in">option</span> <span class="built_in">list</span>之间不能有空格，否则会报错：bad <span class="built_in">option</span> <span class="built_in">list</span>*/</div></pre></td></tr></table></figure>
-<p>共享设置一览：</p>
-<ul>
-<li>rw： 允许客户端对卷有读写权限</li>
-<li>sync： 强制NFS在回复之前将改变写入磁盘。因为回复反映了远程卷的实际状态，所以这样可以产生更加稳定一致的环境。然而，它也降低了文件操作的速度。</li>
-<li>all_squash：客户机上的任何用户读写该共享目录时，都映射成匿名用户，这样就<strong>便于所有用户对文件的存取</strong>。</li>
-<li>insecure：允许客户机从大于等于<code>1024</code>的端口来访问NFS，如果不写明此选项，有时候客户机<code>mount</code>时会报错<code>access denied</code>。</li>
+            <ul>
+<li>icon搜索，各种尺寸，各种格式下载：<a href="http://www.flaticon.com/" target="_blank" rel="external">flaticon</a></li>
 </ul>
-<p>Ubuntu下操作NFS服务器：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl <span class="keyword">start</span>/<span class="keyword">stop</span>/restart/<span class="keyword">status</span> nfs-kernel-server.service</div></pre></td></tr></table></figure>
-<h2 id="在客户端创建挂载点"><a href="#在客户端创建挂载点" class="headerlink" title="在客户端创建挂载点"></a>在客户端创建挂载点</h2><p>为了在客户端机器上使用远程共享目录，我们需要将该目录挂载到本地一个空目录上。</p>
-<blockquote>
-<p>如果待挂载目录下已经有文件或文件夹，那么一旦你挂载了NFS共享目录，原有的文件就会被隐藏掉。所以要确保你的挂载目录若已存在，那么它得是一个空目录。</p>
-</blockquote>
-<p>创建挂载目录：</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> -p /<span class="built_in">home</span>/client/nfs</div></pre></td></tr></table></figure>
-<p>挂载NFS共享目录：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo mount <span class="number">192.168</span>.<span class="number">1.100</span><span class="symbol">:/home/mine/nfs</span> /home/client/nfs /<span class="regexp">/192.168.1.100是NFS服务器IP</span></div></pre></td></tr></table></figure>
-<p>检查挂载情况：</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">df -h</span></div></pre></td></tr></table></figure>
-<p>卸载共享目录的挂载：</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo umount /<span class="built_in">home</span>/client/nfs</div></pre></td></tr></table></figure>
-<p>okay，现在无论在NFS服务器，还是客户机上，任何人都能对<code>nfs</code>共享目录进行读写操作了。</p>
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
-<li><a href="https://help.ubuntu.com/lts/serverguide/network-file-system.html" target="_blank" rel="external">NFS</a></li>
-<li><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04" target="_blank" rel="external">How To Set Up an NFS Mount on Ubuntu 16.04</a></li>
-<li><a href="https://linux.die.net/man/5/exports" target="_blank" rel="external">exports(5) - Linux man page</a></li>
-</ul>
-
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span><span class="comment">//www.flaticon.com/</span></div></pre></td></tr></table></figure>
           
         
       
@@ -466,7 +414,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/01/Mac常用命令积累/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/17/curl使用参数引用的方式发送POST请求/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -485,7 +433,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/06/01/Mac常用命令积累/" itemprop="url">Mac常用命令积累</a></h1>
+                <a class="post-title-link" href="/2017/06/17/curl使用参数引用的方式发送POST请求/" itemprop="url">curl使用参数引用的方式发送POST请求</a></h1>
         
 
         <div class="post-meta">
@@ -497,8 +445,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-01T16:24:28+08:00">
-                2017-06-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-17T11:00:15+08:00">
+                2017-06-17
               </time>
             
 
@@ -520,8 +468,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/经验/" itemprop="url" rel="index">
-                    <span itemprop="name">经验</span>
+                  <a href="/categories/Bash/" itemprop="url" rel="index">
+                    <span itemprop="name">Bash</span>
                   </a>
                 </span>
 
@@ -537,7 +485,7 @@
 
           
           
-             <span id="/2017/06/01/Mac常用命令积累/" class="leancloud_visitors" data-flag-title="Mac常用命令积累">
+             <span id="/2017/06/17/curl使用参数引用的方式发送POST请求/" class="leancloud_visitors" data-flag-title="curl使用参数引用的方式发送POST请求">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -568,21 +516,21 @@
         
           
             <ul>
-<li><p>Mac自带的<code>terminal</code>，新建标签页快捷键：<code>command</code> + <code>T</code></p>
-</li>
-<li><p>Mac自带的<code>terminal</code>，关闭标签页快捷键：<code>command</code> + <code>W</code></p>
-</li>
-<li><p>Mac自带的<code>terminal</code>，显示上一个标签页快捷键：<code>control</code> + <code>shift</code> + <code>tab</code></p>
-</li>
-<li><p>Mac自带的<code>terminal</code>，显示下一个标签页快捷键：<code>control</code> + <code>tab</code></p>
-</li>
-<li><p>Mac剪切粘贴文件，Mac Finder剪切快捷键默认被禁用，需要采用如下2步骤才能实现剪贴：</p>
-<ol>
-<li><code>command</code> + <code>C</code> 复制源文件</li>
-<li><code>command</code> + <code>option</code> + <code>V</code> 在目的地剪贴</li>
-</ol>
+<li>Bash中的单引号<code>&#39;</code>具有raw字符串的功能，即被单引号<code>&#39;</code>包含的字符串，维持字面意思，其中的<code>$</code>这种特殊字符都不会被解析。</li>
+</ul>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">test<span class="symbol">@runningday</span> ~$echo <span class="string">'$PATH'</span></div><div class="line">$PATH</div><div class="line">// $PATH维持字面意思，并没有被解析为变量引用</div></pre></td></tr></table></figure>
+<ul>
+<li><code>curl</code>发送POST请求时，<code>-d</code>后的json数据，如果含有字符串，必须使用双引号<code>&quot;</code>包裹，不能使用单引号<code>&#39;</code>，否则会返回错误码。</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$curl</span> -<span class="keyword">H</span> <span class="string">"Content-Type: application/json"</span> -<span class="keyword">d</span> <span class="string">"&#123;'app_key': 'key1', 'app_secret': 'secret1'&#125;"</span> https:/<span class="keyword">open</span>.c.163.com/api/v1/<span class="keyword">token</span></div><div class="line">&#123;<span class="string">"message"</span>:<span class="string">"Unprocessable entity."</span>,<span class="string">"code"</span>:4220001&#125;</div><div class="line"><span class="comment">// 其中的payload json数据，全都是用单引号包裹，被报错422</span></div><div class="line"></div><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$curl</span> -<span class="keyword">H</span> <span class="string">"Content-Type: application/json"</span> -<span class="keyword">d</span> '&#123;<span class="string">"app_key"</span>: <span class="string">"key1"</span>, <span class="string">"app_secret"</span>: <span class="string">"secret1"</span>&#125;' https:/<span class="keyword">open</span>.c.163.com/api/v1/<span class="keyword">token</span></div><div class="line">&#123;<span class="string">"token"</span>:<span class="string">"token1"</span>,<span class="string">"expires_in"</span>:<span class="string">"86399"</span>&#125;</div><div class="line"><span class="comment">// json数据换成用双引号包裹，请求成功</span></div></pre></td></tr></table></figure>
+<ul>
+<li>于是乎，如果将上文中json数据的<code>key1</code>，<code>secret1</code>使用变量引用的方式，我们就要注意到上文的2个问题，小心谨慎的拼装出最后的命令。<ul>
+<li>需要保证json数据都由双引号包裹</li>
+<li>需要保证<code>$</code>能够被正确解析为变量引用，所以<code>-d</code>的数据整体也要用双引号包裹，而内部需要使用<code>\</code>来进行转义</li>
+</ul>
 </li>
 </ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$api_prefix</span>=<span class="string">"https://open.c.163.com"</span></div><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$k1</span>=key1</div><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$s1</span>=secret1</div><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$api</span>=<span class="variable">$&#123;api_prefix&#125;</span>/api/v1/<span class="keyword">token</span></div><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$curl</span> -<span class="keyword">H</span> <span class="string">"Content-Type: application/json"</span> -<span class="keyword">d</span> <span class="string">"&#123;\"</span>app_key\<span class="string">": \"</span><span class="variable">$&#123;k1&#125;</span>\<span class="string">", \"</span>app_secret\<span class="string">": \"</span><span class="variable">$&#123;s1&#125;</span>\<span class="string">"&#125;"</span> <span class="variable">$&#123;api&#125;</span></div><div class="line">&#123;<span class="string">"token"</span>:<span class="string">"token1"</span>,<span class="string">"expires_in"</span>:<span class="string">"86399"</span>&#125;</div></pre></td></tr></table></figure>
 
           
         
@@ -621,7 +569,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -666,7 +614,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -677,7 +625,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
