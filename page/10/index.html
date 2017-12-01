@@ -267,7 +267,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/05/19/Kubernetes-缩放应用规模/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/05/Ubuntu-NFS使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -286,7 +286,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/05/19/Kubernetes-缩放应用规模/" itemprop="url">Kubernetes 缩放应用规模</a></h1>
+                <a class="post-title-link" href="/2017/06/05/Ubuntu-NFS使用/" itemprop="url">Ubuntu NFS使用</a></h1>
         
 
         <div class="post-meta">
@@ -298,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-19T17:59:58+08:00">
-                2017-05-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-05T14:22:01+08:00">
+                2017-06-05
               </time>
             
 
@@ -321,8 +321,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
-                    <span itemprop="name">Kubernetes</span>
+                  <a href="/categories/经验/" itemprop="url" rel="index">
+                    <span itemprop="name">经验</span>
                   </a>
                 </span>
 
@@ -338,7 +338,7 @@
 
           
           
-             <span id="/2017/05/19/Kubernetes-缩放应用规模/" class="leancloud_visitors" data-flag-title="Kubernetes 缩放应用规模">
+             <span id="/2017/06/05/Ubuntu-NFS使用/" class="leancloud_visitors" data-flag-title="Ubuntu NFS使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -369,17 +369,60 @@
         
           
             <blockquote>
-<p>英文原文：<a href="https://kubernetes.io/docs/tutorials/kubernetes-basics/scale-intro/" target="_blank" rel="external">https://kubernetes.io/docs/tutorials/kubernetes-basics/scale-intro/</a></p>
+<p>在<code>Ubuntu16.04</code>下测试通过</p>
 </blockquote>
-<h4 id="缩放一个应用规模"><a href="#缩放一个应用规模" class="headerlink" title="缩放一个应用规模"></a>缩放一个应用规模</h4><hr>
-<p>之前我们创建了一个部署，然后通过一个服务将它暴露到公网。部署操作只创建了一个Pod来运行我们的应用。当流量增大时，我们将需要扩展应用，以跟上用户的需求。</p>
-<p><strong>通过更改部署中副本的数量可以实现缩放</strong></p>
-<h4 id="缩放概述"><a href="#缩放概述" class="headerlink" title="缩放概述"></a>缩放概述</h4><hr>
-<p><img src="/source_code/image/module_05_scaling1.svg" alt=""></p>
-<p><img src="/source_code/image/module_05_scaling2.svg" alt=""></p>
-<p>扩展一个部署将会保证创建新的Pods，并能调度到可用的节点上。而缩减一个部署则会减少Pods的数量，以到达一个新的期望状态。Kubernetes也支持Pods的自动缩放，但这超出了本文的范围。将Pods数量缩减为0也是可以的，这就会将该部署中的所有Pods都终结掉。</p>
-<p>运行一个应用的多个实例，就需要一种方式将流量分散到它们上面。服务有一个集成的负载均衡，它可以将暴露到集群外的部署所接收到的流量，分散到所有的Pods上去。服务将会使用路径[endpoints]持续监控运行的Pods，以保证流量只会发送到可用的Pods中。</p>
-<p>一旦你的应用拥有多个运行实例，你就可以无需停机来进行滚动更新。后面我们会介绍应用更新。</p>
+<h2 id="NFS安装"><a href="#NFS安装" class="headerlink" title="NFS安装"></a>NFS安装</h2><p>CentOS下查看NFS是否已经安装：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -<span class="keyword">qa</span> | <span class="keyword">grep</span> <span class="string">"nfs"</span></div></pre></td></tr></table></figure>
+<p>Ubuntu下安装NFS服务器：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt <span class="keyword">install</span> nfs-kernel-<span class="keyword">server</span></div></pre></td></tr></table></figure>
+<p>Ubuntu下安装NFS客户端：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">sudo</span> apt install nfs-<span class="meta">common</span></div></pre></td></tr></table></figure>
+<h2 id="在NFS服务器上指定共享目录"><a href="#在NFS服务器上指定共享目录" class="headerlink" title="在NFS服务器上指定共享目录"></a>在NFS服务器上指定共享目录</h2><p>指定共享目录有2种方式，分别有不同的目的：一种适用于通用的文件存储；另一种则适用于带权限管理的文件存储。</p>
+<p>root用户可以在系统的任何位置做任何事情。然而，NFS挂载的目录不是这个系统的一部分，所以默认情况下，NFS服务器会拒绝执行需要超级用户权限的操作。这个默认的限制意味着，客户端系统的root用户无法在NFS挂载目录下，以root角色写文件，重新指定文件拥有者，或者执行其它超级用户操作。</p>
+<p>这里先介绍默认方式的共享目录配置方法，它适用于大多数场景，比如作为内容管理系统存储上传的文件，或者为用户开辟空间共享项目文件。</p>
+<p>首先，创建一个待共享的目录：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> -p /<span class="built_in">home</span>/mine/nfs</div></pre></td></tr></table></figure>
+<p><strong>由于是默认的共享方式，NFS会将客户机上的所有<code>root</code>操作都映射为<code>nobody:nogroup</code>身份，因此，我们需要修改该目录的拥有权，以便匿名身份可以读写该目录</strong>：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chown <span class="string">nobody:</span>nogroup <span class="regexp">/home/</span>mine/nfs</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在下文的<code>/etc/exports</code>配置中，我们可以使用<code>all_squash</code>选项，将客户机上的所有用户都映射为匿名用户，这样就保证了所有人都能够存取该目录。</p>
+</blockquote>
+<p>接下来，配置NFS导出：</p>
+<p>使用root权限打开<code>/etc/exports</code>文件：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim <span class="regexp">/etc/</span>exports</div></pre></td></tr></table></figure>
+<p>这个文件有一段注释内容，展示了每一个配置行的基本结构，语法大致是这样的：</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">directory_to_share</span></span> client(share_option1,...,share_optionN)</div></pre></td></tr></table></figure>
+<p>对于每一个要共享的目录都要配置一行：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/mine/nfs <span class="number">192.168</span><span class="number">.100</span><span class="number">.180</span>(rw,sync,all_squash,insecure)</div></pre></td></tr></table></figure>
+<p>这意味着将<code>/home/mine/nfs</code>目录共享给<code>192.168.100.180</code>机器使用，如果想共享给所有主机，也可以换成<code>*</code>：</p>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/home/mine/nfs *(rw,sync,all_squash,insecure) </div><div class="line">/*<span class="built_in">option</span> <span class="built_in">list</span>之间不能有空格，否则会报错：bad <span class="built_in">option</span> <span class="built_in">list</span>*/</div></pre></td></tr></table></figure>
+<p>共享设置一览：</p>
+<ul>
+<li>rw： 允许客户端对卷有读写权限</li>
+<li>sync： 强制NFS在回复之前将改变写入磁盘。因为回复反映了远程卷的实际状态，所以这样可以产生更加稳定一致的环境。然而，它也降低了文件操作的速度。</li>
+<li>all_squash：客户机上的任何用户读写该共享目录时，都映射成匿名用户，这样就<strong>便于所有用户对文件的存取</strong>。</li>
+<li>insecure：允许客户机从大于等于<code>1024</code>的端口来访问NFS，如果不写明此选项，有时候客户机<code>mount</code>时会报错<code>access denied</code>。</li>
+</ul>
+<p>Ubuntu下操作NFS服务器：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl <span class="keyword">start</span>/<span class="keyword">stop</span>/restart/<span class="keyword">status</span> nfs-kernel-server.service</div></pre></td></tr></table></figure>
+<h2 id="在客户端创建挂载点"><a href="#在客户端创建挂载点" class="headerlink" title="在客户端创建挂载点"></a>在客户端创建挂载点</h2><p>为了在客户端机器上使用远程共享目录，我们需要将该目录挂载到本地一个空目录上。</p>
+<blockquote>
+<p>如果待挂载目录下已经有文件或文件夹，那么一旦你挂载了NFS共享目录，原有的文件就会被隐藏掉。所以要确保你的挂载目录若已存在，那么它得是一个空目录。</p>
+</blockquote>
+<p>创建挂载目录：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> -p /<span class="built_in">home</span>/client/nfs</div></pre></td></tr></table></figure>
+<p>挂载NFS共享目录：</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo mount <span class="number">192.168</span>.<span class="number">1.100</span><span class="symbol">:/home/mine/nfs</span> /home/client/nfs /<span class="regexp">/192.168.1.100是NFS服务器IP</span></div></pre></td></tr></table></figure>
+<p>检查挂载情况：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">df -h</span></div></pre></td></tr></table></figure>
+<p>卸载共享目录的挂载：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo umount /<span class="built_in">home</span>/client/nfs</div></pre></td></tr></table></figure>
+<p>okay，现在无论在NFS服务器，还是客户机上，任何人都能对<code>nfs</code>共享目录进行读写操作了。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a href="https://help.ubuntu.com/lts/serverguide/network-file-system.html" target="_blank" rel="external">NFS</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04" target="_blank" rel="external">How To Set Up an NFS Mount on Ubuntu 16.04</a></li>
+<li><a href="https://linux.die.net/man/5/exports" target="_blank" rel="external">exports(5) - Linux man page</a></li>
+</ul>
 
           
         
@@ -423,7 +466,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/05/17/Kubernetes-Service-简介/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/01/Mac常用命令积累/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -442,7 +485,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/05/17/Kubernetes-Service-简介/" itemprop="url">Kubernetes Service 简介</a></h1>
+                <a class="post-title-link" href="/2017/06/01/Mac常用命令积累/" itemprop="url">Mac常用命令积累</a></h1>
         
 
         <div class="post-meta">
@@ -454,8 +497,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-17T18:08:00+08:00">
-                2017-05-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-01T16:24:28+08:00">
+                2017-06-01
               </time>
             
 
@@ -477,8 +520,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
-                    <span itemprop="name">Kubernetes</span>
+                  <a href="/categories/经验/" itemprop="url" rel="index">
+                    <span itemprop="name">经验</span>
                   </a>
                 </span>
 
@@ -494,7 +537,7 @@
 
           
           
-             <span id="/2017/05/17/Kubernetes-Service-简介/" class="leancloud_visitors" data-flag-title="Kubernetes Service 简介">
+             <span id="/2017/06/01/Mac常用命令积累/" class="leancloud_visitors" data-flag-title="Mac常用命令积累">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -524,41 +567,22 @@
       
         
           
-            <blockquote>
-<p>英文原文：<a href="https://kubernetes.io/docs/tutorials/kubernetes-basics/expose-intro/" target="_blank" rel="external">https://kubernetes.io/docs/tutorials/kubernetes-basics/expose-intro/</a></p>
-</blockquote>
-<h4 id="Kubernetes服务概述"><a href="#Kubernetes服务概述" class="headerlink" title="Kubernetes服务概述"></a>Kubernetes服务概述</h4><hr>
-<p>Kubernetes Pods不是永恒的，实际上它有一个生命周期。当一个工作节点挂掉的时候，运行在上面的Pods也会消失。一个复制操控程序将会通过创建新的Pods使你的应用保持运行，来动态地驱动集群恢复到期望的状态。再举一个例子，考虑一个拥有3个副本的镜像处理后台。这些副本是可以互相替代的；前端系统不需要关注后端的副本，甚至也不需要关注一个Pod是消失还是被重建。即便如此，每一个Kubernetes集群中的Pod都有一个唯一的IP地址，即使在同一个节点上的多个Pods也是这样，所以需要有一种方法能够使Pods中的变化自动保持一致，以保证你的应用持续正常运行。这就要提到服务了。在Kubernetes中，一个服务也是一个抽象概念，它定义了一个逻辑意义上的Pods集合，以及一个控制谁能访问它们的协议[policy]。服务可以使Pods之间的依赖很松散的耦合。一个服务使用YAML（优先）或者JSON来定义，就像所有的Kubernetes对象一样。一个服务标定的Pods集合通常由一个<strong>LabelSelector</strong>来决定（关于为什么在属性集中你也许不想让服务包含<code>selector</code>，可以看下面的内容）。</p>
-<p>即使Pods每个都有一个唯一的IP地址，但是没有服务，这些IP就不会暴露在集群外面。服务允许你的应用接收通讯。服务可以在ServiceSpec中指定一个<code>type</code>来以不同的方式向外部暴露：</p>
-<ul>
-<li><p><code>ClusterIP</code>（默认的） – 在集群中将服务暴露在一个内部IP上。这种类型使得服务只能在集群内部访问。</p>
+            <ul>
+<li><p>Mac自带的<code>terminal</code>，新建标签页快捷键：<code>command</code> + <code>T</code></p>
 </li>
-<li><p><code>NodePort</code> – 使用NAT，对于集群中每一个选中的节点，将服务暴露在同一个端口上。这样可以使用<code>:</code>来从集群外部访问服务。NodePort是ClusterIP的超集。</p>
+<li><p>Mac自带的<code>terminal</code>，关闭标签页快捷键：<code>command</code> + <code>W</code></p>
 </li>
-<li><p><code>LoadBalancer</code> – 在当前云环境中创建一个外部的负载均衡器（如果支持的话），并且为服务指定一个固定的外部IP。LoadBalancer是NodePort的超集。</p>
+<li><p>Mac自带的<code>terminal</code>，显示上一个标签页快捷键：<code>control</code> + <code>shift</code> + <code>tab</code></p>
 </li>
-<li><p><code>ExternalName</code> – 使用一个任意的名字，通过返回一个包含该名字的CNAME记录来暴露服务（在属性集中通过<code>externalName</code>指定名字）。不使用任何协议。这个类型需要<code>kube-dns</code>版本为v1.7及以上。</p>
+<li><p>Mac自带的<code>terminal</code>，显示下一个标签页快捷键：<code>control</code> + <code>tab</code></p>
 </li>
-</ul>
-<p>关于服务的不同类型更多信息，可以参看<a href="https://kubernetes.io/docs/tutorials/services/source-ip/" target="_blank" rel="external">Using Source IP</a>教程。也可以参看<a href="https://kubernetes.io/docs/concepts/services-networking/connect-applications-service" target="_blank" rel="external">Connecting Applications with Services</a>。</p>
-<p>另外，要注意在一些场景下，服务的属性集中并没有定义<code>selector</code>。一个没有<code>selector</code>的服务也不会创建对应的路径[Endpoints]对象。这样可以允许用户手动将一个服务映射到指定的路径上。另一个不含<code>selector</code>的原因可能是你严格使用了<code>type: ExternalName</code>。</p>
-<blockquote>
-<p>一个Kubernetes服务是一个抽象层，定义了一个逻辑上的Pods集合，并且对这些Pods启用外部通讯暴露，负载均衡和服务发现</p>
-</blockquote>
-<h4 id="服务和标签-Services-and-Labels"><a href="#服务和标签-Services-and-Labels" class="headerlink" title="服务和标签[Services and Labels]"></a>服务和标签[Services and Labels]</h4><hr>
-<p><img src="/source_code/image/module_04_services.svg" alt=""></p>
-<p>一个服务在一组Pods中路由流量。服务是一个抽象的概念，它允许pods在Kubernetes中消亡和复制而不影响应用运行。依赖Pods的发现和路由（比如一个应用的前端和后端组件）也是经由服务来处理。</p>
-<p>服务使用labels和selectors来匹配一组Pods，这是一个分组元素，可以在Kubernetes中对多个对象进行逻辑操作。Labels是附加到对象上的键值对，可以以多种方式使用，比如：</p>
-<ul>
-<li><p>指明该对象是用于开发，测试，还是生产环境</p>
-</li>
-<li><p>嵌入版本标签</p>
-</li>
-<li><p>使用标签对一个对象进行分类</p>
+<li><p>Mac剪切粘贴文件，Mac Finder剪切快捷键默认被禁用，需要采用如下2步骤才能实现剪贴：</p>
+<ol>
+<li><code>command</code> + <code>C</code> 复制源文件</li>
+<li><code>command</code> + <code>option</code> + <code>V</code> 在目的地剪贴</li>
+</ol>
 </li>
 </ul>
-<p><img src="/source_code/image/module_04_labels.svg" alt=""></p>
-<p>Labels可以在对象创建时附加到对象上，也可以以后再添加。并且你可以随时修改它们。</p>
 
           
         
@@ -597,7 +621,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -642,7 +666,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -653,7 +677,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

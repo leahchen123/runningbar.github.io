@@ -93,16 +93,16 @@
 
 
 
-<meta name="description" content="转载请注明出处：www.huamo.online   修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$(DUMMY)-build/image/peer/$(DUMMY): build/image/ccenv/$(DUMMY) b">
+<meta name="description" content="转载请注明出处：www.huamo.online  步骤 修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$(DUMMY)-build/image/peer/$(DUMMY): build/image/ccenv/$(DUMMY)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hyperledger Fabric编译">
 <meta property="og:url" content="http://www.huamo.online/2017/11/20/Hyperledger-Fabric编译/index.html">
 <meta property="og:site_name" content="花木兰">
-<meta property="og:description" content="转载请注明出处：www.huamo.online   修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$(DUMMY)-build/image/peer/$(DUMMY): build/image/ccenv/$(DUMMY) b">
-<meta property="og:updated_time" content="2017-11-22T07:37:08.000Z">
+<meta property="og:description" content="转载请注明出处：www.huamo.online  步骤 修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$(DUMMY)-build/image/peer/$(DUMMY): build/image/ccenv/$(DUMMY)">
+<meta property="og:updated_time" content="2017-11-22T15:22:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hyperledger Fabric编译">
-<meta name="twitter:description" content="转载请注明出处：www.huamo.online   修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$(DUMMY)-build/image/peer/$(DUMMY): build/image/ccenv/$(DUMMY) b">
+<meta name="twitter:description" content="转载请注明出处：www.huamo.online  步骤 修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$(DUMMY)-build/image/peer/$(DUMMY): build/image/ccenv/$(DUMMY)">
 
 
 
@@ -366,7 +366,7 @@
         <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
-<ol>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
 <li><p>修改根目录Makefile文件，<code>vim ./Makefile</code>：</p>
  <figure class="highlight mel"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">-build/bin/peer: build/<span class="keyword">image</span>/ccenv/$(DUMMY) build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line">-build/<span class="keyword">image</span>/peer/$(DUMMY): build/<span class="keyword">image</span>/ccenv/$(DUMMY) build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line">+build/bin/peer: build/<span class="keyword">image</span>/ccenv/$(DUMMY) #build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line">+build/<span class="keyword">image</span>/peer/$(DUMMY): build/<span class="keyword">image</span>/ccenv/$(DUMMY) #build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line"></div><div class="line">-IMAGES = peer orderer ccenv javaenv buildenv testenv zookeeper kafka couchdb tools</div><div class="line">+IMAGES = peer orderer ccenv buildenv zookeeper kafka tools</div><div class="line"></div><div class="line">-all: native docker checks</div><div class="line">+all: native docker #checks</div></pre></td></tr></table></figure>
 </li>
@@ -534,7 +534,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -545,7 +545,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -582,7 +582,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#备注"><span class="nav-number">1.</span> <span class="nav-text">备注</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤"><span class="nav-number">1.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备注"><span class="nav-number">2.</span> <span class="nav-text">备注</span></a></li></ol></div>
             
 
           </div>
