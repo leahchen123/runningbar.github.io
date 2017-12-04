@@ -371,12 +371,16 @@
             <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
-<h3 id="解决docker-ps-a的冗长问题"><a href="#解决docker-ps-a的冗长问题" class="headerlink" title="解决docker ps -a的冗长问题"></a>解决<code>docker ps -a</code>的冗长问题</h3><p><code>docker ps -a</code>的输出结果经常会超过一行，看起来非常杂乱。</p>
+<h3 id="解决docker-ps-a的冗长问题"><a href="#解决docker-ps-a的冗长问题" class="headerlink" title="* 解决docker ps -a的冗长问题"></a>* 解决<code>docker ps -a</code>的冗长问题</h3><p><code>docker ps -a</code>的输出结果经常会超过一行，看起来非常杂乱。</p>
 <p><img src="/source_code/image/docker_ps_a.png" alt=""></p>
 <p>这个时候可以加上<code>--format</code>参数，定制输出列，以保证简洁的输出。</p>
 <figure class="highlight tex"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="formula">$ docker ps -a --format "table &#123;&#123;.ID&#125;&#125;: &#123;&#123;.Image&#125;&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.Command&#125;</span></span>&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.RunningFor&#125;</span></span>&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.Status&#125;</span></span>&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.Names&#125;</span></span>&#125;"</span></div></pre></td></tr></table></figure>
 <p><img src="/source_code/image/docker_ps_a_format.png" alt=""></p>
 <p><code>--format</code>更多细节请参考：<a href="https://docs.docker.com/engine/reference/commandline/ps/#formatting" target="_blank" rel="external">docker ps formatting</a></p>
+<h3 id="进入运行中的docker-container"><a href="#进入运行中的docker-container" class="headerlink" title="* 进入运行中的docker container"></a>* 进入运行中的<code>docker container</code></h3><p>假设container ID为<code>39ddc76afbd8</code>，则进入命令为：</p>
+<p><code>docker exec -it 39ddc76afbd8 /bin/bash</code></p>
+<p>需要退出则输入<code>exit</code></p>
+<p>最好不要使用<code>docker attach 39ddc76afbd8</code>这种命令，因为<code>attach</code>只是把本地的<code>input/output/error stream</code>绑定到容器上，看上去就像进入了容器内部一样。<strong>但若该容器正在运行的命令不提供可交互性，那么就无法对容器进行输入，</strong>所以这种进入就没有太大意义。</p>
 <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
