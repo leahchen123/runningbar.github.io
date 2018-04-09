@@ -267,7 +267,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/22/golang注意点/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/22/Fabric为什么用CouchDB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -286,7 +286,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/22/golang注意点/" itemprop="url">golang注意点</a></h1>
+                <a class="post-title-link" href="/2017/11/22/Fabric为什么用CouchDB/" itemprop="url">Fabric为什么用CouchDB</a></h1>
         
 
         <div class="post-meta">
@@ -298,7 +298,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T14:20:47+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T22:34:17+08:00">
                 2017-11-22
               </time>
             
@@ -309,6 +309,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/blockchain/" itemprop="url" rel="index">
+                    <span itemprop="name">blockchain</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -316,7 +338,7 @@
 
           
           
-             <span id="/2017/11/22/golang注意点/" class="leancloud_visitors" data-flag-title="golang注意点">
+             <span id="/2017/11/22/Fabric为什么用CouchDB/" class="leancloud_visitors" data-flag-title="Fabric为什么用CouchDB">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -349,9 +371,13 @@
             <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
-<ul>
-<li>数组名不再表示地址，需要使用<code>&amp;</code>取得地址</li>
-</ul>
+<h3 id="Why-CouchDB"><a href="#Why-CouchDB" class="headerlink" title="Why CouchDB"></a>Why CouchDB</h3><p><code>CouchDB</code>是一种<code>NoSQL</code>解决方案。它是一个面向文档的数据库，文档中的字段都以<code>key-value</code>映射的形式存储在数据库中。字段可以是一个简单的<code>key-value对</code>，<code>list</code>或者<code>map</code>。除了<code>LevelDB</code>支持的<code>keyed / composite-key / key-range</code>查询之外，<code>CouchDB</code>还能支持所有数据富查询的能力，比如相对于区块链数据的<code>non-key</code>查询，因为它的数据内容都以<code>JSON</code>格式存储并且是全部可查询的。因此，<code>CouchDB</code>可以满足<code>chaincode</code>，审计，以及在很多应用场景遇到的<code>LevelDB</code>不能支持的需求。</p>
+<p><code>CouchDB</code>还可以增强区块链中合规性和数据保护的安全性。因为它可以通过过滤和屏蔽事务中的各个属性来实现字段级的安全性，并且如果需要，可以只授权只读权限。</p>
+<p>此外，<code>CouchDB</code>属于CAP定理中的AP类型（可用性和分区容错性）。它使用了一种具有<strong>最终一致性</strong>的主-主备份模型。更多详情可以参看<a href="http://docs.couchdb.org/en/latest/intro/consistency.html" target="_blank" rel="external">Eventual Consistency page of the CouchDB documentation</a>。然而，在每一个<code>fabric peer</code>中，并没有数据库备份，写数据库是保证一致并持久化的（不是最终一致性）。</p>
+<p><code>CouchDB</code>是<code>Fabric</code>第一个外部可插拔的状态数据库，并且可以也应该有其它外部的数据库选择。比如，IBM为它的区块链实现了关系型数据库。并且CP类型（一致性和分区容错性）的数据库可能也是需要的，以便在没有应用级保证的情况下实现数据一致性。</p>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><ol>
+<li><a href="http://hyperledger-fabric.readthedocs.io/en/release/build_network.html#why-couchdb" target="_blank" rel="external">http://hyperledger-fabric.readthedocs.io/en/release/build_network.html#why-couchdb</a></li>
+</ol>
 <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
@@ -398,7 +424,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/22/Kubernetes构建高可用集群/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/22/区块链圣经-bitcoin白皮书/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -417,7 +443,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/22/Kubernetes构建高可用集群/" itemprop="url">Kubernetes构建高可用集群</a></h1>
+                <a class="post-title-link" href="/2017/11/22/区块链圣经-bitcoin白皮书/" itemprop="url">区块链圣经 -- bitcoin白皮书</a></h1>
         
 
         <div class="post-meta">
@@ -429,7 +455,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T14:15:38+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T15:36:28+08:00">
                 2017-11-22
               </time>
             
@@ -452,8 +478,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/kubernetes/" itemprop="url" rel="index">
-                    <span itemprop="name">kubernetes</span>
+                  <a href="/categories/blockchain/" itemprop="url" rel="index">
+                    <span itemprop="name">blockchain</span>
                   </a>
                 </span>
 
@@ -469,7 +495,7 @@
 
           
           
-             <span id="/2017/11/22/Kubernetes构建高可用集群/" class="leancloud_visitors" data-flag-title="Kubernetes构建高可用集群">
+             <span id="/2017/11/22/区块链圣经-bitcoin白皮书/" class="leancloud_visitors" data-flag-title="区块链圣经 -- bitcoin白皮书">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -502,7 +528,10 @@
             <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
-<h2 id="构建高可用集群"><a href="#构建高可用集群" class="headerlink" title="构建高可用集群"></a>构建高可用集群</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>本文叙述了如何构建一个高可用的Kubernetes集群。</p>
+<h2 id="Bitcoin：一种点对点的电子现金系统"><a href="#Bitcoin：一种点对点的电子现金系统" class="headerlink" title="Bitcoin：一种点对点的电子现金系统"></a>Bitcoin：一种点对点的电子现金系统</h2><blockquote>
+<p>Satoshi Nakamoto<br>satoshin@gmx.com<br>www.bitcoin.org</p>
+</blockquote>
+<p><strong>概述。</strong> 如果是一个纯粹的点对点的电子现金，那么它应该支持在线支付，交易的一方能够直接向另一方进行转账，并不通过任何一家金融机构。数字签名提供了部分解决方案，但如果仍然需要一个受信任的第三方来防止双花，那么点对点核心的价值就消失了。我们基于一个点对点的网络，针对双花问题提出了一种解决方案。</p>
 <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
@@ -544,7 +573,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -589,7 +618,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -600,7 +629,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -643,8 +672,8 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
