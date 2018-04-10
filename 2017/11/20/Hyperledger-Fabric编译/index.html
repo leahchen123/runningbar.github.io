@@ -93,16 +93,16 @@
 
 
 
-<meta name="description" content="转载请注明出处：www.huamo.online  步骤 修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$(DUMMY)-build/image/peer/$(DUMMY): build/image/ccenv/$(DUMMY)">
+<meta name="description" content="转载请注明出处：www.huamo.online  步骤 安装libtool  1$ sudo apt install libtool libltdl-dev //linux下  修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hyperledger Fabric编译">
 <meta property="og:url" content="http://www.huamo.online/2017/11/20/Hyperledger-Fabric编译/index.html">
 <meta property="og:site_name" content="花木兰">
-<meta property="og:description" content="转载请注明出处：www.huamo.online  步骤 修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$(DUMMY)-build/image/peer/$(DUMMY): build/image/ccenv/$(DUMMY)">
-<meta property="og:updated_time" content="2017-11-22T15:22:22.000Z">
+<meta property="og:description" content="转载请注明出处：www.huamo.online  步骤 安装libtool  1$ sudo apt install libtool libltdl-dev //linux下  修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$">
+<meta property="og:updated_time" content="2018-04-10T11:18:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hyperledger Fabric编译">
-<meta name="twitter:description" content="转载请注明出处：www.huamo.online  步骤 修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$(DUMMY)-build/image/peer/$(DUMMY): build/image/ccenv/$(DUMMY)">
+<meta name="twitter:description" content="转载请注明出处：www.huamo.online  步骤 安装libtool  1$ sudo apt install libtool libltdl-dev //linux下  修改根目录Makefile文件，vim ./Makefile：  12345678910-build/bin/peer: build/image/ccenv/$(DUMMY) build/image/javaenv/$">
 
 
 
@@ -367,16 +367,15 @@
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
 <h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li><p>安装<code>libtool</code></p>
+ <figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">$</span> sudo apt install libtool libltdl-dev <span class="comment">//linux下</span></div></pre></td></tr></table></figure>
+</li>
 <li><p>修改根目录Makefile文件，<code>vim ./Makefile</code>：</p>
  <figure class="highlight mel"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">-build/bin/peer: build/<span class="keyword">image</span>/ccenv/$(DUMMY) build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line">-build/<span class="keyword">image</span>/peer/$(DUMMY): build/<span class="keyword">image</span>/ccenv/$(DUMMY) build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line">+build/bin/peer: build/<span class="keyword">image</span>/ccenv/$(DUMMY) #build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line">+build/<span class="keyword">image</span>/peer/$(DUMMY): build/<span class="keyword">image</span>/ccenv/$(DUMMY) #build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line"></div><div class="line">-IMAGES = peer orderer ccenv javaenv buildenv testenv zookeeper kafka couchdb tools</div><div class="line">+IMAGES = peer orderer ccenv buildenv zookeeper kafka tools</div><div class="line"></div><div class="line">-all: native docker checks</div><div class="line">+all: native docker #checks</div></pre></td></tr></table></figure>
 </li>
-</ol>
-<ol>
 <li><p>修改gotools目录的Makefile文件，<code>vim ./gotools/Makefile</code>：</p>
  <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-GOTOOLS = golint govendor goimports protoc-gen-go ginkgo gocov gocov-<span class="keyword">xml</span> <span class="title">misspell</span></div><div class="line">+GOTOOLS = protoc-gen-go</div></pre></td></tr></table></figure>
 </li>
-</ol>
-<ol>
 <li><p>开始编译，坐等编译成功：</p>
  <figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">make</span> <span class="keyword">all</span></div></pre></td></tr></table></figure>
 </li>
@@ -534,7 +533,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -545,7 +544,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
