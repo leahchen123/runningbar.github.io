@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="在常见的网站布局中，通常是如下布局结构：顶部横幅header，紧接着有左侧边栏sider，然后是右边content主体，有的还尾随着底部footer。  这里涉及到header的横向铺满视窗，sider的纵向铺满视窗剩余部分，并且多数都会固定header和sider。 对于铺满视窗：可以用vh，vw单位来描述width，height，这些单位表示视窗的占比，比如100vw就是是指宽度占满100%视">
+<meta name="description" content="在常见的网站布局中，通常是如下布局结构：顶部横幅header，紧接着有左侧边栏sider，然后是右边content主体，有的还尾随着底部footer。  这里涉及到header的横向铺满视窗，sider的纵向铺满视窗剩余部分，并且多数都会固定header和sider。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网页顶部和侧边栏固定的方法">
 <meta property="og:url" content="http://www.huamo.online/2017/04/22/网页顶部和侧边栏固定且铺满的方法/index.html">
 <meta property="og:site_name" content="花木兰">
-<meta property="og:description" content="在常见的网站布局中，通常是如下布局结构：顶部横幅header，紧接着有左侧边栏sider，然后是右边content主体，有的还尾随着底部footer。  这里涉及到header的横向铺满视窗，sider的纵向铺满视窗剩余部分，并且多数都会固定header和sider。 对于铺满视窗：可以用vh，vw单位来描述width，height，这些单位表示视窗的占比，比如100vw就是是指宽度占满100%视">
+<meta property="og:description" content="在常见的网站布局中，通常是如下布局结构：顶部横幅header，紧接着有左侧边栏sider，然后是右边content主体，有的还尾随着底部footer。  这里涉及到header的横向铺满视窗，sider的纵向铺满视窗剩余部分，并且多数都会固定header和sider。">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/website_layout.jpg">
-<meta property="og:updated_time" content="2017-07-14T04:55:03.000Z">
+<meta property="og:updated_time" content="2018-04-16T10:30:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网页顶部和侧边栏固定的方法">
-<meta name="twitter:description" content="在常见的网站布局中，通常是如下布局结构：顶部横幅header，紧接着有左侧边栏sider，然后是右边content主体，有的还尾随着底部footer。  这里涉及到header的横向铺满视窗，sider的纵向铺满视窗剩余部分，并且多数都会固定header和sider。 对于铺满视窗：可以用vh，vw单位来描述width，height，这些单位表示视窗的占比，比如100vw就是是指宽度占满100%视">
+<meta name="twitter:description" content="在常见的网站布局中，通常是如下布局结构：顶部横幅header，紧接着有左侧边栏sider，然后是右边content主体，有的还尾随着底部footer。  这里涉及到header的横向铺满视窗，sider的纵向铺满视窗剩余部分，并且多数都会固定header和sider。">
 <meta name="twitter:image" content="http://www.huamo.online/source_code/image/website_layout.jpg">
 
 
@@ -367,7 +367,7 @@
       
         <p>在常见的网站布局中，通常是如下布局结构：顶部横幅header，紧接着有左侧边栏sider，然后是右边content主体，有的还尾随着底部footer。</p>
 <p><img src="/source_code/image/website_layout.jpg" alt="Alt text"></p>
-<p>这里涉及到header的横向铺满视窗，sider的纵向铺满视窗剩余部分，并且多数都会固定header和sider。</p>
+<p>这里涉及到header的横向铺满视窗，sider的纵向铺满视窗剩余部分，并且多数都会固定header和sider。<a id="more"></a></p>
 <p>对于铺满视窗：可以用vh，vw单位来描述width，height，这些单位表示视窗的占比，比如100vw就是是指宽度占满100%视窗，这里的视窗指的是浏览器内部可视区域，所以<strong>使用vw这种单位是可以窗口大小自适应的</strong>。</p>
 <p>对于顶部header宽度铺满视窗，这个很简单，直接使用<code>width: 100vw</code>即可；而对于侧边栏高度铺满视窗，由于有一部分高度已经被header占用，所以需要用到CSS的计算符<code>height: calc( 100vh - 64px )</code>,即为视窗高度减去header占用的64px，余下部分赋予sider的height。这样就保证了sider的高度铺满剩余视窗。</p>
 <p>说完铺满，再说固定，这个很常见，用<code>position: fixed</code>即实现元素相对于浏览器布局，注意这种定位方式会使元素脱离文档流。</p>
@@ -515,7 +515,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

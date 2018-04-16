@@ -267,6 +267,211 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/12/20/Fabric-End-to-End流程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/20/Fabric-End-to-End流程/" itemprop="url">Fabric End-to-End流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T10:34:49+08:00">
+                2017-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fabric/" itemprop="url" rel="index">
+                    <span itemprop="name">fabric</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/20/Fabric-End-to-End流程/" class="leancloud_visitors" data-flag-title="Fabric End-to-End流程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<p><code>end-to-end</code>验证提供了一个示例<code>fabric</code>网络，包括2个组织，每个组织包含2个<code>peer</code>节点，以及1个基于<code>Kafka</code>的排序服务。</p>
+<p>这个验证用到了2个基础工具，用来创建一个带有数字签名验证的和访问控制的实用交易网络：</p>
+<ul>
+<li><code>cryptogen</code> - 创建x509证书，用来标识和验证网络中的各种组件。</li>
+<li><code>configtxgen</code> - 为<code>orderer</code>节点的启动和<code>channel</code>的创建，生成必需的配置文件[artifacts]。</li>
+</ul>
+<p>每一个工具用到一个<code>yaml</code>配置文件，在里面我们指定了网络的拓扑结构（<code>cryptogen</code>需用到），以及用于各种配置操作的证书的位置（<code>configtxgen</code>需用到）。当这些工具都已被成功运行后，我们就可以发布这个网络了。工具的更多细节和网络的架构在下文描述。现在，让我们开始吧…</p>
+<h2 id="前置操作【Prerequisites】"><a href="#前置操作【Prerequisites】" class="headerlink" title="前置操作【Prerequisites】"></a>前置操作【<code>Prerequisites</code>】</h2><h3 id="编译二进制包"><a href="#编译二进制包" class="headerlink" title="编译二进制包"></a>编译二进制包</h3><ul>
+<li><p>先生成特定平台的，<code>cryptogen</code>和<code>configtxgen</code>二进制包</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src/github.com/hyperledger/fabric</span></div><div class="line"><span class="meta">$</span><span class="bash"> make release</span></div></pre></td></tr></table></figure>
+<p>  该命令将会在<code>fabric/release</code>文件夹中输出特定平台的二进制包。</p>
+</li>
+<li><p>接下来，编译<code>Fabric</code>镜像。这一般需要5 ~ 10分钟，所以耐心等候【国内需要更大的耐心…】：</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src/github.com/hyperledger/fabric</span></div><div class="line"><span class="meta">$</span><span class="bash"> make docker</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在终端运行命令<code>docker images</code>，如果这些镜像都被成功编译，你应该能够看到类似于下面的输出：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">REPOSITORY                     TAG                   IMAGE ID            CREATED             SIZE</div><div class="line">hyperledger/fabric-couchdb     latest                e2df4dd39ca9        <span class="number">38</span> minutes ago      <span class="number">1.51</span> GB</div><div class="line">hyperledger/fabric-couchdb     x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     e2df4dd39ca9        <span class="number">38</span> minutes ago      <span class="number">1.51</span> GB</div><div class="line">hyperledger/fabric-kafka       latest                <span class="number">08</span>af4d797266        <span class="number">40</span> minutes ago      <span class="number">1.3</span> GB</div><div class="line">hyperledger/fabric-kafka       x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">08</span>af4d797266        <span class="number">40</span> minutes ago      <span class="number">1.3</span> GB</div><div class="line">hyperledger/fabric-zookeeper   latest                <span class="number">444e9</span>e695367        <span class="number">40</span> minutes ago      <span class="number">1.31</span> GB</div><div class="line">hyperledger/fabric-zookeeper   x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">444e9</span>e695367        <span class="number">40</span> minutes ago      <span class="number">1.31</span> GB</div><div class="line">hyperledger/fabric-testenv     latest                <span class="number">8678</span>d3101930        <span class="number">41</span> minutes ago      <span class="number">1.41</span> GB</div><div class="line">hyperledger/fabric-testenv     x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">8678</span>d3101930        <span class="number">41</span> minutes ago      <span class="number">1.41</span> GB</div><div class="line">hyperledger/fabric-buildenv    latest                <span class="number">60911392</span>c82e        <span class="number">41</span> minutes ago      <span class="number">1.33</span> GB</div><div class="line">hyperledger/fabric-buildenv    x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">60911392</span>c82e        <span class="number">41</span> minutes ago      <span class="number">1.33</span> GB</div><div class="line">hyperledger/fabric-orderer     latest                <span class="number">2</span>afab937b9cc        <span class="number">41</span> minutes ago      <span class="number">182</span> MB</div><div class="line">hyperledger/fabric-orderer     x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">2</span>afab937b9cc        <span class="number">41</span> minutes ago      <span class="number">182</span> MB</div><div class="line">hyperledger/fabric-peer        latest                <span class="number">9560e58</span>e8089        <span class="number">41</span> minutes ago      <span class="number">185</span> MB</div><div class="line">hyperledger/fabric-peer        x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">9560e58</span>e8089        <span class="number">41</span> minutes ago      <span class="number">185</span> MB</div><div class="line">hyperledger/fabric-javaenv     latest                <span class="number">881</span>ca5219fad        <span class="number">42</span> minutes ago      <span class="number">1.43</span> GB</div><div class="line">hyperledger/fabric-javaenv     x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">881</span>ca5219fad        <span class="number">42</span> minutes ago      <span class="number">1.43</span> GB</div><div class="line">hyperledger/fabric-ccenv       latest                <span class="number">28</span>af77ffe9e9        <span class="number">43</span> minutes ago      <span class="number">1.29</span> GB</div><div class="line">hyperledger/fabric-ccenv       x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">28</span>af77ffe9e9        <span class="number">43</span> minutes ago      <span class="number">1.29</span> GB</div><div class="line">hyperledger/fabric-baseimage   x86_64<span class="number">-0.3</span><span class="number">.0</span>          f4751a503f02        <span class="number">3</span> months ago        <span class="number">1.27</span> GB</div><div class="line">hyperledger/fabric-baseos      x86_64<span class="number">-0.3</span><span class="number">.0</span>          c3a4cf3b3350        <span class="number">3</span> months ago        <span class="number">161</span> MB</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果在编译过程中失败了，可以修复错误，然后执行<code>make clean</code>，最后再<code>make docker</code>。</p>
+</blockquote>
+<h2 id="Cryptogen工具"><a href="#Cryptogen工具" class="headerlink" title="Cryptogen工具"></a><code>Cryptogen</code>工具</h2><p>我们将使用<code>cryptogen</code>工具来为我们的各种网络实体生成加密内容（x509证书）。证书基于PKI标准实现，通过回溯到一个共同的信任锚点来实现验证。</p>
+<h3 id="它是如何工作的？"><a href="#它是如何工作的？" class="headerlink" title="它是如何工作的？"></a>它是如何工作的？</h3><p><code>Cryptogen</code>使用一个文件 - <code>crypto-config.yaml</code> - 包含了网络的拓扑结构，并且允许我们为组织以及组织中的各种组件，生成一系列的证书。每个组织被提供了一个唯一的根证书（<code>ca-cert</code>），将指定的组件（<code>peers</code>和<code>orderers</code>）绑定到了该组织上。Fabric中的交易和通讯都由一个实体的私钥（<code>keystore</code>）进行签名，然后由相应的公钥（<code>signcerts</code>）进行验证。在这个yaml文件中你会看到一个<code>count</code>变量。我们使用这个值指定了每个组织的<code>peer</code>数量；这里我们指定了2个<code>peer</code>。这个模板的其它部分都是非常浅显易懂的。</p>
+<p>在我们运行了工具之后，证书会被放在<code>crypto-config</code>目录下。</p>
+<h2 id="Configtxgen工具"><a href="#Configtxgen工具" class="headerlink" title="Configtxgen工具"></a><code>Configtxgen</code>工具</h2><p><code>configtxgen</code>工具用来生成4种文件：orderer节点的启动块（<code>bootstrap block</code>），fabric channel的配置交易（<code>channel configuration transaction</code>），以及2个锚<code>peer</code>交易（<code>anchor peer transactions</code>）– 一个<code>Peer</code>组织一个。</p>
+<p>orderer block是排序服务的创世块，channel交易文件会在channel创建时广播给orderer节点。而锚peer节点交易，就像名字表示的那样，在这个channel上为每个组织指定一个锚peer节点。</p>
+<h3 id="它是如何工作的？-1"><a href="#它是如何工作的？-1" class="headerlink" title="它是如何工作的？"></a>它是如何工作的？</h3><p><code>Configtxgen</code>读取一个文件 - <code>configtx.yaml</code> - 文件中包含了样例网络的定义。有3个成员 - 一个Orderer组织（<code>OrdererOrg</code>），和2个Peer组织(<code>Org1</code>和<code>Org2</code>）每个都管理和维护2个peer节点。这个文件也指定了一个联盟 - <code>SampleConsortium</code> - 包含我们的2个Peer组织的联盟。对文件顶部的<code>Profiles</code>区域中内容多留意下。你会发现我们有2个不同的顶级属性。一个是给orderer创世块用的 - <code>TwoOrgsOrdererGenesis</code> - 另一个是给channel用的 - <code>TwoOrgsChannel</code>。这些顶级属性是很重要的，当我们创建配置文件时我们会把它们作为参数传入进去。这个yaml文件还包含了2个值得注意的额外规范。首先，我们为每一个Peer组织指定了锚peer节点（<code>peer0.org1.example.com</code>和<code>peer0,org2.example.com</code>）。然后，我们为每一个成员指定了MSP文件夹路径，这就使我们可以在<code>orderer</code>创世块中按顺序的存储每个组织的根证书。这是一个很关键的概念。现在任何与排序服务通信的网络实体都能够被<code>orderer</code>验证其数字签名了。</p>
+<h3 id="运行shell脚本"><a href="#运行shell脚本" class="headerlink" title="运行shell脚本"></a>运行<code>shell</code>脚本</h3><p>确认你在<code>examples/e2e_cli</code>目录下，这是<code>shell</code>脚本所在的位置。为你的<code>channel</code>起一个独特的名字，然后替换掉下方的<code>&lt;channel-ID&gt;</code>参数。如果你不提供一个名字，那么这个脚本会运行失败。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cd</span> examples/e2e_cli</div><div class="line">./generateArtifacts.<span class="keyword">sh</span> <span class="symbol">&lt;channel-ID&gt;</span></div></pre></td></tr></table></figure>
+<p>这个脚本的输出有些多，因为它会生成加密库和多个文件。但是，你会在终端里看到5个截然不同的说明信息，如下所示：</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">##########################################################</div><div class="line">##### Generate certificates using cryptogen tool #########</div><div class="line">##########################################################</div><div class="line"></div><div class="line">##########################################################</div><div class="line">#########  Generating Orderer Genesis block ##############</div><div class="line">##########################################################</div><div class="line"></div><div class="line">#################################################################</div><div class="line">### Generating channel configuration transaction <span class="string">'channel.tx'</span> ###</div><div class="line">#################################################################</div><div class="line"></div><div class="line">#################################################################</div><div class="line">#######    Generating anchor peer update for Org0MSP   ##########</div><div class="line">#################################################################</div><div class="line"></div><div class="line">#################################################################</div><div class="line">#######    Generating anchor peer update for Org1MSP   ##########</div><div class="line">#################################################################</div></pre></td></tr></table></figure>
+<p>这些配置交易将会绑定参与成员和它们的网络组件的加密内容，并且生成1个<code>orderer</code>创世块和3个channel交易文件。对于启动一个Fabric网络，以及创建一个channel来在上面做交易，这些文件都是必要的。</p>
+<h2 id="用Docker运行end-to-end测试"><a href="#用Docker运行end-to-end测试" class="headerlink" title="用Docker运行end-to-end测试"></a>用<code>Docker</code>运行<code>end-to-end</code>测试</h2><p>确保你在<code>/e2e_cli</code>目录下。然后使用<code>docker-compose</code>创建网络实体运行测试。注意你可以使用<code>TIMEOUT</code>变量（以秒为单位），以便你的<code>cli</code>容器不会在脚本结束后立马退出。你可以使用任何数值：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># TIMEOUT变量是可选的</span></div><div class="line">$ <span class="attribute">CHANNEL_NAME</span>=&lt;channel-id&gt; <span class="attribute">TIMEOUT</span>=&lt;value&gt; docker-compose -f docker-compose-cli.yaml up -d</div></pre></td></tr></table></figure>
+<p>如果你创建了一个特定的channel名称，确保将它传入到了参数中。比如，</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="attribute">CHANNEL_NAME</span>=abc <span class="attribute">TIMEOUT</span>=1000 docker-compose -f docker-compose-cli.yaml up -d</div></pre></td></tr></table></figure>
+<p>等待，大概60s左右。在后台，有交易发送给peers。执行<code>docker ps</code>命令来查看你激活的容器。你应该能够看到如下的输出：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">CONTAINER ID        IMAGE                                 COMMAND                  CREATED             STATUS              PORTS                                              NAMES</div><div class="line">b568de3fe931        dev-peer1<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span>   <span class="string">"chaincode -peer.a..."</span>   <span class="number">4</span> minutes ago       Up <span class="number">4</span> minutes                                                           dev-peer1<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span></div><div class="line"><span class="number">17</span>c1c82087e7        dev-peer0<span class="selector-class">.org1</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span>   <span class="string">"chaincode -peer.a..."</span>   <span class="number">4</span> minutes ago       Up <span class="number">4</span> minutes                                                           dev-peer0<span class="selector-class">.org1</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span></div><div class="line"><span class="number">0</span>e1c5034c47b        dev-peer0<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span>   <span class="string">"chaincode -peer.a..."</span>   <span class="number">4</span> minutes ago       Up <span class="number">4</span> minutes                                                           dev-peer0<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span></div><div class="line"><span class="number">71339</span>e7e1d38        hyperledger/fabric-peer               <span class="string">"peer node start -..."</span>   <span class="number">5</span> minutes ago       Up <span class="number">5</span> minutes        <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8051</span>-&gt;<span class="number">7051</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8053</span>-&gt;<span class="number">7053</span>/tcp     peer1<span class="selector-class">.org1</span><span class="selector-class">.example</span><span class="selector-class">.com</span></div><div class="line">add6113ffdcf        hyperledger/fabric-peer               <span class="string">"peer node start -..."</span>   <span class="number">5</span> minutes ago       Up <span class="number">5</span> minutes        <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">10051</span>-&gt;<span class="number">7051</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">10053</span>-&gt;<span class="number">7053</span>/tcp   peer1<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com</span></div><div class="line"><span class="number">689396</span>c0e520        hyperledger/fabric-peer               <span class="string">"peer node start -..."</span>   <span class="number">5</span> minutes ago       Up <span class="number">5</span> minutes        <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7051</span>-&gt;<span class="number">7051</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7053</span>-&gt;<span class="number">7053</span>/tcp     peer0<span class="selector-class">.org1</span><span class="selector-class">.example</span><span class="selector-class">.com</span></div><div class="line"><span class="number">65424407</span>a653        hyperledger/fabric-orderer            <span class="string">"orderer"</span>                <span class="number">5</span> minutes ago       Up <span class="number">5</span> minutes        <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7050</span>-&gt;<span class="number">7050</span>/tcp                             orderer<span class="selector-class">.example</span><span class="selector-class">.com</span></div><div class="line">ce14853db660        hyperledger/fabric-peer               <span class="string">"peer node start -..."</span>   <span class="number">5</span> minutes ago       Up <span class="number">5</span> minutes        <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">9051</span>-&gt;<span class="number">7051</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">9053</span>-&gt;<span class="number">7053</span>/tcp     peer0<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com</span></div></pre></td></tr></table></figure>
+<p>如果你设置了一个比较大的<code>TIMEOUT</code>值，你还可以看到你的<code>cli</code>容器。</p>
+<h3 id="后台究竟发生了什么？"><a href="#后台究竟发生了什么？" class="headerlink" title="后台究竟发生了什么？"></a>后台究竟发生了什么？</h3><ul>
+<li><p>一个脚本 - <code>script.sh</code> - 被放在了<code>cli</code>容器中。这个脚本会使用提供的<code>channel</code>名字，以及用于<code>channel</code>设置的<code>channel.tx</code>文件，执行<code>createChannel</code>命令。</p>
+</li>
+<li><p><code>createChannel</code>的输出是一个创世块 - <code>&lt;your_channel_name&gt;.block</code> - 会存在peers的文件系统中，并且包含了由<code>channel.tx</code>指定的<code>channel</code>配置。</p>
+</li>
+<li><p><code>joinChannel</code>命令用于所有4个<code>peer</code>节点，用上一步产生的创世块作为输入。该命令指示这些peer节点加入<code>&lt;your_channel_name&gt;</code>，并且创建一个以<code>&lt;your_channel_name&gt;.block</code>开始的链。</p>
+</li>
+<li><p>现在我们有了一个包含4个<code>peer</code>节点，和2个组织的链。这就是我们<code>TwoOrgsChannel</code>描述的样子。</p>
+</li>
+<li><p><code>peer0.org1.example.com</code>和<code>peer1.org1.example.com</code>隶属于<code>Org1</code>；<code>peer0.org2.example.com</code>和<code>peer1.org2.example.com</code>隶属于<code>Org2</code>。</p>
+</li>
+<li></li>
+</ul>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a href="https://github.com/runningbar/fabric/blob/master/examples/e2e_cli/end-to-end.rst" target="_blank" rel="external">https://github.com/runningbar/fabric/blob/master/examples/e2e_cli/end-to-end.rst</a></li>
+</ul>
+<blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/30/docker积累/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -418,177 +623,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/22/Fabric背书策略/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="runningbar">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花木兰">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/22/Fabric背书策略/" itemprop="url">Fabric背书策略</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T23:27:32+08:00">
-                2017-11-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/blockchain/" itemprop="url" rel="index">
-                    <span itemprop="name">blockchain</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/11/22/Fabric背书策略/" class="leancloud_visitors" data-flag-title="Fabric背书策略">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
-</blockquote>
-<h2 id="背书策略"><a href="#背书策略" class="headerlink" title="背书策略"></a>背书策略</h2><p>背书策略是用来指导一个<code>peer</code>如何确定一笔交易是否被正确的背书。当一个<code>peer</code>接收到一笔交易后，它会<code>invoke</code>与该交易的<code>chaincode</code>相关的<code>VSCC(Validation System Chaincode)</code>，作为交易确认流程的一部分来确定交易的有效性。回想一下，一个交易包含了一个或多个背书<code>peer</code>的认可。<code>VSCC</code>的任务是做出如下决定：</p>
-<ul>
-<li>所有的背书都是有效的（比如：它们是有效的证书在预期的消息上做了有效的签名）。</li>
-<li>拥有合适数量的背书认可。</li>
-<li>背书都来自于预期的来源。</li>
-</ul>
-<p>背书策略是指定第2点和第3点的一种方式。</p>
-<h3 id="背书策略设计"><a href="#背书策略设计" class="headerlink" title="背书策略设计"></a>背书策略设计</h3><p>背书策略有2个重要组件： 1. 一个原则。 2. 一个门槛</p>
-<p>原则<code>P</code>定义了期待哪个主体的签名。</p>
-<p>门槛<code>T</code>有2个输入：一个实数<code>t</code>(门槛值)和一个包含了<code>n</code>个原则的列表；这个门槛本质上就是刻画了满足<code>n</code>个原则的预期，<code>t</code>就是必须要满足的数量。</p>
-<p>举个例子： <code>T(2, &#39;A&#39;, &#39;B&#39;, &#39;C&#39;)</code>要求来自<code>A</code>, <code>B</code>或者<code>C</code>任意2个主体的签名；<code>T(1, &#39;A&#39;, T(2, &#39;B&#39;, &#39;C&#39;))</code>要求来自<code>A</code>或者<code>B</code>和<code>C</code>的签名。</p>
-<h3 id="CLI中的背书策略语法"><a href="#CLI中的背书策略语法" class="headerlink" title="CLI中的背书策略语法"></a><code>CLI</code>中的背书策略语法</h3><p>在<code>CLI</code>中，有一种简单的语言来表达策略，用布尔表达式来定义原则。</p>
-<p>一个原则根据<code>MSP</code>来描述，用来验证签名者的身份以及签名者在<code>MSP</code>中的角色。目前，支持2种角色：<code>member</code>和<code>admin</code>。原则用<code>MSP.ROLE</code>格式来描述，其中<code>MSP</code>是需要的<code>MSP ID</code>，<code>ROLE</code>则是一个字符串，取值<code>member</code>或者<code>admin</code>。举一个有效的原则例子，比如<code>Org0.admin</code>（需要<code>Org0 MSP</code>中任意一个管理员的签名），或者<code>Org1.member</code>（需要<code>Org1 MSP</code>中任意一个成员的签名）。</p>
-<p>这种语言的语法是： <code>EXPR(E[, E...])</code></p>
-<p>其中<code>EXPR</code>要么是<code>AND</code>，要么是<code>OR</code>，代表了这2个布尔表达式的功能，而<code>E</code>要么是一个原则（根据上面的语法描述），要么就是另一个嵌套的<code>EXPR</code>。</p>
-<p>举个例子：<code>AND(&#39;Org1.member&#39;, &#39;Org2.member&#39;, &#39;Org3.member&#39;)</code>需要来自3个实体的所有签名；<code>OR(&#39;Org1.member&#39;, &#39;Org2.member&#39;)</code>需要来自2个实体中任意一个的签名；<code>OR(&#39;Org1.member&#39;, AND(&#39;Org2.member&#39;, &#39;Org3.member&#39;))</code>需要来自<code>Org1 MSP</code>中一个成员的签名，或者是，需要来自<code>Org2 MSP</code>中一个成员的签名以及来自<code>Org3 MSP</code>中一个成员的签名。</p>
-<h3 id="为一个chaincode指定背书策略"><a href="#为一个chaincode指定背书策略" class="headerlink" title="为一个chaincode指定背书策略"></a>为一个<code>chaincode</code>指定背书策略</h3><p>使用这种语言，一个<code>chaincode</code>部署者可以根据指定的策略，来验证一个chaincode的背书是有效的。<strong>记住:</strong> 默认的策略是需要一个来自<code>MSPID</code>为<code>DEFAULT</code>的<code>MSP</code>中一个成员的签名。如果在<code>CLI</code>中没有指定任何策略，那么这个默认策略就会生效。</p>
-<p>策略可以在部署时通过<code>-p</code>开关来指定</p>
-<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ol>
-<li><a href="http://hyperledger-fabric.readthedocs.io/en/release/endorsement-policies.html" target="_blank" rel="external">http://hyperledger-fabric.readthedocs.io/en/release/endorsement-policies.html</a></li>
-</ol>
-<blockquote>
-<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -638,7 +672,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
