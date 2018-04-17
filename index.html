@@ -564,11 +564,637 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2018/04/09/Ethereum源码阅读笔记-accounts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/09/Ethereum源码阅读笔记-accounts/" itemprop="url">Ethereum源码阅读笔记-accounts</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-09T10:58:15+08:00">
+                2018-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ethereum/" itemprop="url" rel="index">
+                    <span itemprop="name">ethereum</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/09/Ethereum源码阅读笔记-accounts/" class="leancloud_visitors" data-flag-title="Ethereum源码阅读笔记-accounts">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<h2 id="go-ethereum-accounts"><a href="#go-ethereum-accounts" class="headerlink" title="go-ethereum/accounts"></a><code>go-ethereum/accounts</code></h2><p><code>accounts</code>包实现了高层的以太坊账号管理模块</p>
+<p>首先看<code>accounts.go</code>中的<code>Account</code>结构体：<code>Account</code>结构体描述了一个以太坊账号，可以定位到一个指定地址上，这个地址由结构体中的<code>Account.URL</code>字段定义，<code>Account.URL</code>字段是可选的。结构体中的另一个字段<code>Account.Address</code>是必选的，该地址是由私钥衍生出来。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/09/Ethereum源码阅读笔记-accounts/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2018/02/07/Ethereum初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/07/Ethereum初探/" itemprop="url">Ethereum初探</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-07T15:01:00+08:00">
+                2018-02-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/blockchain/" itemprop="url" rel="index">
+                    <span itemprop="name">blockchain</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/07/Ethereum初探/" class="leancloud_visitors" data-flag-title="Ethereum初探">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<h2 id="运行geth"><a href="#运行geth" class="headerlink" title="运行geth"></a>运行geth</h2><h3 id="在Ethereum主网上运行全节点"><a href="#在Ethereum主网上运行全节点" class="headerlink" title="在Ethereum主网上运行全节点"></a>在<code>Ethereum</code>主网上运行全节点</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> geth console</span></div></pre></td></tr></table></figure>
+<p>该命令将会：</p>
+<ul>
+<li><p>以快速同步模式启动<code>geth</code>（默认值，可以使用<code>--syncmode</code>参数修改），为了避免处理以太坊主网的所有历史数据，它需要下载更多的数据，该过程非常耗费CPU。</p>
+</li>
+<li><p>启动<code>geth</code>内置的<a href="https://github.com/ethereum/go-ethereum/wiki/JavaScript-Console" target="_blank" rel="external"><code>JavaScript console</code></a>，你可以调用所有官方的<a href="https://github.com/ethereum/wiki/wiki/JavaScript-API" target="_blank" rel="external"><code>web3</code>方法</a>，也可以调用<code>geth</code>自己的<a href="https://github.com/ethereum/go-ethereum/wiki/Management-APIs" target="_blank" rel="external">控制类<code>API</code></a>，这个工具是可选的，如果你把它放在外面，也总是可以通过<code>geth attach</code>将其附加到一个已经运行的<code>geth</code>实例上。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/07/Ethereum初探/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/12/20/Fabric-End-to-End流程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/20/Fabric-End-to-End流程/" itemprop="url">Fabric End-to-End流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T10:34:49+08:00">
+                2017-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fabric/" itemprop="url" rel="index">
+                    <span itemprop="name">fabric</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/20/Fabric-End-to-End流程/" class="leancloud_visitors" data-flag-title="Fabric End-to-End流程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<p><code>end-to-end</code>验证提供了一个示例<code>fabric</code>网络，包括2个组织，每个组织包含2个<code>peer</code>节点，以及1个基于<code>Kafka</code>的排序服务。</p>
+<p>这个验证用到了2个基础工具，用来创建一个带有数字签名验证的和访问控制的实用交易网络：</p>
+<ul>
+<li><code>cryptogen</code> - 创建x509证书，用来标识和验证网络中的各种组件。</li>
+<li><code>configtxgen</code> - 为<code>orderer</code>节点的启动和<code>channel</code>的创建，生成必需的配置文件(<code>artifacts</code>)。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/20/Fabric-End-to-End流程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/30/docker积累/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/30/docker积累/" itemprop="url">docker积累</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-30T21:48:24+08:00">
+                2017-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/30/docker积累/" class="leancloud_visitors" data-flag-title="docker积累">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<h3 id="解决docker-ps-a的冗长问题"><a href="#解决docker-ps-a的冗长问题" class="headerlink" title="* 解决docker ps -a的冗长问题"></a>* 解决<code>docker ps -a</code>的冗长问题</h3><p><code>docker ps -a</code>的输出结果经常会超过一行，看起来非常杂乱。</p>
+<p><img src="/source_code/image/docker_ps_a.png" alt=""></p>
+<p>这个时候可以加上<code>--format</code>参数，定制输出列，以保证简洁的输出。</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="formula">$ docker ps -a --format "table &#123;&#123;.ID&#125;&#125;: &#123;&#123;.Image&#125;&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.Command&#125;</span></span>&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.RunningFor&#125;</span></span>&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.Status&#125;</span></span>&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.Names&#125;</span></span>&#125;"</span></div></pre></td></tr></table></figure>
+<p><img src="/source_code/image/docker_ps_a_format.png" alt=""></p>
+<p><code>--format</code>更多细节请参考：<a href="https://docs.docker.com/engine/reference/commandline/ps/#formatting" target="_blank" rel="external">docker ps formatting</a></p>
+<h3 id="进入运行中的docker-container"><a href="#进入运行中的docker-container" class="headerlink" title="* 进入运行中的docker container"></a>* 进入运行中的<code>docker container</code></h3><p>假设container ID为<code>39ddc76afbd8</code>，则进入命令为：</p>
+<p><code>docker exec -it 39ddc76afbd8 /bin/bash</code></p>
+<p>需要退出则输入<code>exit</code></p>
+<p>最好不要使用<code>docker attach 39ddc76afbd8</code>这种命令，因为<code>attach</code>只是把本地的<code>input/output/error stream</code>绑定到容器上，看上去就像进入了容器内部一样。<strong>但若该容器正在运行的命令不提供可交互性，那么就无法对容器进行输入，</strong>所以这种进入就没有太大意义。</p>
+<blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 

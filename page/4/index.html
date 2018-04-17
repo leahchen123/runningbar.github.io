@@ -267,7 +267,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/22/Fabric背书策略/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/17/curl使用参数引用的方式发送POST请求/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -286,7 +286,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/22/Fabric背书策略/" itemprop="url">Fabric背书策略</a></h1>
+                <a class="post-title-link" href="/2017/06/17/curl使用参数引用的方式发送POST请求/" itemprop="url">curl使用参数引用的方式发送POST请求</a></h1>
         
 
         <div class="post-meta">
@@ -298,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T23:27:32+08:00">
-                2017-11-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-17T11:00:15+08:00">
+                2017-06-17
               </time>
             
 
@@ -321,8 +321,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/blockchain/" itemprop="url" rel="index">
-                    <span itemprop="name">blockchain</span>
+                  <a href="/categories/Bash/" itemprop="url" rel="index">
+                    <span itemprop="name">Bash</span>
                   </a>
                 </span>
 
@@ -338,7 +338,7 @@
 
           
           
-             <span id="/2017/11/22/Fabric背书策略/" class="leancloud_visitors" data-flag-title="Fabric背书策略">
+             <span id="/2017/06/17/curl使用参数引用的方式发送POST请求/" class="leancloud_visitors" data-flag-title="curl使用参数引用的方式发送POST请求">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -368,33 +368,22 @@
       
         
           
-            <blockquote>
-<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
-</blockquote>
-<h2 id="背书策略"><a href="#背书策略" class="headerlink" title="背书策略"></a>背书策略</h2><p>背书策略是用来指导一个<code>peer</code>如何确定一笔交易是否被正确的背书。当一个<code>peer</code>接收到一笔交易后，它会<code>invoke</code>与该交易的<code>chaincode</code>相关的<code>VSCC(Validation System Chaincode)</code>，作为交易确认流程的一部分来确定交易的有效性。回想一下，一个交易包含了一个或多个背书<code>peer</code>的认可。<code>VSCC</code>的任务是做出如下决定：</p>
-<ul>
-<li>所有的背书都是有效的（比如：它们是有效的证书在预期的消息上做了有效的签名）。</li>
-<li>拥有合适数量的背书认可。</li>
-<li>背书都来自于预期的来源。</li>
+            <ul>
+<li>Bash中的单引号<code>&#39;</code>具有raw字符串的功能，即被单引号<code>&#39;</code>包含的字符串，维持字面意思，其中的<code>$</code>这种特殊字符都不会被解析。</li>
 </ul>
-<p>背书策略是指定第2点和第3点的一种方式。</p>
-<h3 id="背书策略设计"><a href="#背书策略设计" class="headerlink" title="背书策略设计"></a>背书策略设计</h3><p>背书策略有2个重要组件： 1. 一个原则。 2. 一个门槛</p>
-<p>原则<code>P</code>定义了期待哪个主体的签名。</p>
-<p>门槛<code>T</code>有2个输入：一个实数<code>t</code>(门槛值)和一个包含了<code>n</code>个原则的列表；这个门槛本质上就是刻画了满足<code>n</code>个原则的预期，<code>t</code>就是必须要满足的数量。</p>
-<p>举个例子： <code>T(2, &#39;A&#39;, &#39;B&#39;, &#39;C&#39;)</code>要求来自<code>A</code>, <code>B</code>或者<code>C</code>任意2个主体的签名；<code>T(1, &#39;A&#39;, T(2, &#39;B&#39;, &#39;C&#39;))</code>要求来自<code>A</code>或者<code>B</code>和<code>C</code>的签名。</p>
-<h3 id="CLI中的背书策略语法"><a href="#CLI中的背书策略语法" class="headerlink" title="CLI中的背书策略语法"></a><code>CLI</code>中的背书策略语法</h3><p>在<code>CLI</code>中，有一种简单的语言来表达策略，用布尔表达式来定义原则。</p>
-<p>一个原则根据<code>MSP</code>来描述，用来验证签名者的身份以及签名者在<code>MSP</code>中的角色。目前，支持2种角色：<code>member</code>和<code>admin</code>。原则用<code>MSP.ROLE</code>格式来描述，其中<code>MSP</code>是需要的<code>MSP ID</code>，<code>ROLE</code>则是一个字符串，取值<code>member</code>或者<code>admin</code>。举一个有效的原则例子，比如<code>Org0.admin</code>（需要<code>Org0 MSP</code>中任意一个管理员的签名），或者<code>Org1.member</code>（需要<code>Org1 MSP</code>中任意一个成员的签名）。</p>
-<p>这种语言的语法是： <code>EXPR(E[, E...])</code></p>
-<p>其中<code>EXPR</code>要么是<code>AND</code>，要么是<code>OR</code>，代表了这2个布尔表达式的功能，而<code>E</code>要么是一个原则（根据上面的语法描述），要么就是另一个嵌套的<code>EXPR</code>。</p>
-<p>举个例子：<code>AND(&#39;Org1.member&#39;, &#39;Org2.member&#39;, &#39;Org3.member&#39;)</code>需要来自3个实体的所有签名；<code>OR(&#39;Org1.member&#39;, &#39;Org2.member&#39;)</code>需要来自2个实体中任意一个的签名；<code>OR(&#39;Org1.member&#39;, AND(&#39;Org2.member&#39;, &#39;Org3.member&#39;))</code>需要来自<code>Org1 MSP</code>中一个成员的签名，或者是，需要来自<code>Org2 MSP</code>中一个成员的签名以及来自<code>Org3 MSP</code>中一个成员的签名。</p>
-<h3 id="为一个chaincode指定背书策略"><a href="#为一个chaincode指定背书策略" class="headerlink" title="为一个chaincode指定背书策略"></a>为一个<code>chaincode</code>指定背书策略</h3><p>使用这种语言，一个<code>chaincode</code>部署者可以根据指定的策略，来验证一个chaincode的背书是有效的。<strong>记住:</strong> 默认的策略是需要一个来自<code>MSPID</code>为<code>DEFAULT</code>的<code>MSP</code>中一个成员的签名。如果在<code>CLI</code>中没有指定任何策略，那么这个默认策略就会生效。</p>
-<p>策略可以在部署时通过<code>-p</code>开关来指定</p>
-<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ol>
-<li><a href="http://hyperledger-fabric.readthedocs.io/en/release/endorsement-policies.html" target="_blank" rel="external">http://hyperledger-fabric.readthedocs.io/en/release/endorsement-policies.html</a></li>
-</ol>
-<blockquote>
-<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
-</blockquote>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">test<span class="symbol">@runningday</span> ~$echo <span class="string">'$PATH'</span></div><div class="line">$PATH</div><div class="line">// $PATH维持字面意思，并没有被解析为变量引用</div></pre></td></tr></table></figure>
+<ul>
+<li><code>curl</code>发送POST请求时，<code>-d</code>后的json数据，如果含有字符串，必须使用双引号<code>&quot;</code>包裹，不能使用单引号<code>&#39;</code>，否则会返回错误码。</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$curl</span> -<span class="keyword">H</span> <span class="string">"Content-Type: application/json"</span> -<span class="keyword">d</span> <span class="string">"&#123;'app_key': 'key1', 'app_secret': 'secret1'&#125;"</span> https:/<span class="keyword">open</span>.c.163.com/api/v1/<span class="keyword">token</span></div><div class="line">&#123;<span class="string">"message"</span>:<span class="string">"Unprocessable entity."</span>,<span class="string">"code"</span>:4220001&#125;</div><div class="line"><span class="comment">// 其中的payload json数据，全都是用单引号包裹，被报错422</span></div><div class="line"></div><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$curl</span> -<span class="keyword">H</span> <span class="string">"Content-Type: application/json"</span> -<span class="keyword">d</span> '&#123;<span class="string">"app_key"</span>: <span class="string">"key1"</span>, <span class="string">"app_secret"</span>: <span class="string">"secret1"</span>&#125;' https:/<span class="keyword">open</span>.c.163.com/api/v1/<span class="keyword">token</span></div><div class="line">&#123;<span class="string">"token"</span>:<span class="string">"token1"</span>,<span class="string">"expires_in"</span>:<span class="string">"86399"</span>&#125;</div><div class="line"><span class="comment">// json数据换成用双引号包裹，请求成功</span></div></pre></td></tr></table></figure>
+<ul>
+<li>于是乎，如果将上文中json数据的<code>key1</code>，<code>secret1</code>使用变量引用的方式，我们就要注意到上文的2个问题，小心谨慎的拼装出最后的命令。<ul>
+<li>需要保证json数据都由双引号包裹</li>
+<li>需要保证<code>$</code>能够被正确解析为变量引用，所以<code>-d</code>的数据整体也要用双引号包裹，而内部需要使用<code>\</code>来进行转义</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$api_prefix</span>=<span class="string">"https://open.c.163.com"</span></div><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$k1</span>=key1</div><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$s1</span>=secret1</div><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$api</span>=<span class="variable">$&#123;api_prefix&#125;</span>/api/v1/<span class="keyword">token</span></div><div class="line"><span class="keyword">test</span>@runningday ~<span class="variable">$curl</span> -<span class="keyword">H</span> <span class="string">"Content-Type: application/json"</span> -<span class="keyword">d</span> <span class="string">"&#123;\"</span>app_key\<span class="string">": \"</span><span class="variable">$&#123;k1&#125;</span>\<span class="string">", \"</span>app_secret\<span class="string">": \"</span><span class="variable">$&#123;s1&#125;</span>\<span class="string">"&#125;"</span> <span class="variable">$&#123;api&#125;</span></div><div class="line">&#123;<span class="string">"token"</span>:<span class="string">"token1"</span>,<span class="string">"expires_in"</span>:<span class="string">"86399"</span>&#125;</div></pre></td></tr></table></figure>
 
           
         
@@ -438,7 +427,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/22/Fabric为什么用CouchDB/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/15/Linux使用shadowsocks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -457,7 +446,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/22/Fabric为什么用CouchDB/" itemprop="url">Fabric为什么用CouchDB</a></h1>
+                <a class="post-title-link" href="/2017/06/15/Linux使用shadowsocks/" itemprop="url">Linux使用shadowsocks</a></h1>
         
 
         <div class="post-meta">
@@ -469,8 +458,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T22:34:17+08:00">
-                2017-11-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-15T11:42:54+08:00">
+                2017-06-15
               </time>
             
 
@@ -492,8 +481,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/blockchain/" itemprop="url" rel="index">
-                    <span itemprop="name">blockchain</span>
+                  <a href="/categories/经验/" itemprop="url" rel="index">
+                    <span itemprop="name">经验</span>
                   </a>
                 </span>
 
@@ -509,7 +498,312 @@
 
           
           
-             <span id="/2017/11/22/Fabric为什么用CouchDB/" class="leancloud_visitors" data-flag-title="Fabric为什么用CouchDB">
+             <span id="/2017/06/15/Linux使用shadowsocks/" class="leancloud_visitors" data-flag-title="Linux使用shadowsocks">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="安装shadowsocks"><a href="#安装shadowsocks" class="headerlink" title="安装shadowsocks"></a>安装<code>shadowsocks</code></h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip <span class="keyword">install</span> shadowsocks</div></pre></td></tr></table></figure>
+<h2 id="添加shadowsocks配置文件"><a href="#添加shadowsocks配置文件" class="headerlink" title="添加shadowsocks配置文件"></a>添加<code>shadowsocks</code>配置文件</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">vim /<span class="built_in">home</span>/test/ss-<span class="built_in">config</span>.json</div><div class="line"></div><div class="line">&#123;</div><div class="line">	<span class="string">"server"</span>: <span class="string">"1.1.1.1"</span>,</div><div class="line">	<span class="string">"server_port"</span>: <span class="number">1010</span>,</div><div class="line">	<span class="string">"local_address"</span>: <span class="string">"0.0.0.0"</span>,</div><div class="line">	<span class="string">"local_port"</span>: <span class="number">1080</span>,</div><div class="line">	<span class="string">"password"</span>: <span class="string">"password"</span>,</div><div class="line">	<span class="string">"timeout"</span>: <span class="number">600</span>,</div><div class="line">	<span class="string">"method"</span>: <span class="string">"aes-256-cfb"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="启动shadowsocks服务"><a href="#启动shadowsocks服务" class="headerlink" title="启动shadowsocks服务"></a>启动<code>shadowsocks</code>服务</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sslocal -c /<span class="built_in">home</span>/test/ss-<span class="built_in">config</span>.json <span class="comment">//前端运行</span></div><div class="line"></div><div class="line">nohup sslocal -c /<span class="built_in">home</span>/test/ss-<span class="built_in">config</span>.json &gt; /dev/null <span class="number">2</span>&gt;&amp;<span class="number">1</span> &amp; <span class="comment">//后台运行</span></div></pre></td></tr></table></figure>
+<h2 id="开启全局代理"><a href="#开启全局代理" class="headerlink" title="开启全局代理"></a>开启全局代理</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="builtin-name">export</span> <span class="attribute">all_proxy</span>=socks5://127.0.0.1:1080</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/14/使用kubeadm搭建通用的Kubernetes集群/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/14/使用kubeadm搭建通用的Kubernetes集群/" itemprop="url">使用kubeadm搭建通用的Kubernetes集群</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-14T10:30:44+08:00">
+                2017-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/14/使用kubeadm搭建通用的Kubernetes集群/" class="leancloud_visitors" data-flag-title="使用kubeadm搭建通用的Kubernetes集群">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p><code>kubeadm</code>尚处于alpha阶段，安装中会卡住，目前尚未解决</p>
+</blockquote>
+<h2 id="安装kubeadm"><a href="#安装kubeadm" class="headerlink" title="安装kubeadm"></a>安装<code>kubeadm</code></h2><h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><ul>
+<li><p>一台或多台运行<code>Ubuntu 16.04+</code>，<code>CentOS 7</code>或者<code>HypriotOS v1.0.1+</code>系统的机器。</p>
+</li>
+<li><p>每台机器拥有1GB及以上容量的内存（否则的话，留给你的应用空间就会很少了）</p>
+</li>
+<li><p>集群中的所有机器都能完全相连（公网互联还是私网互联都行）
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/14/使用kubeadm搭建通用的Kubernetes集群/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/07/Kubernetes搭建TLS私有docker仓库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/07/Kubernetes搭建TLS私有docker仓库/" itemprop="url">Kubernetes搭建TLS私有docker仓库</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-07T19:10:30+08:00">
+                2017-06-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/07/Kubernetes搭建TLS私有docker仓库/" class="leancloud_visitors" data-flag-title="Kubernetes搭建TLS私有docker仓库">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -540,18 +834,501 @@
         
           
             <blockquote>
-<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+<p>以下流程在<code>minikube</code>中完全跑通</p>
 </blockquote>
-<h3 id="Why-CouchDB"><a href="#Why-CouchDB" class="headerlink" title="Why CouchDB"></a>Why CouchDB</h3><p><code>CouchDB</code>是一种<code>NoSQL</code>解决方案。它是一个面向文档的数据库，文档中的字段都以<code>key-value</code>映射的形式存储在数据库中。字段可以是一个简单的<code>key-value对</code>，<code>list</code>或者<code>map</code>。除了<code>LevelDB</code>支持的<code>keyed / composite-key / key-range</code>查询之外，<code>CouchDB</code>还能支持所有数据富查询的能力，比如相对于区块链数据的<code>non-key</code>查询，因为它的数据内容都以<code>JSON</code>格式存储并且是全部可查询的。因此，<code>CouchDB</code>可以满足<code>chaincode</code>，审计，以及在很多应用场景遇到的<code>LevelDB</code>不能支持的需求。</p>
-<p><code>CouchDB</code>还可以增强区块链中合规性和数据保护的安全性。因为它可以通过过滤和屏蔽事务中的各个属性来实现字段级的安全性，并且如果需要，可以只授权只读权限。</p>
-<p>此外，<code>CouchDB</code>属于CAP定理中的AP类型（可用性和分区容错性）。它使用了一种具有<strong>最终一致性</strong>的主-主备份模型。更多详情可以参看<a href="http://docs.couchdb.org/en/latest/intro/consistency.html" target="_blank" rel="external">Eventual Consistency page of the CouchDB documentation</a>。然而，在每一个<code>fabric peer</code>中，并没有数据库备份，写数据库是保证一致并持久化的（不是最终一致性）。</p>
-<p><code>CouchDB</code>是<code>Fabric</code>第一个外部可插拔的状态数据库，并且可以也应该有其它外部的数据库选择。比如，IBM为它的区块链实现了关系型数据库。并且CP类型（一致性和分区容错性）的数据库可能也是需要的，以便在没有应用级保证的情况下实现数据一致性。</p>
-<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><ol>
-<li><a href="http://hyperledger-fabric.readthedocs.io/en/release/build_network.html#why-couchdb" target="_blank" rel="external">http://hyperledger-fabric.readthedocs.io/en/release/build_network.html#why-couchdb</a></li>
-</ol>
+<h2 id="完成效果"><a href="#完成效果" class="headerlink" title="完成效果"></a>完成效果</h2><ul>
+<li>可以在kubernetes集群中，搭建自己的<code>docker registry</code></li>
+<li><code>registry</code>支持TLS验证，并且TLS证书支持IP验证【默认只支持域名验证】</li>
+<li><code>registry</code>不仅可以被集群中<code>pod</code>访问，而且可以被集群外部访问。</li>
+<li><code>registry</code>使用的存储基于NFS，这就意味着你可以将镜像存在网络中其它主机上。</li>
+</ul>
+<h2 id="完整流程"><a href="#完整流程" class="headerlink" title="完整流程"></a>完整流程</h2><h3 id="创建PV"><a href="#创建PV" class="headerlink" title="创建PV"></a>创建PV</h3><p>仓库的首要任务就是存储数据。我们需要决定将数据存储在哪里，可以使用Kubernetes的<code>PersistentVolume</code>对象实现持久化。</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># kube-registry-pv.yaml</span></div><div class="line"><span class="symbol">kind:</span> PersistentVolume</div><div class="line"><span class="symbol">apiVersion:</span> v1</div><div class="line"><span class="symbol">metadata:</span></div><div class="line"><span class="symbol">        name:</span> kube-system-kube-registry-pv</div><div class="line"><span class="symbol">        labels:</span></div><div class="line">                kubernetes.io/cluster-service: <span class="string">"true"</span></div><div class="line"><span class="symbol">spec:</span></div><div class="line"><span class="symbol">        capacity:</span></div><div class="line"><span class="symbol">                storage:</span> <span class="number">23</span>Gi</div><div class="line"><span class="symbol">        accessModes:</span></div><div class="line">                - ReadWriteOnce</div><div class="line"><span class="symbol">        storageClassName:</span> nfs-registry</div><div class="line"><span class="symbol">        nfs:</span></div><div class="line"><span class="symbol">                path:</span> <span class="string">"/home/mine/nfs"</span></div><div class="line"><span class="symbol">                server:</span> <span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span></div></pre></td></tr></table></figure>
+<p>这里面使用nfs作为持久化挂载，关于如何搭建NFS服务器，可以查看我的这篇文章：<a href="http://www.huamo.online/2017/06/05/Ubuntu-NFS%E4%BD%BF%E7%94%A8/">Linux NFS使用</a> 。</p>
+<h3 id="创建PVC来绑定PV"><a href="#创建PVC来绑定PV" class="headerlink" title="创建PVC来绑定PV"></a>创建PVC来绑定PV</h3><p>PV持久卷创建完毕后，我们可以使用<code>PersistentVolumeClaim</code>来绑定这个PV。</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># kube-registry-pvc.yaml</span></div><div class="line"><span class="symbol">kind:</span> PersistentVolumeClaim</div><div class="line"><span class="symbol">apiVersion:</span> v1</div><div class="line"><span class="symbol">metadata:</span></div><div class="line"><span class="symbol">        name:</span> kube-registry-pvc</div><div class="line"><span class="symbol">        namespace:</span> kube-system</div><div class="line"><span class="symbol">        labels:</span></div><div class="line">                kubernetes.io/cluster-service: <span class="string">"true"</span></div><div class="line"><span class="symbol">spec:</span></div><div class="line"><span class="symbol">        accessModes:</span></div><div class="line">                - ReadWriteOnce</div><div class="line"><span class="symbol">        storageClassName:</span> nfs-registry</div><div class="line"><span class="symbol">        resources:</span></div><div class="line"><span class="symbol">                requests:</span></div><div class="line"><span class="symbol">                        storage:</span> <span class="number">23</span>Gi</div></pre></td></tr></table></figure>
+<h3 id="创建docker-registry"><a href="#创建docker-registry" class="headerlink" title="创建docker registry"></a>创建docker registry</h3><p>现在我们可以创建一个Docker仓库了。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># kube-registry-rc.yaml</span></div><div class="line"></div><div class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></div><div class="line"><span class="attr">kind:</span> <span class="string">ReplicationController</span></div><div class="line"><span class="attr">metadata:</span></div><div class="line"><span class="attr">    name:</span> <span class="string">kube-registry-v0</span></div><div class="line"><span class="attr">    namespace:</span> <span class="string">kube-system</span></div><div class="line"><span class="attr">    labels:</span></div><div class="line"><span class="attr">        k8s-app:</span> <span class="string">kube-registry</span></div><div class="line"><span class="attr">        version:</span> <span class="string">v0</span></div><div class="line">        <span class="comment">#kubernetes.io/cluster-service: "true"</span></div><div class="line"><span class="attr">spec:</span></div><div class="line"><span class="attr">    replicas:</span> <span class="number">1</span></div><div class="line"><span class="attr">    selector:</span></div><div class="line"><span class="attr">        k8s-app:</span> <span class="string">kube-registry</span></div><div class="line"><span class="attr">        version:</span> <span class="string">v0</span></div><div class="line"><span class="attr">    template:</span></div><div class="line"><span class="attr">        metadata:</span></div><div class="line"><span class="attr">            labels:</span></div><div class="line"><span class="attr">                k8s-app:</span> <span class="string">kube-registry</span></div><div class="line"><span class="attr">                version:</span> <span class="string">v0</span></div><div class="line">                <span class="comment">#kubernetes.io/cluster-service: "true"</span></div><div class="line"><span class="attr">        spec:</span></div><div class="line"><span class="attr">            containers:</span></div><div class="line"><span class="attr">            - name:</span> <span class="string">registry</span></div><div class="line"><span class="attr">              image:</span> <span class="attr">registry:2</span></div><div class="line"><span class="attr">              resources:</span></div><div class="line"><span class="attr">                limits:</span></div><div class="line"><span class="attr">                    cpu:</span> <span class="number">100</span><span class="string">m</span></div><div class="line"><span class="attr">                    memory:</span> <span class="number">100</span><span class="string">Mi</span></div><div class="line"><span class="attr">              env:</span></div><div class="line"><span class="attr">              - name:</span> <span class="string">REGISTRY_HTTP_ADDR</span></div><div class="line"><span class="attr">                value:</span> <span class="string">:5000</span></div><div class="line"><span class="attr">              - name:</span> <span class="string">REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY</span></div><div class="line"><span class="attr">                value:</span> <span class="string">/var/lib/registry</span></div><div class="line"><span class="attr">              - name:</span> <span class="string">REGISTRY_HTTP_TLS_CERTIFICATE</span></div><div class="line"><span class="attr">                value:</span> <span class="string">/certs/server.crt</span></div><div class="line"><span class="attr">              - name:</span> <span class="string">REGISTRY_HTTP_TLS_KEY</span></div><div class="line"><span class="attr">                value:</span> <span class="string">/certs/server.key</span></div><div class="line"><span class="attr">              volumeMounts:</span></div><div class="line"><span class="attr">              - name:</span> <span class="string">image-store</span></div><div class="line"><span class="attr">                mountPath:</span> <span class="string">/var/lib/registry</span></div><div class="line"><span class="attr">              - name:</span> <span class="string">cert-dir</span></div><div class="line"><span class="attr">                mountPath:</span> <span class="string">/certs</span></div><div class="line"><span class="attr">              ports:</span></div><div class="line"><span class="attr">              - containerPort:</span> <span class="number">5000</span></div><div class="line"><span class="attr">                hostPort:</span> <span class="number">5000</span></div><div class="line"><span class="attr">                name:</span> <span class="string">registry</span></div><div class="line"><span class="attr">                protocol:</span> <span class="string">TCP</span></div><div class="line"><span class="attr">            volumes:</span></div><div class="line"><span class="attr">            - name:</span> <span class="string">image-store</span></div><div class="line"><span class="attr">              persistentVolumeClaim:</span></div><div class="line"><span class="attr">                claimName:</span> <span class="string">kube-registry-pvc</span></div><div class="line"><span class="attr">            - name:</span> <span class="string">cert-dir</span></div><div class="line"><span class="attr">              secret:</span></div><div class="line"><span class="attr">                secretName:</span> <span class="string">registry-tls-secret</span></div></pre></td></tr></table></figure>
+<p>这里面使用了<code>hostPort: 5000</code>将Pod中的仓库端口映射到minikube的<code>5000</code>端口中，以便集群外部也能访问这个docker registry。</p>
+<p>并且，我们通过使用名叫<code>registry-tls-secret</code>的<code>Secret</code>资源，为这个registry pod提供了TLS必要的<code>server.crt</code>和<code>server.key</code>。这个<code>Secrets</code>以及证书相关，会在下文介绍。</p>
+<h3 id="创建Service暴露Pod服务"><a href="#创建Service暴露Pod服务" class="headerlink" title="创建Service暴露Pod服务"></a>创建Service暴露Pod服务</h3><p>我们可以将registry Pod作为一个<code>Service</code>暴露出来。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># kube-registry-svc.yaml</span></div><div class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></div><div class="line"><span class="attr">kind:</span> <span class="string">Service</span></div><div class="line"><span class="attr">metadata:</span></div><div class="line"><span class="attr">    name:</span> <span class="string">kube-registry</span></div><div class="line"><span class="attr">    namespace:</span> <span class="string">kube-system</span></div><div class="line"><span class="attr">    labels:</span></div><div class="line"><span class="attr">        k8s-app:</span> <span class="string">kube-registry</span></div><div class="line">        <span class="comment">#kubernetes.io/cluster-service: "true"</span></div><div class="line">        <span class="string">kubernetes.io/name:</span> <span class="string">"KubeRegistry"</span></div><div class="line"><span class="attr">spec:</span></div><div class="line"><span class="attr">    selector:</span></div><div class="line"><span class="attr">        k8s-app:</span> <span class="string">kube-registry</span></div><div class="line">    <span class="comment">#type: NodePort</span></div><div class="line"><span class="attr">    ports:</span></div><div class="line"><span class="attr">    - name:</span> <span class="string">registry</span></div><div class="line"><span class="attr">      port:</span> <span class="number">5000</span></div><div class="line">      <span class="comment">#nodePort: 30001</span></div><div class="line"><span class="attr">      protocol:</span> <span class="string">TCP</span></div></pre></td></tr></table></figure>
+<p>OK，目前为止，我们已经建立了docker registry的相关资源，接下来就是准备TLS支持的相关工作。</p>
+<h3 id="生成服务端crt证书和key私钥"><a href="#生成服务端crt证书和key私钥" class="headerlink" title="生成服务端crt证书和key私钥"></a>生成服务端crt证书和key私钥</h3><p>这一段走的时候不太顺利，尝试了很多方法，也解决了很多问题，大致包括：</p>
+<ul>
+<li>TLS证书需要支持IP验证。默认情况下证书只支持域名校验，否则会报<code>IP SANs</code>错误<code>cannot validate certificate for 192.168.1.100 because it doesn&#39;t contain any IP SANs</code>。</li>
+<li>不能使用自签名证书。首先必须要自己生成一个CA crt证书，然后用这个CA来签名服务端证书，然后把该CA证书放在docker的<code>custom root CA</code>目录下，如果采用自签名证书，或者不提供CA，则会报错<code>x509: certificate signed by unknown authority</code>。</li>
+</ul>
+<p>如前所述，我们将registry服务映射到了minikube的<code>5000</code>端口上，假设minikube的IP地址为<code>192.168.99.100</code>，根据这些信息我们来生成<code>192.168.99.100:5000</code>服务端TLS证书。</p>
 <blockquote>
-<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+<p>当然了，如果你是土豪，可以直接到公网CA上直接买证书，就可以跳过这一段辛酸的经验</p>
 </blockquote>
+<h4 id="解决IP-SANs问题"><a href="#解决IP-SANs问题" class="headerlink" title="解决IP SANs问题"></a>解决<code>IP SANs</code>问题</h4><p>为了让证书支持IP验证，我们首先需要定制一个自己的openssl模板文件，创建文件<code>openssl.cnf</code>，内容如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">[ req ]</div><div class="line"><span class="comment">#default_bits           = 2048</span></div><div class="line"><span class="comment">#default_md             = sha256</span></div><div class="line"><span class="comment">#default_keyfile        = privkey.pem</span></div><div class="line">distinguished_name      = req_distinguished_name</div><div class="line">attributes              = req_attributes</div><div class="line">req_extensions          = v3_req</div><div class="line"></div><div class="line">[ req_distinguished_name ]</div><div class="line">countryName                     = Country Name (2 letter code)</div><div class="line">countryName_min                 = 2</div><div class="line">countryName_max                 = 2</div><div class="line">stateOrProvinceName             = State or Province Name (full name)</div><div class="line">localityName                    = Locality Name (eg, city)</div><div class="line">0.organizationName              = Organization Name (eg, company)</div><div class="line">organizationalUnitName          = Organizational Unit Name (eg, section)</div><div class="line">commonName                      = Common Name (eg, fully qualified host name)</div><div class="line">commonName_max                  = 64</div><div class="line">emailAddress                    = Email Address</div><div class="line">emailAddress_max                = 64</div><div class="line"></div><div class="line">[ req_attributes ]</div><div class="line">challengePassword               = A challenge password</div><div class="line">challengePassword_min           = 4</div><div class="line">challengePassword_max           = 20</div><div class="line"></div><div class="line">[ v3_req ]</div><div class="line">subjectAltName = IP:192.168.99.100</div></pre></td></tr></table></figure>
+<p>主要是<code>subjectAltName = IP:192.168.99.100</code>这句话，开启了对IP的验证功能。</p>
+<h4 id="生成ca-key"><a href="#生成ca-key" class="headerlink" title="生成ca.key"></a>生成<code>ca.key</code></h4><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl genrsa -out ca.<span class="type">key</span> <span class="number">2048</span></div></pre></td></tr></table></figure>
+<h4 id="基于openssl-cnf生成ca-crt"><a href="#基于openssl-cnf生成ca-crt" class="headerlink" title="基于openssl.cnf生成ca.crt"></a>基于<code>openssl.cnf</code>生成<code>ca.crt</code></h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl req -x509 -new -nodes -key ca<span class="selector-class">.key</span> -subj <span class="string">"/CN=192.168.99.100:5000"</span> -days <span class="number">5000</span> -config openssl<span class="selector-class">.cnf</span> -out ca.crt</div></pre></td></tr></table></figure>
+<blockquote>
+<p>备注：当然，推荐使用域名作为CN，这样的话，就不需要openssl.cnf文件了，只需要在hosts文件中做域名到IP的映射就行，如果你有公网域名，那就更方便了，连hosts也不用改，DNS服务商已为你做好了一切。</p>
+</blockquote>
+<h4 id="生成server-key"><a href="#生成server-key" class="headerlink" title="生成server.key"></a>生成<code>server.key</code></h4><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl genrsa -out server.<span class="type">key</span> <span class="number">2048</span></div></pre></td></tr></table></figure>
+<p>这个<code>server.key</code>就是前面<code>ReplicationController</code>配置文件里面提到的key文件。</p>
+<h4 id="基于openssl-cnf生成server-csr"><a href="#基于openssl-cnf生成server-csr" class="headerlink" title="基于openssl.cnf生成server.csr"></a>基于<code>openssl.cnf</code>生成<code>server.csr</code></h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl req -new -key server<span class="selector-class">.key</span> -subj <span class="string">"/CN=192.168.99.100:5000"</span> -config openssl<span class="selector-class">.cnf</span> -out server.csr</div></pre></td></tr></table></figure>
+<h4 id="生成server-crt"><a href="#生成server-crt" class="headerlink" title="生成server.crt"></a>生成<code>server.crt</code></h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl x509 -req -<span class="keyword">in</span> server<span class="selector-class">.csr</span> -CA ca<span class="selector-class">.crt</span> -CAkey ca<span class="selector-class">.key</span> -CAcreateserial -out server<span class="selector-class">.crt</span> -days <span class="number">5000</span> -extensions v3_req -extfile openssl.cnf</div></pre></td></tr></table></figure>
+<p>这个命令同时还会生成<code>ca.srl</code>文件。这个<code>server.crt</code>就是前面<code>ReplicationController</code>配置文件里面提到的crt文件。</p>
+<p>到这儿，TLS所需要的证书和私钥已经全部准备完毕。</p>
+<h3 id="将server-key和server-crt打包到Secrets中"><a href="#将server-key和server-crt打包到Secrets中" class="headerlink" title="将server.key和server.crt打包到Secrets中"></a>将server.key和server.crt打包到Secrets中</h3><p>准备好了<code>server.key</code>和<code>server.crt</code>，需要提供给registry pod，这样才能提供TLS支持，这里使用kubernetes的<code>Secrets</code>资源来提供配置。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kubectl <span class="attribute">--namespace</span>=kube-system create<span class="built_in"> secret </span>generic registry-tls-secret <span class="attribute">--from-file</span>=server.crt=./server.crt <span class="attribute">--from-file</span>=server.key=./server.key</div></pre></td></tr></table></figure>
+<p>这个<code>Secret</code>资源名称即为<code>registry-tls-secret</code>，正好被之前的<code>ReplicationController</code>所引用。</p>
+<h3 id="将所有准备工作串起来"><a href="#将所有准备工作串起来" class="headerlink" title="将所有准备工作串起来"></a>将所有准备工作串起来</h3><p>到这里，所有的准备资源都已就绪，现在需要把它们整合起来并运行。首先看下当前的目录结构：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── ca<span class="selector-class">.crt</span></div><div class="line">├── ca<span class="selector-class">.key</span></div><div class="line">├── ca<span class="selector-class">.srl</span></div><div class="line">├── kube-registry-pvc<span class="selector-class">.yaml</span></div><div class="line">├── kube-registry-pv<span class="selector-class">.yaml</span></div><div class="line">├── kube-registry-rc<span class="selector-class">.yaml</span></div><div class="line">├── kube-registry-svc<span class="selector-class">.yaml</span></div><div class="line">├── openssl<span class="selector-class">.cnf</span></div><div class="line">├── server<span class="selector-class">.crt</span></div><div class="line">├── server<span class="selector-class">.csr</span></div><div class="line">└── server.key</div></pre></td></tr></table></figure>
+<p>创建文件<code>start.sh</code>，这样便于随时自动化启动运行：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">kubectl <span class="attribute">--namespace</span>=kube-system create<span class="built_in"> secret </span>generic registry-tls-secret <span class="attribute">--from-file</span>=server.crt=./server.crt <span class="attribute">--from-file</span>=server.key=./server.key</div><div class="line">kubectl create -f kube-registry-pv.yaml</div><div class="line">kubectl create -f kube-registry-pvc.yaml</div><div class="line">kubectl create -f kube-registry-rc.yaml</div><div class="line">kubectl create -f kube-registry-svc.yaml</div></pre></td></tr></table></figure>
+<p>创建文件<code>delete.sh</code>，便于自动化关闭服务：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">kubectl --namespace=kube-<span class="built_in">system</span> <span class="built_in">delete</span> secrets registry-tls-secret</div><div class="line">kubectl <span class="built_in">delete</span> -f kube-registry-<span class="built_in">pv</span>.yaml</div><div class="line">kubectl <span class="built_in">delete</span> -f kube-registry-pvc.yaml</div><div class="line">kubectl <span class="built_in">delete</span> -f kube-registry-rc.yaml</div><div class="line">kubectl <span class="built_in">delete</span> -f kube-registry-svc.yaml</div></pre></td></tr></table></figure>
+<p>将一切运行起来：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sh ./<span class="keyword">delete</span>.sh <span class="comment">/*删除所有相关资源以初始化*/</span></div><div class="line">sh ./<span class="keyword">start</span>.sh <span class="comment">/*运行支持tls的docker registry*/</span></div><div class="line">kubectl --<span class="keyword">namespace</span>=kube-<span class="keyword">system</span> get <span class="keyword">all</span> <span class="comment">/*查看所有相关资源是否都正常running*/</span></div><div class="line"></div><div class="line"><span class="comment">/*有可能会因为在墙内，导致相关container镜像下载失败，进而不能正常运行，需要自行翻墙*/</span></div></pre></td></tr></table></figure>
+<h3 id="验证这一切跑通"><a href="#验证这一切跑通" class="headerlink" title="验证这一切跑通"></a>验证这一切跑通</h3><p>我们可以在能访问<code>192.168.99.100</code>的任一台机器上验证这一切，在验证之前，还有一项准备工作要做，否则docker会提示你证书无效：<code>x509: certificate signed by unknown authority</code></p>
+<h4 id="向验证机器的docker提供CA证书："><a href="#向验证机器的docker提供CA证书：" class="headerlink" title="向验证机器的docker提供CA证书："></a>向验证机器的docker提供CA证书：</h4><figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo mkdir -p <span class="regexp">/etc/</span>docker<span class="regexp">/certs.d/</span><span class="number">192.168</span>.<span class="number">99.100</span>:<span class="number">5000</span></div><div class="line"><span class="regexp">/*如果之前使用域名作为CN，那这里就用域名作为最后一个目录名字*/</span></div><div class="line"></div><div class="line"><span class="regexp">/*将之前生成的ca.crt放在docker custom root ca目录下*/</span></div><div class="line">cp .<span class="regexp">/ca.crt /</span>etc<span class="regexp">/docker/</span>certs.d<span class="regexp">/192.168.99.100:5000/</span></div></pre></td></tr></table></figure>
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">docker pull busybox</div><div class="line">docker tag busybox <span class="number">192.168</span><span class="meta">.99</span><span class="meta">.100</span>:<span class="number">5000</span>/busybox</div><div class="line">docker <span class="keyword">push</span> <span class="number">192.168</span><span class="meta">.99</span><span class="meta">.100</span>:<span class="number">5000</span>/busybox</div><div class="line">docker pull <span class="number">192.168</span><span class="meta">.99</span><span class="meta">.100</span>:<span class="number">5000</span>/busybox</div></pre></td></tr></table></figure>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a href="https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/registry" target="_blank" rel="external">Private Docker Registry in Kubernetes</a></li>
+<li><a href="https://github.com/kubernetes/kubernetes/blob/master/cluster/addons/registry/tls/README.md" target="_blank" rel="external">Enable TLS for Kube-Registry</a></li>
+<li><a href="http://www.tuicool.com/articles/IZza6jA" target="_blank" rel="external">Https原理以及服务端和客户端golang的基本实现</a></li>
+<li><a href="https://stackoverflow.com/questions/8443081/how-are-ssl-certificate-server-names-resolved-can-i-add-alternative-names-using/8444863#8444863" target="_blank" rel="external">How are SSL certificate server names resolved/Can I add alternative names using keytool?</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/06/Ubuntu下安装Kubernetes产品环境/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/06/Ubuntu下安装Kubernetes产品环境/" itemprop="url">Ubuntu下搭建Kubernetes产品环境集群</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T18:20:04+08:00">
+                2017-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/06/Ubuntu下安装Kubernetes产品环境/" class="leancloud_visitors" data-flag-title="Ubuntu下搭建Kubernetes产品环境集群">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>以下过程在<code>Ubuntu 16.04</code>裸机上完全跑通</p>
+</blockquote>
+<p>本文展示了在<code>Ubuntu 16.04</code>系统上搭建Kubernetes集群的方法，用到了Canonical Kubernetes的发行版本，这是一种快捷搭建本地Kubernetes集群的方法，并能够支持动态增删node节点。</p>
+<p>主要搭建步骤是，使用<code>conjure-up</code>工具，结合<code>juju</code>，基于<code>LXD</code>搭建Kubernetes集群，并使用<code>kubelet</code>和<code>kube-proxy</code>将其他机器作为node节点，注册入该集群中。</p>
+<p>以下为详细步骤（最好已经翻墙）</p>
+<h2 id="安装snapd"><a href="#安装snapd" class="headerlink" title="安装snapd"></a>安装<code>snapd</code></h2><p><code>conjure-up</code>工具需要使用<code>Ubuntu 16.04</code>新的包管理器<code>snapd</code>安装，所以先安装<code>snapd</code>。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt <span class="keyword">update</span></div><div class="line">sudo apt <span class="keyword">install</span> snapd</div></pre></td></tr></table></figure>
+<h2 id="安装LXD"><a href="#安装LXD" class="headerlink" title="安装LXD"></a>安装<code>LXD</code></h2><p><code>conjure-up</code>是基于<code>LXD</code>搭建集群的，所以要先安装<code>LXD</code>，并做好初始化配置。这里面涉及到<code>lxd</code>用户组的操作。下面先简单介绍下其用法。</p>
+<blockquote>
+<p>当安装好<code>LXD</code>后，会自动创建一个<code>lxd</code>用户组，只有在这个用户组才能操作<code>LXD</code>程序，所有<code>admin</code>和<code>sudoers</code>的用户，都会被自动加入到<code>lxd</code>用户组中。所以如果你不在这个组内，就需要手动添加到<code>lxd</code>组中。</p>
+<p>因为用户组成员权限只会在登录时生效，所以你要么关闭当前回话，然后重新登录；要么就使用<code>newgrp lxd</code>命令，在当前会话中将自己切换到<code>lxd</code>用户组中。</p>
+</blockquote>
+<p>用法示例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 显示用户<span class="string">"test"</span>当前隶属于哪些用户组</span></div><div class="line"><span class="meta">test@ubuntu$</span><span class="bash"> groups <span class="built_in">test</span></span></div><div class="line">test : test docker</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> 将用户<span class="string">"test"</span>添加到<span class="string">"lxd"</span>用户组中</span></div><div class="line"><span class="meta">test@ubuntu$</span><span class="bash"> sudo gpasswd -a <span class="built_in">test</span> lxd</span></div><div class="line">Adding user test to group lxd</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> 查看添加效果</span></div><div class="line"><span class="meta">test@ubuntu$</span><span class="bash"> groups <span class="built_in">test</span></span></div><div class="line">test : test lxd docker</div><div class="line"><span class="meta">#</span><span class="bash"> 目前来说，<span class="built_in">test</span>用户理论上已经加入到lxd用户组中。</span></div><div class="line"><span class="meta">#</span><span class="bash"> 但是若操作lxd用户组才有权限的文件，会提示Permission denied。</span></div><div class="line"><span class="meta">#</span><span class="bash"> 由此说明添加并没有实际生效</span></div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> 现在对<span class="string">"lxd"</span>用户组运行<span class="string">"newgrp"</span>命令</span></div><div class="line"><span class="meta">test@ubuntu$</span><span class="bash"> newgrp lxd</span></div><div class="line"><span class="meta">#</span><span class="bash"> 再次操作文件，发现已经可以正常操作，<span class="string">"newgrp"</span>生效</span></div></pre></td></tr></table></figure>
+<p>OK，现在开始安装<code>LXD</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sudo apt-get <span class="keyword">install</span> lxd</div><div class="line"><span class="keyword">groups</span> <span class="keyword">test</span></div><div class="line">sudo gpasswd -a <span class="keyword">test</span> lxd</div><div class="line"><span class="keyword">groups</span> <span class="keyword">test</span></div><div class="line">newgrp lxd</div><div class="line">sudo lxd init //配置一大堆，都可以选默认，但<span class="string">"Setup an ipv6 subnet"</span>要选<span class="string">"NO"</span></div></pre></td></tr></table></figure>
+<h2 id="安装conjure-up"><a href="#安装conjure-up" class="headerlink" title="安装conjure-up"></a>安装<code>conjure-up</code></h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt install software-properties-common //安装<span class="built_in">add</span>-apt-repository命令</div><div class="line">sudo apt-<span class="built_in">add</span>-repository <span class="keyword">pp</span><span class="variable">a:juju</span>/stable</div><div class="line">sudo apt-<span class="built_in">add</span>-repository <span class="keyword">pp</span><span class="variable">a:conjure</span>-<span class="keyword">up</span>/<span class="keyword">next</span></div><div class="line">sudo apt <span class="keyword">update</span></div><div class="line">sudo snap install conjure-<span class="keyword">up</span> --classic</div></pre></td></tr></table></figure>
+<h2 id="安装Kubernetes"><a href="#安装Kubernetes" class="headerlink" title="安装Kubernetes"></a>安装<code>Kubernetes</code></h2><figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conjure-up kubernetes</div><div class="line"></div><div class="line"><span class="comment">//选择localhost安装，即可在本地搭建一个集群</span></div></pre></td></tr></table></figure>
+<ul>
+<li><p>如果有提示<code>Missing dependencies for SOCKS support</code>，是因为系统的全局代理和<code>conjure-up</code>冲突，需要<code>unset all_proxy</code>。但是这样又会导致安装过程中，因为没有翻墙，有些镜像下载失败导致卡住，所以建议修改hosts翻墙。</p>
+</li>
+<li><p>切记<code>LXD</code>要在<code>conjure-up</code>运行之前装好并init完毕，否则会出现各种与<code>LXD</code>相关的错误。</p>
+</li>
+</ul>
+<p>选择<code>The Canonical Distribution of Kubernetes</code>。</p>
+<p><img src="/source_code/image/k8s_1.png" alt="Alt text"></p>
+<p>选择<code>Deploy New Self-Hosted Controller</code>。</p>
+<p><img src="/source_code/image/k8s_2.png" alt="Alt text"></p>
+<p>选择<code>localhost</code>。</p>
+<p><img src="/source_code/image/k8s_3.png" alt="Alt text"></p>
+<p>一路<code>Deploy</code>过去，也可以将worker节点Configure为1，毕竟node节点可以由其它机器提供。</p>
+<p><img src="/source_code/image/k8s_4.png" alt="Alt text"></p>
+<p>坐等安装，时间会比较长，这个过程需要翻墙下一些镜像。</p>
+<p><img src="/source_code/image/k8s_5.png" alt="Alt text"></p>
+<h2 id="暴露Master节点以增加Node"><a href="#暴露Master节点以增加Node" class="headerlink" title="暴露Master节点以增加Node"></a>暴露<code>Master</code>节点以增加<code>Node</code></h2><p>集群安装完毕后，在<code>~/bin</code>目录下生成了一个<code>kubectl.xxx</code>可执行文件，该文件可以和集群进行交互，可以查看安装效果：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">~/<span class="keyword">bin/kubectl </span>cluster-<span class="meta">info</span></div></pre></td></tr></table></figure>
+<p>部署完成后，master的服务都运行在内网IP之上，需要将其暴露到集群外，这样才能让其他机器访问到。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nohup ~<span class="string">/bin/kubectl</span> proxy <span class="params">--accept-hosts=</span><span class="string">"^*$"</span> <span class="params">--address=</span><span class="string">"0.0.0.0"</span> &amp;</div><div class="line"></div><div class="line"><span class="string">//</span>这样就将master服务暴露在了http:<span class="string">//106.106.9.22</span><span class="function">:8001</span>。其中106.106.9.22为master所在服务器的IP地址</div></pre></td></tr></table></figure>
+<h2 id="添加Node节点"><a href="#添加Node节点" class="headerlink" title="添加Node节点"></a>添加<code>Node</code>节点</h2><p>添加Node节点，需要在Node机器上运行2个进程：<code>kubelet</code>和<code>kube-proxy</code>，启动时指定master的服务地址，这样就可以将该机器注册进集群中。同时Node机器要安装好<code>Docker</code>。</p>
+<ul>
+<li><p>参看Docker官方文档，安装<code>Docker</code></p>
+</li>
+<li><p>在<a href="https://github.com/kubernetes/kubernetes/releases/latest" target="_blank" rel="external">Kubernetes最新发布页</a>下载发布包<code>kubernetes.tar.gz</code></p>
+</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https:<span class="regexp">//gi</span>thub.com<span class="regexp">/kubernetes/</span>kubernetes<span class="regexp">/releases/</span>latest<span class="regexp">/kubernetes.tar.gz</span></div></pre></td></tr></table></figure>
+<ul>
+<li>解压发布包</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tar -xf kubernetes<span class="selector-class">.tar</span><span class="selector-class">.gz</span></div></pre></td></tr></table></figure>
+<ul>
+<li>运行<code>cluster/get-kube-binaries.sh</code>拉取最新的二进制包，这里面包含各种所需要的包，我们需要的包都放在<code>kubernetes/server/kubernetes/server/bin/</code>目录下。</li>
+</ul>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">bash </span>cluster/<span class="meta">get</span>-kube-<span class="keyword">binaries.sh</span></div></pre></td></tr></table></figure>
+<ul>
+<li>运行<code>kubelet</code>:</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kubelet --<span class="attr">api-servers=</span>http://<span class="number">106.106</span>.<span class="number">9.22</span>:<span class="number">8001</span> --register-<span class="keyword">node</span><span class="title"></span></div></pre></td></tr></table></figure>
+<ul>
+<li>运行<code>kube-proxy</code>:</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kube-proxy --master=<span class="string">http:</span><span class="comment">//106.106.9.22:8001</span></div></pre></td></tr></table></figure>
+<ul>
+<li>在master节点查看添加效果</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">~/bin/kubectl <span class="builtin-name">get</span> <span class="literal">no</span></div></pre></td></tr></table></figure>
+<h2 id="删除Node节点"><a href="#删除Node节点" class="headerlink" title="删除Node节点"></a>删除<code>Node</code>节点</h2><ul>
+<li><p>杀掉node节点中的<code>kubelet</code>和<code>kube-proxy</code>进程</p>
+</li>
+<li><p>在master节点删除node</p>
+</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">~<span class="regexp">/bin/</span>kubectl <span class="keyword">delete</span> no worker1 <span class="regexp">//</span>worker1为该node节点名称</div></pre></td></tr></table></figure>
+<h2 id="SSH连接cluster"><a href="#SSH连接cluster" class="headerlink" title="SSH连接cluster"></a><code>SSH</code>连接<code>cluster</code></h2><p><strong>十分有用</strong>：对于这种方式部署的<code>kubernetes</code>集群，如果需要进入到<code>master</code>节点，或者<code>node</code>节点，进行数据查看或调试。有极其简单的SSH方法：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">juju ssh <span class="number">5</span></div></pre></td></tr></table></figure>
+<p>数字5表示5号<code>machine</code>，具体可以通过<code>juju status</code>查看所有服务都运行在哪个<code>machine</code>上，当然了，还有很多花式的<code>SSH</code>连接参数，都可以帮助你连接到需要的节点上，具体可以参看<code>juju ssh --help</code></p>
+<h2 id="可能用到的命令"><a href="#可能用到的命令" class="headerlink" title="可能用到的命令"></a>可能用到的命令</h2><ul>
+<li><code>conjure-up kubernetes</code>不一定能一次成功，如下命令也许有用：</li>
+</ul>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">juju status </div><div class="line"><span class="comment">// 查看当前集群的安装信息</span></div><div class="line"></div><div class="line">juju destroy-controller --destroy-<span class="keyword">all</span>-<span class="keyword">models</span> test</div><div class="line"><span class="comment">// 销毁名为test的controller，包括所有的machines，applications，data和其它resources都会被清除。通过这种方式，可以干净的清空之前失败的kubernetes安装。</span></div></pre></td></tr></table></figure>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><p><a href="https://kubernetes.io/docs/getting-started-guides/ubuntu/local/" target="_blank" rel="external">Local Kubernetes development with LXD</a></p>
+</li>
+<li><p><a href="https://askubuntu.com/questions/856057/newgrp-function/856069" target="_blank" rel="external">newgrp function</a></p>
+</li>
+<li><p><a href="https://linuxcontainers.org/lxd/getting-started-cli/" target="_blank" rel="external">Installing LXD and the command line tool</a></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/05/Ubuntu-NFS使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/05/Ubuntu-NFS使用/" itemprop="url">Ubuntu NFS使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-05T14:22:01+08:00">
+                2017-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/经验/" itemprop="url" rel="index">
+                    <span itemprop="name">经验</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/05/Ubuntu-NFS使用/" class="leancloud_visitors" data-flag-title="Ubuntu NFS使用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>在<code>Ubuntu16.04</code>下测试通过</p>
+</blockquote>
+<h2 id="NFS安装"><a href="#NFS安装" class="headerlink" title="NFS安装"></a>NFS安装</h2><p>CentOS下查看NFS是否已经安装：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -<span class="keyword">qa</span> | <span class="keyword">grep</span> <span class="string">"nfs"</span></div></pre></td></tr></table></figure>
+<p>Ubuntu下安装NFS服务器：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt <span class="keyword">install</span> nfs-kernel-<span class="keyword">server</span></div></pre></td></tr></table></figure>
+<p>Ubuntu下安装NFS客户端：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">sudo</span> apt install nfs-<span class="meta">common</span></div></pre></td></tr></table></figure>
+<h2 id="在NFS服务器上指定共享目录"><a href="#在NFS服务器上指定共享目录" class="headerlink" title="在NFS服务器上指定共享目录"></a>在NFS服务器上指定共享目录</h2><p>指定共享目录有2种方式，分别有不同的目的：一种适用于通用的文件存储；另一种则适用于带权限管理的文件存储。</p>
+<p>root用户可以在系统的任何位置做任何事情。然而，NFS挂载的目录不是这个系统的一部分，所以默认情况下，NFS服务器会拒绝执行需要超级用户权限的操作。这个默认的限制意味着，客户端系统的root用户无法在NFS挂载目录下，以root角色写文件，重新指定文件拥有者，或者执行其它超级用户操作。</p>
+<p>这里先介绍默认方式的共享目录配置方法，它适用于大多数场景，比如作为内容管理系统存储上传的文件，或者为用户开辟空间共享项目文件。</p>
+<p>首先，创建一个待共享的目录：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> -p /<span class="built_in">home</span>/mine/nfs</div></pre></td></tr></table></figure>
+<p><strong>由于是默认的共享方式，NFS会将客户机上的所有<code>root</code>操作都映射为<code>nobody:nogroup</code>身份，因此，我们需要修改该目录的拥有权，以便匿名身份可以读写该目录</strong>：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chown <span class="string">nobody:</span>nogroup <span class="regexp">/home/</span>mine/nfs</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在下文的<code>/etc/exports</code>配置中，我们可以使用<code>all_squash</code>选项，将客户机上的所有用户都映射为匿名用户，这样就保证了所有人都能够存取该目录。</p>
+</blockquote>
+<p>接下来，配置NFS导出：</p>
+<p>使用root权限打开<code>/etc/exports</code>文件：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim <span class="regexp">/etc/</span>exports</div></pre></td></tr></table></figure>
+<p>这个文件有一段注释内容，展示了每一个配置行的基本结构，语法大致是这样的：</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">directory_to_share</span></span> client(share_option1,...,share_optionN)</div></pre></td></tr></table></figure>
+<p>对于每一个要共享的目录都要配置一行：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/mine/nfs <span class="number">192.168</span><span class="number">.100</span><span class="number">.180</span>(rw,sync,all_squash,insecure)</div></pre></td></tr></table></figure>
+<p>这意味着将<code>/home/mine/nfs</code>目录共享给<code>192.168.100.180</code>机器使用，如果想共享给所有主机，也可以换成<code>*</code>：</p>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/home/mine/nfs *(rw,sync,all_squash,insecure) </div><div class="line">/*<span class="built_in">option</span> <span class="built_in">list</span>之间不能有空格，否则会报错：bad <span class="built_in">option</span> <span class="built_in">list</span>*/</div></pre></td></tr></table></figure>
+<p>共享设置一览：</p>
+<ul>
+<li>rw： 允许客户端对卷有读写权限</li>
+<li>sync： 强制NFS在回复之前将改变写入磁盘。因为回复反映了远程卷的实际状态，所以这样可以产生更加稳定一致的环境。然而，它也降低了文件操作的速度。</li>
+<li>all_squash：客户机上的任何用户读写该共享目录时，都映射成匿名用户，这样就<strong>便于所有用户对文件的存取</strong>。</li>
+<li>insecure：允许客户机从大于等于<code>1024</code>的端口来访问NFS，如果不写明此选项，有时候客户机<code>mount</code>时会报错<code>access denied</code>。</li>
+</ul>
+<p>Ubuntu下操作NFS服务器：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl <span class="keyword">start</span>/<span class="keyword">stop</span>/restart/<span class="keyword">status</span> nfs-kernel-server.service</div></pre></td></tr></table></figure>
+<h2 id="在客户端创建挂载点"><a href="#在客户端创建挂载点" class="headerlink" title="在客户端创建挂载点"></a>在客户端创建挂载点</h2><p>为了在客户端机器上使用远程共享目录，我们需要将该目录挂载到本地一个空目录上。</p>
+<blockquote>
+<p>如果待挂载目录下已经有文件或文件夹，那么一旦你挂载了NFS共享目录，原有的文件就会被隐藏掉。所以要确保你的挂载目录若已存在，那么它得是一个空目录。</p>
+</blockquote>
+<p>创建挂载目录：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> -p /<span class="built_in">home</span>/client/nfs</div></pre></td></tr></table></figure>
+<p>挂载NFS共享目录：</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo mount <span class="number">192.168</span>.<span class="number">1.100</span><span class="symbol">:/home/mine/nfs</span> /home/client/nfs /<span class="regexp">/192.168.1.100是NFS服务器IP</span></div></pre></td></tr></table></figure>
+<p>检查挂载情况：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">df -h</span></div></pre></td></tr></table></figure>
+<p>卸载共享目录的挂载：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo umount /<span class="built_in">home</span>/client/nfs</div></pre></td></tr></table></figure>
+<p>okay，现在无论在NFS服务器，还是客户机上，任何人都能对<code>nfs</code>共享目录进行读写操作了。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a href="https://help.ubuntu.com/lts/serverguide/network-file-system.html" target="_blank" rel="external">NFS</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04" target="_blank" rel="external">How To Set Up an NFS Mount on Ubuntu 16.04</a></li>
+<li><a href="https://linux.die.net/man/5/exports" target="_blank" rel="external">exports(5) - Linux man page</a></li>
+</ul>
 
           
         
@@ -590,7 +1367,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 

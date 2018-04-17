@@ -267,7 +267,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/12/20/Fabric-End-to-End流程/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/20/Hyperledger-Fabric编译/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -286,7 +286,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/20/Fabric-End-to-End流程/" itemprop="url">Fabric End-to-End流程</a></h1>
+                <a class="post-title-link" href="/2017/11/20/Hyperledger-Fabric编译/" itemprop="url">Hyperledger Fabric编译</a></h1>
         
 
         <div class="post-meta">
@@ -298,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T10:34:49+08:00">
-                2017-12-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-20T10:55:56+08:00">
+                2017-11-20
               </time>
             
 
@@ -321,8 +321,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fabric/" itemprop="url" rel="index">
-                    <span itemprop="name">fabric</span>
+                  <a href="/categories/blockchain/" itemprop="url" rel="index">
+                    <span itemprop="name">blockchain</span>
                   </a>
                 </span>
 
@@ -338,7 +338,7 @@
 
           
           
-             <span id="/2017/12/20/Fabric-End-to-End流程/" class="leancloud_visitors" data-flag-title="Fabric End-to-End流程">
+             <span id="/2017/11/20/Hyperledger-Fabric编译/" class="leancloud_visitors" data-flag-title="Hyperledger Fabric编译">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -371,60 +371,263 @@
             <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
-<p><code>end-to-end</code>验证提供了一个示例<code>fabric</code>网络，包括2个组织，每个组织包含2个<code>peer</code>节点，以及1个基于<code>Kafka</code>的排序服务。</p>
-<p>这个验证用到了2个基础工具，用来创建一个带有数字签名验证的和访问控制的实用交易网络：</p>
-<ul>
-<li><code>cryptogen</code> - 创建x509证书，用来标识和验证网络中的各种组件。</li>
-<li><code>configtxgen</code> - 为<code>orderer</code>节点的启动和<code>channel</code>的创建，生成必需的配置文件[artifacts]。</li>
-</ul>
-<p>每一个工具用到一个<code>yaml</code>配置文件，在里面我们指定了网络的拓扑结构（<code>cryptogen</code>需用到），以及用于各种配置操作的证书的位置（<code>configtxgen</code>需用到）。当这些工具都已被成功运行后，我们就可以发布这个网络了。工具的更多细节和网络的架构在下文描述。现在，让我们开始吧…</p>
-<h2 id="前置操作【Prerequisites】"><a href="#前置操作【Prerequisites】" class="headerlink" title="前置操作【Prerequisites】"></a>前置操作【<code>Prerequisites</code>】</h2><h3 id="编译二进制包"><a href="#编译二进制包" class="headerlink" title="编译二进制包"></a>编译二进制包</h3><ul>
-<li><p>先生成特定平台的，<code>cryptogen</code>和<code>configtxgen</code>二进制包</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src/github.com/hyperledger/fabric</span></div><div class="line"><span class="meta">$</span><span class="bash"> make release</span></div></pre></td></tr></table></figure>
-<p>  该命令将会在<code>fabric/release</code>文件夹中输出特定平台的二进制包。</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li><p>安装<code>libtool</code></p>
+ <figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">$</span> sudo apt install libtool libltdl-dev <span class="comment">//linux下</span></div></pre></td></tr></table></figure>
 </li>
-<li><p>接下来，编译<code>Fabric</code>镜像。这一般需要5 ~ 10分钟，所以耐心等候【国内需要更大的耐心…】：</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src/github.com/hyperledger/fabric</span></div><div class="line"><span class="meta">$</span><span class="bash"> make docker</span></div></pre></td></tr></table></figure>
+<li><p>修改根目录Makefile文件，<code>vim ./Makefile</code>：</p>
+ <figure class="highlight mel"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">-build/bin/peer: build/<span class="keyword">image</span>/ccenv/$(DUMMY) build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line">-build/<span class="keyword">image</span>/peer/$(DUMMY): build/<span class="keyword">image</span>/ccenv/$(DUMMY) build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line">+build/bin/peer: build/<span class="keyword">image</span>/ccenv/$(DUMMY) #build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line">+build/<span class="keyword">image</span>/peer/$(DUMMY): build/<span class="keyword">image</span>/ccenv/$(DUMMY) #build/<span class="keyword">image</span>/javaenv/$(DUMMY)</div><div class="line"></div><div class="line">-IMAGES = peer orderer ccenv javaenv buildenv testenv zookeeper kafka couchdb tools</div><div class="line">+IMAGES = peer orderer ccenv buildenv zookeeper kafka tools</div><div class="line"></div><div class="line">-all: native docker checks</div><div class="line">+all: native docker #checks</div></pre></td></tr></table></figure>
 </li>
-</ul>
-<p>在终端运行命令<code>docker images</code>，如果这些镜像都被成功编译，你应该能够看到类似于下面的输出：</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">REPOSITORY                     TAG                   IMAGE ID            CREATED             SIZE</div><div class="line">hyperledger/fabric-couchdb     latest                e2df4dd39ca9        <span class="number">38</span> minutes ago      <span class="number">1.51</span> GB</div><div class="line">hyperledger/fabric-couchdb     x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     e2df4dd39ca9        <span class="number">38</span> minutes ago      <span class="number">1.51</span> GB</div><div class="line">hyperledger/fabric-kafka       latest                <span class="number">08</span>af4d797266        <span class="number">40</span> minutes ago      <span class="number">1.3</span> GB</div><div class="line">hyperledger/fabric-kafka       x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">08</span>af4d797266        <span class="number">40</span> minutes ago      <span class="number">1.3</span> GB</div><div class="line">hyperledger/fabric-zookeeper   latest                <span class="number">444e9</span>e695367        <span class="number">40</span> minutes ago      <span class="number">1.31</span> GB</div><div class="line">hyperledger/fabric-zookeeper   x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">444e9</span>e695367        <span class="number">40</span> minutes ago      <span class="number">1.31</span> GB</div><div class="line">hyperledger/fabric-testenv     latest                <span class="number">8678</span>d3101930        <span class="number">41</span> minutes ago      <span class="number">1.41</span> GB</div><div class="line">hyperledger/fabric-testenv     x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">8678</span>d3101930        <span class="number">41</span> minutes ago      <span class="number">1.41</span> GB</div><div class="line">hyperledger/fabric-buildenv    latest                <span class="number">60911392</span>c82e        <span class="number">41</span> minutes ago      <span class="number">1.33</span> GB</div><div class="line">hyperledger/fabric-buildenv    x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">60911392</span>c82e        <span class="number">41</span> minutes ago      <span class="number">1.33</span> GB</div><div class="line">hyperledger/fabric-orderer     latest                <span class="number">2</span>afab937b9cc        <span class="number">41</span> minutes ago      <span class="number">182</span> MB</div><div class="line">hyperledger/fabric-orderer     x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">2</span>afab937b9cc        <span class="number">41</span> minutes ago      <span class="number">182</span> MB</div><div class="line">hyperledger/fabric-peer        latest                <span class="number">9560e58</span>e8089        <span class="number">41</span> minutes ago      <span class="number">185</span> MB</div><div class="line">hyperledger/fabric-peer        x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">9560e58</span>e8089        <span class="number">41</span> minutes ago      <span class="number">185</span> MB</div><div class="line">hyperledger/fabric-javaenv     latest                <span class="number">881</span>ca5219fad        <span class="number">42</span> minutes ago      <span class="number">1.43</span> GB</div><div class="line">hyperledger/fabric-javaenv     x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">881</span>ca5219fad        <span class="number">42</span> minutes ago      <span class="number">1.43</span> GB</div><div class="line">hyperledger/fabric-ccenv       latest                <span class="number">28</span>af77ffe9e9        <span class="number">43</span> minutes ago      <span class="number">1.29</span> GB</div><div class="line">hyperledger/fabric-ccenv       x86_64<span class="number">-1.0</span><span class="number">.0</span>-beta     <span class="number">28</span>af77ffe9e9        <span class="number">43</span> minutes ago      <span class="number">1.29</span> GB</div><div class="line">hyperledger/fabric-baseimage   x86_64<span class="number">-0.3</span><span class="number">.0</span>          f4751a503f02        <span class="number">3</span> months ago        <span class="number">1.27</span> GB</div><div class="line">hyperledger/fabric-baseos      x86_64<span class="number">-0.3</span><span class="number">.0</span>          c3a4cf3b3350        <span class="number">3</span> months ago        <span class="number">161</span> MB</div></pre></td></tr></table></figure>
+<li><p>修改gotools目录的Makefile文件，<code>vim ./gotools/Makefile</code>：</p>
+ <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-GOTOOLS = golint govendor goimports protoc-gen-go ginkgo gocov gocov-<span class="keyword">xml</span> <span class="title">misspell</span></div><div class="line">+GOTOOLS = protoc-gen-go</div></pre></td></tr></table></figure>
+</li>
+<li><p>开始编译，坐等编译成功：</p>
+ <figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">make</span> <span class="keyword">all</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h3><ol>
+<li><p>所有命令的路径都基于fabric根目录，用<code>./</code>代表根目录</p>
+</li>
+<li><p>如果编译中途失败，可以解决问题后，先<code>make clean-all</code>，再<code>make all</code></p>
+</li>
+<li><p>chaintool.jar最好先下载好，然后修改<code>./Makefile</code>的<code>curl -fL $(CHAINTOOL_URL) &gt; $@</code>，这样可以大幅提高编译速度</p>
+</li>
+<li><p>kafka镜像build时，可能会出现需要下载的kafka版本，在官网上找不到，报<code>404 Error</code>，可以修改<code>images/kafka/Dockerfile.in</code>文件，找到正确可用的版本，由于fabric下载后会进行<code>sha256</code>校验，所以还需要把参考值<code>KAFKA_DOWNLOAD_SHA256</code>改为一致。</p>
+</li>
+</ol>
 <blockquote>
-<p>如果在编译过程中失败了，可以修复错误，然后执行<code>make clean</code>，最后再<code>make docker</code>。</p>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
-<h2 id="Cryptogen工具"><a href="#Cryptogen工具" class="headerlink" title="Cryptogen工具"></a><code>Cryptogen</code>工具</h2><p>我们将使用<code>cryptogen</code>工具来为我们的各种网络实体生成加密内容（x509证书）。证书基于PKI标准实现，通过回溯到一个共同的信任锚点来实现验证。</p>
-<h3 id="它是如何工作的？"><a href="#它是如何工作的？" class="headerlink" title="它是如何工作的？"></a>它是如何工作的？</h3><p><code>Cryptogen</code>使用一个文件 - <code>crypto-config.yaml</code> - 包含了网络的拓扑结构，并且允许我们为组织以及组织中的各种组件，生成一系列的证书。每个组织被提供了一个唯一的根证书（<code>ca-cert</code>），将指定的组件（<code>peers</code>和<code>orderers</code>）绑定到了该组织上。Fabric中的交易和通讯都由一个实体的私钥（<code>keystore</code>）进行签名，然后由相应的公钥（<code>signcerts</code>）进行验证。在这个yaml文件中你会看到一个<code>count</code>变量。我们使用这个值指定了每个组织的<code>peer</code>数量；这里我们指定了2个<code>peer</code>。这个模板的其它部分都是非常浅显易懂的。</p>
-<p>在我们运行了工具之后，证书会被放在<code>crypto-config</code>目录下。</p>
-<h2 id="Configtxgen工具"><a href="#Configtxgen工具" class="headerlink" title="Configtxgen工具"></a><code>Configtxgen</code>工具</h2><p><code>configtxgen</code>工具用来生成4种文件：orderer节点的启动块（<code>bootstrap block</code>），fabric channel的配置交易（<code>channel configuration transaction</code>），以及2个锚<code>peer</code>交易（<code>anchor peer transactions</code>）– 一个<code>Peer</code>组织一个。</p>
-<p>orderer block是排序服务的创世块，channel交易文件会在channel创建时广播给orderer节点。而锚peer节点交易，就像名字表示的那样，在这个channel上为每个组织指定一个锚peer节点。</p>
-<h3 id="它是如何工作的？-1"><a href="#它是如何工作的？-1" class="headerlink" title="它是如何工作的？"></a>它是如何工作的？</h3><p><code>Configtxgen</code>读取一个文件 - <code>configtx.yaml</code> - 文件中包含了样例网络的定义。有3个成员 - 一个Orderer组织（<code>OrdererOrg</code>），和2个Peer组织(<code>Org1</code>和<code>Org2</code>）每个都管理和维护2个peer节点。这个文件也指定了一个联盟 - <code>SampleConsortium</code> - 包含我们的2个Peer组织的联盟。对文件顶部的<code>Profiles</code>区域中内容多留意下。你会发现我们有2个不同的顶级属性。一个是给orderer创世块用的 - <code>TwoOrgsOrdererGenesis</code> - 另一个是给channel用的 - <code>TwoOrgsChannel</code>。这些顶级属性是很重要的，当我们创建配置文件时我们会把它们作为参数传入进去。这个yaml文件还包含了2个值得注意的额外规范。首先，我们为每一个Peer组织指定了锚peer节点（<code>peer0.org1.example.com</code>和<code>peer0,org2.example.com</code>）。然后，我们为每一个成员指定了MSP文件夹路径，这就使我们可以在<code>orderer</code>创世块中按顺序的存储每个组织的根证书。这是一个很关键的概念。现在任何与排序服务通信的网络实体都能够被<code>orderer</code>验证其数字签名了。</p>
-<h3 id="运行shell脚本"><a href="#运行shell脚本" class="headerlink" title="运行shell脚本"></a>运行<code>shell</code>脚本</h3><p>确认你在<code>examples/e2e_cli</code>目录下，这是<code>shell</code>脚本所在的位置。为你的<code>channel</code>起一个独特的名字，然后替换掉下方的<code>&lt;channel-ID&gt;</code>参数。如果你不提供一个名字，那么这个脚本会运行失败。</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cd</span> examples/e2e_cli</div><div class="line">./generateArtifacts.<span class="keyword">sh</span> <span class="symbol">&lt;channel-ID&gt;</span></div></pre></td></tr></table></figure>
-<p>这个脚本的输出有些多，因为它会生成加密库和多个文件。但是，你会在终端里看到5个截然不同的说明信息，如下所示：</p>
-<figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">##########################################################</div><div class="line">##### Generate certificates using cryptogen tool #########</div><div class="line">##########################################################</div><div class="line"></div><div class="line">##########################################################</div><div class="line">#########  Generating Orderer Genesis block ##############</div><div class="line">##########################################################</div><div class="line"></div><div class="line">#################################################################</div><div class="line">### Generating channel configuration transaction <span class="string">'channel.tx'</span> ###</div><div class="line">#################################################################</div><div class="line"></div><div class="line">#################################################################</div><div class="line">#######    Generating anchor peer update for Org0MSP   ##########</div><div class="line">#################################################################</div><div class="line"></div><div class="line">#################################################################</div><div class="line">#######    Generating anchor peer update for Org1MSP   ##########</div><div class="line">#################################################################</div></pre></td></tr></table></figure>
-<p>这些配置交易将会绑定参与成员和它们的网络组件的加密内容，并且生成1个<code>orderer</code>创世块和3个channel交易文件。对于启动一个Fabric网络，以及创建一个channel来在上面做交易，这些文件都是必要的。</p>
-<h2 id="用Docker运行end-to-end测试"><a href="#用Docker运行end-to-end测试" class="headerlink" title="用Docker运行end-to-end测试"></a>用<code>Docker</code>运行<code>end-to-end</code>测试</h2><p>确保你在<code>/e2e_cli</code>目录下。然后使用<code>docker-compose</code>创建网络实体运行测试。注意你可以使用<code>TIMEOUT</code>变量（以秒为单位），以便你的<code>cli</code>容器不会在脚本结束后立马退出。你可以使用任何数值：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># TIMEOUT变量是可选的</span></div><div class="line">$ <span class="attribute">CHANNEL_NAME</span>=&lt;channel-id&gt; <span class="attribute">TIMEOUT</span>=&lt;value&gt; docker-compose -f docker-compose-cli.yaml up -d</div></pre></td></tr></table></figure>
-<p>如果你创建了一个特定的channel名称，确保将它传入到了参数中。比如，</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="attribute">CHANNEL_NAME</span>=abc <span class="attribute">TIMEOUT</span>=1000 docker-compose -f docker-compose-cli.yaml up -d</div></pre></td></tr></table></figure>
-<p>等待，大概60s左右。在后台，有交易发送给peers。执行<code>docker ps</code>命令来查看你激活的容器。你应该能够看到如下的输出：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">CONTAINER ID        IMAGE                                 COMMAND                  CREATED             STATUS              PORTS                                              NAMES</div><div class="line">b568de3fe931        dev-peer1<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span>   <span class="string">"chaincode -peer.a..."</span>   <span class="number">4</span> minutes ago       Up <span class="number">4</span> minutes                                                           dev-peer1<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span></div><div class="line"><span class="number">17</span>c1c82087e7        dev-peer0<span class="selector-class">.org1</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span>   <span class="string">"chaincode -peer.a..."</span>   <span class="number">4</span> minutes ago       Up <span class="number">4</span> minutes                                                           dev-peer0<span class="selector-class">.org1</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span></div><div class="line"><span class="number">0</span>e1c5034c47b        dev-peer0<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span>   <span class="string">"chaincode -peer.a..."</span>   <span class="number">4</span> minutes ago       Up <span class="number">4</span> minutes                                                           dev-peer0<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com-mycc-1</span>.<span class="number">0</span></div><div class="line"><span class="number">71339</span>e7e1d38        hyperledger/fabric-peer               <span class="string">"peer node start -..."</span>   <span class="number">5</span> minutes ago       Up <span class="number">5</span> minutes        <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8051</span>-&gt;<span class="number">7051</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8053</span>-&gt;<span class="number">7053</span>/tcp     peer1<span class="selector-class">.org1</span><span class="selector-class">.example</span><span class="selector-class">.com</span></div><div class="line">add6113ffdcf        hyperledger/fabric-peer               <span class="string">"peer node start -..."</span>   <span class="number">5</span> minutes ago       Up <span class="number">5</span> minutes        <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">10051</span>-&gt;<span class="number">7051</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">10053</span>-&gt;<span class="number">7053</span>/tcp   peer1<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com</span></div><div class="line"><span class="number">689396</span>c0e520        hyperledger/fabric-peer               <span class="string">"peer node start -..."</span>   <span class="number">5</span> minutes ago       Up <span class="number">5</span> minutes        <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7051</span>-&gt;<span class="number">7051</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7053</span>-&gt;<span class="number">7053</span>/tcp     peer0<span class="selector-class">.org1</span><span class="selector-class">.example</span><span class="selector-class">.com</span></div><div class="line"><span class="number">65424407</span>a653        hyperledger/fabric-orderer            <span class="string">"orderer"</span>                <span class="number">5</span> minutes ago       Up <span class="number">5</span> minutes        <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">7050</span>-&gt;<span class="number">7050</span>/tcp                             orderer<span class="selector-class">.example</span><span class="selector-class">.com</span></div><div class="line">ce14853db660        hyperledger/fabric-peer               <span class="string">"peer node start -..."</span>   <span class="number">5</span> minutes ago       Up <span class="number">5</span> minutes        <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">9051</span>-&gt;<span class="number">7051</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">9053</span>-&gt;<span class="number">7053</span>/tcp     peer0<span class="selector-class">.org2</span><span class="selector-class">.example</span><span class="selector-class">.com</span></div></pre></td></tr></table></figure>
-<p>如果你设置了一个比较大的<code>TIMEOUT</code>值，你还可以看到你的<code>cli</code>容器。</p>
-<h3 id="后台究竟发生了什么？"><a href="#后台究竟发生了什么？" class="headerlink" title="后台究竟发生了什么？"></a>后台究竟发生了什么？</h3><ul>
-<li><p>一个脚本 - <code>script.sh</code> - 被放在了<code>cli</code>容器中。这个脚本会使用提供的<code>channel</code>名字，以及用于<code>channel</code>设置的<code>channel.tx</code>文件，执行<code>createChannel</code>命令。</p>
-</li>
-<li><p><code>createChannel</code>的输出是一个创世块 - <code>&lt;your_channel_name&gt;.block</code> - 会存在peers的文件系统中，并且包含了由<code>channel.tx</code>指定的<code>channel</code>配置。</p>
-</li>
-<li><p><code>joinChannel</code>命令用于所有4个<code>peer</code>节点，用上一步产生的创世块作为输入。该命令指示这些peer节点加入<code>&lt;your_channel_name&gt;</code>，并且创建一个以<code>&lt;your_channel_name&gt;.block</code>开始的链。</p>
-</li>
-<li><p>现在我们有了一个包含4个<code>peer</code>节点，和2个组织的链。这就是我们<code>TwoOrgsChannel</code>描述的样子。</p>
-</li>
-<li><p><code>peer0.org1.example.com</code>和<code>peer1.org1.example.com</code>隶属于<code>Org1</code>；<code>peer0.org2.example.com</code>和<code>peer1.org2.example.com</code>隶属于<code>Org2</code>。</p>
-</li>
-<li></li>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/07/28/Docker网络设置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/28/Docker网络设置/" itemprop="url">Docker网络设置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-28T15:43:37+08:00">
+                2017-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/28/Docker网络设置/" class="leancloud_visitors" data-flag-title="Docker网络设置">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<p>本文概述了<code>Docker</code>默认网络的配置，包含了默认创建的网络类型，以及如何创建你自己的用户定义网络。同时也描述了在一台主机或者在一个集群中创建网络所需要的资源。</p>
+<p>如要了解在Linux主机中，<code>Docker</code>是如何与<code>iptables</code>进行交互的，可以参看<a href="https://docs.docker.com/engine/userguide/networking/#docker-and-iptables" target="_blank" rel="external">Docker and iptables</a>。</p>
+<h2 id="默认网络"><a href="#默认网络" class="headerlink" title="默认网络"></a>默认网络</h2><p>当你安装Docker时，它会自动创建3个网络。你可以使用<code>docker network ls</code>命令罗列出这些网络：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ docker<span class="built_in"> network </span>ls</div><div class="line"><span class="built_in"></span></div><div class="line">NETWORK ID          NAME                DRIVER              SCOPE</div><div class="line">b8ed42a010f8       <span class="built_in"> bridge </span>            <span class="built_in"> bridge </span>             local</div><div class="line">f8c5b547c829        host                host                local</div><div class="line">58ec52c671cb        none                <span class="literal">null</span>                local</div></pre></td></tr></table></figure>
+<p>这3个网络內建在<code>Docker</code>中。当你运行一个<code>container</code>时，你可以使用<code>--network</code>标记来指定你的容器要连接哪个网络。</p>
+<p><code>bridge</code>网络代表了在所有<code>Docker</code>安装中都存在的<code>docker0</code>网络。除非你使用<code>docker run --network=&lt;NETWORK&gt;</code>命令指定了其它网络，Docker后台默认都会将container连接到这个网络。你可以在主机上使用<code>ifconfig</code>命令看到这个<code>bridge</code>网络属于主机网络栈的一部分。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ ifconfig</div><div class="line"></div><div class="line">docker0   Link <span class="string">encap:</span>Ethernet  HWaddr <span class="number">02</span>:<span class="number">42</span>:<span class="number">45</span>:<span class="string">cf:</span><span class="string">e9:</span>c3  </div><div class="line">          inet <span class="string">addr:</span><span class="number">172.17</span><span class="number">.0</span><span class="number">.1</span>  <span class="string">Bcast:</span><span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>  <span class="string">Mask:</span><span class="number">255.255</span><span class="number">.0</span><span class="number">.0</span></div><div class="line">          UP BROADCAST MULTICAST  <span class="string">MTU:</span><span class="number">1500</span>  <span class="string">Metric:</span><span class="number">1</span></div><div class="line">          RX <span class="string">packets:</span><span class="number">0</span> <span class="string">errors:</span><span class="number">0</span> <span class="string">dropped:</span><span class="number">0</span> <span class="string">overruns:</span><span class="number">0</span> <span class="string">frame:</span><span class="number">0</span></div><div class="line">          TX <span class="string">packets:</span><span class="number">0</span> <span class="string">errors:</span><span class="number">0</span> <span class="string">dropped:</span><span class="number">0</span> <span class="string">overruns:</span><span class="number">0</span> <span class="string">carrier:</span><span class="number">0</span></div><div class="line"><span class="symbol">          collisions:</span><span class="number">0</span> <span class="string">txqueuelen:</span><span class="number">0</span> </div><div class="line">          RX <span class="string">bytes:</span><span class="number">0</span> (<span class="number">0.0</span> B)  TX <span class="string">bytes:</span><span class="number">0</span> (<span class="number">0.0</span> B)</div></pre></td></tr></table></figure>
+<p><code>none</code>网络会将容器添加到一个容器特定的(container-specific)网络堆栈中。这种容器会缺少一个网络接口，即Docker不会为这个容器配置任何IP地址，该容器也无法访问外网以及其它容器。它只有一个本地回环地址，通常用来进行批处理工作。如果你进入到这个容器中并查看它的网络堆栈，你会发现验证上面的描述：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ docker <span class="builtin-name">run</span> -it <span class="attribute">--network</span>=none registry.cn-hangzhou.aliyuncs.com/docker/ubuntu14.04 /bin/bash</div><div class="line"></div><div class="line">root@bd6af240c5cd:/#<span class="built_in"> ping </span>192.168.9.63</div><div class="line">connect:<span class="built_in"> Network </span>is unreachable</div><div class="line"></div><div class="line">root@bd6af240c5cd:/# cat /etc/hosts</div><div class="line">127.0.0.1	localhost</div><div class="line">::1	localhost ip6-localhost ip6-loopback</div><div class="line">fe00::0	ip6-localnet</div><div class="line">ff00::0	ip6-mcastprefix</div><div class="line">ff02::1	ip6-allnodes</div><div class="line">ff02::2	ip6-allrouters</div><div class="line"></div><div class="line">root@bd6af240c5cd:/# ifconfig</div><div class="line">lo        Link encap<span class="keyword">:Local</span> Loopback  </div><div class="line">          inet addr:127.0.0.1  Mask:255.0.0.0</div><div class="line">          UP LOOPBACK RUNNING  MTU:65536  Metric:1</div><div class="line">          RX packets:0 errors:0 dropped:0 overruns:0 frame:0</div><div class="line">          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0</div><div class="line">          collisions:0 txqueuelen:1 </div><div class="line">          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>备注：以上的进入方式，可以输入<code>exit</code>退出container</p>
+</blockquote>
+<p><code>host</code>网络则是将<code>container</code>添加到主机的网络堆栈中。就网络而言，主机和容器并没有隔离。比如，如果你的容器使用<code>host</code>网络，在80端口运行了一个web服务器，那么这个服务器就可以在主机的80端口上使用。</p>
+<p><code>none</code>网络和<code>host</code>网络在Docker中不能直接配置。但是，你可以配置默认的<code>bridge</code>网络，你自己定义的网桥网络也可以配置。</p>
+<h3 id="默认的bridge网络"><a href="#默认的bridge网络" class="headerlink" title="默认的bridge网络"></a>默认的<code>bridge</code>网络</h3><p>默认的<code>bridge</code>网络存在于所有的Docker主机上。如果你不指定其它的网络，新的container都会自动连接到这个默认的<code>bridge</code>网络中。</p>
+<p><code>docker network inspect</code>命令可以返回一个网络的相关信息：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">$ docker<span class="built_in"> network </span>inspect<span class="built_in"> bridge</span></div><div class="line">[</div><div class="line">    &#123;</div><div class="line">        <span class="string">"Name"</span>: <span class="string">"bridge"</span>,</div><div class="line">        <span class="string">"Id"</span>: <span class="string">"b8ed42a010f8014be4788401c6dd013b59d0542d137325355c0f58720b32df07"</span>,</div><div class="line">        <span class="string">"Created"</span>: <span class="string">"2017-07-28T16:19:53.903583477+08:00"</span>,</div><div class="line">        <span class="string">"Scope"</span>: <span class="string">"local"</span>,</div><div class="line">        <span class="string">"Driver"</span>: <span class="string">"bridge"</span>,</div><div class="line">        <span class="string">"EnableIPv6"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"IPAM"</span>: &#123;</div><div class="line">            <span class="string">"Driver"</span>: <span class="string">"default"</span>,</div><div class="line">            <span class="string">"Options"</span>: <span class="literal">null</span>,</div><div class="line">            <span class="string">"Config"</span>: [</div><div class="line">                &#123;</div><div class="line">                    <span class="string">"Subnet"</span>: <span class="string">"172.17.0.0/16"</span></div><div class="line">                &#125;</div><div class="line">            ]</div><div class="line">        &#125;,</div><div class="line">        <span class="string">"Internal"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Attachable"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Ingress"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"ConfigFrom"</span>: &#123;</div><div class="line">            <span class="string">"Network"</span>: <span class="string">""</span></div><div class="line">        &#125;,</div><div class="line">        <span class="string">"ConfigOnly"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Containers"</span>: &#123;&#125;,</div><div class="line">        <span class="string">"Options"</span>: &#123;</div><div class="line">            <span class="string">"com.docker.network.bridge.default_bridge"</span>: <span class="string">"true"</span>,</div><div class="line">            <span class="string">"com.docker.network.bridge.enable_icc"</span>: <span class="string">"true"</span>,</div><div class="line">            <span class="string">"com.docker.network.bridge.enable_ip_masquerade"</span>: <span class="string">"true"</span>,</div><div class="line">            <span class="string">"com.docker.network.bridge.host_binding_ipv4"</span>: <span class="string">"0.0.0.0"</span>,</div><div class="line">            <span class="string">"com.docker.network.bridge.name"</span>: <span class="string">"docker0"</span>,</div><div class="line">            <span class="string">"com.docker.network.driver.mtu"</span>: <span class="string">"1500"</span></div><div class="line">        &#125;,</div><div class="line">        <span class="string">"Labels"</span>: &#123;&#125;</div><div class="line">    &#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>运行下面2个命令启动2个<code>busybox</code>容器，连接到默认的<code>bridge</code>网络上。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ docker <span class="builtin-name">run</span> -itd <span class="attribute">--name</span>=container1 busybox</div><div class="line">a8d3bd2901a8946a0fed762f5af7ef0c3e65ae915364f7440db8253b6977277b</div><div class="line"></div><div class="line">$ docker <span class="builtin-name">run</span> -itd <span class="attribute">--name</span>=container2 busybox</div><div class="line">54b2d9cd0ebcb260597dca91d8e1ac6488b16b8b9a9cf34667e6f355beae4415</div></pre></td></tr></table></figure>
+<p>启动完这2个容器之后，再次查看<code>bridge</code>网络。2个<code>busybox</code>容器都已经连接上该网络。记下它们的IP地址，在你的主机上的结果，可能会与下面的例子不同。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">$ docker<span class="built_in"> network </span>inspect<span class="built_in"> bridge</span></div><div class="line">[</div><div class="line">    &#123;</div><div class="line">        <span class="string">"Name"</span>: <span class="string">"bridge"</span>,</div><div class="line">        <span class="string">"Id"</span>: <span class="string">"b8ed42a010f8014be4788401c6dd013b59d0542d137325355c0f58720b32df07"</span>,</div><div class="line">        <span class="string">"Created"</span>: <span class="string">"2017-07-28T16:19:53.903583477+08:00"</span>,</div><div class="line">        <span class="string">"Scope"</span>: <span class="string">"local"</span>,</div><div class="line">        <span class="string">"Driver"</span>: <span class="string">"bridge"</span>,</div><div class="line">        <span class="string">"EnableIPv6"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"IPAM"</span>: &#123;</div><div class="line">            <span class="string">"Driver"</span>: <span class="string">"default"</span>,</div><div class="line">            <span class="string">"Options"</span>: <span class="literal">null</span>,</div><div class="line">            <span class="string">"Config"</span>: [</div><div class="line">                &#123;</div><div class="line">                    <span class="string">"Subnet"</span>: <span class="string">"172.17.0.0/16"</span></div><div class="line">                &#125;</div><div class="line">            ]</div><div class="line">        &#125;,</div><div class="line">        <span class="string">"Internal"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Attachable"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Ingress"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"ConfigFrom"</span>: &#123;</div><div class="line">            <span class="string">"Network"</span>: <span class="string">""</span></div><div class="line">        &#125;,</div><div class="line">        <span class="string">"ConfigOnly"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Containers"</span>: &#123;</div><div class="line">            <span class="string">"54b2d9cd0ebcb260597dca91d8e1ac6488b16b8b9a9cf34667e6f355beae4415"</span>: &#123;</div><div class="line">                <span class="string">"Name"</span>: <span class="string">"container2"</span>,</div><div class="line">                <span class="string">"EndpointID"</span>: <span class="string">"b083c545b43a5ac1aae0f14c2caf653273c4da9abf1e2f56089d68fcf2176aea"</span>,</div><div class="line">                <span class="string">"MacAddress"</span>: <span class="string">"02:42:ac:11:00:03"</span>,</div><div class="line">                <span class="string">"IPv4Address"</span>: <span class="string">"172.17.0.3/16"</span>,</div><div class="line">                <span class="string">"IPv6Address"</span>: <span class="string">""</span></div><div class="line">            &#125;,</div><div class="line">            <span class="string">"a8d3bd2901a8946a0fed762f5af7ef0c3e65ae915364f7440db8253b6977277b"</span>: &#123;</div><div class="line">                <span class="string">"Name"</span>: <span class="string">"container1"</span>,</div><div class="line">                <span class="string">"EndpointID"</span>: <span class="string">"a0e2e1d825dbc80cc3bcf6335cb53c054ddb3b57bc10a088eea605741f5de5bf"</span>,</div><div class="line">                <span class="string">"MacAddress"</span>: <span class="string">"02:42:ac:11:00:02"</span>,</div><div class="line">                <span class="string">"IPv4Address"</span>: <span class="string">"172.17.0.2/16"</span>,</div><div class="line">                <span class="string">"IPv6Address"</span>: <span class="string">""</span></div><div class="line">            &#125;</div><div class="line">        &#125;,</div><div class="line">        <span class="string">"Options"</span>: &#123;</div><div class="line">            <span class="string">"com.docker.network.bridge.default_bridge"</span>: <span class="string">"true"</span>,</div><div class="line">            <span class="string">"com.docker.network.bridge.enable_icc"</span>: <span class="string">"true"</span>,</div><div class="line">            <span class="string">"com.docker.network.bridge.enable_ip_masquerade"</span>: <span class="string">"true"</span>,</div><div class="line">            <span class="string">"com.docker.network.bridge.host_binding_ipv4"</span>: <span class="string">"0.0.0.0"</span>,</div><div class="line">            <span class="string">"com.docker.network.bridge.name"</span>: <span class="string">"docker0"</span>,</div><div class="line">            <span class="string">"com.docker.network.driver.mtu"</span>: <span class="string">"1500"</span></div><div class="line">        &#125;,</div><div class="line">        <span class="string">"Labels"</span>: &#123;&#125;</div><div class="line">    &#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>连接到默认<code>bridge</code>网络的容器，可以通过IP地址相互通信。Docker不支持在默认<code>bridge</code>网络上自动服务发现。如果你想让容器可以根据容器名字解析出IP地址，你就需要使用用户定义网络而不是默认<code>bridge</code>网络。你也可以使用旧版的<code>docker run --link</code>选项将2个容器连接起来，但在大多数情况下不建议这么做。</p>
+<p>你可以<code>attach</code>到一个正在运行的<code>container</code>中，去从容器内部观察网络情况。因为是以<code>root</code>身份进入的，所以命令提示符变为了<code>#</code>。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="string">$</span> <span class="string">docker</span> <span class="string">attach</span> <span class="string">container1</span></div><div class="line"><span class="string">/</span> <span class="comment"># ifconfig</span></div><div class="line"><span class="string">eth0</span>      <span class="string">Link</span> <span class="attr">encap:Ethernet</span>  <span class="string">HWaddr</span> <span class="number">02</span><span class="string">:42:AC:11:00:02</span>  </div><div class="line">          <span class="string">inet</span> <span class="attr">addr:172.17.0.2</span>  <span class="attr">Bcast:0.0.0.0</span>  <span class="attr">Mask:255.255.0.0</span></div><div class="line">          <span class="string">UP</span> <span class="string">BROADCAST</span> <span class="string">RUNNING</span> <span class="string">MULTICAST</span>  <span class="attr">MTU:1500</span>  <span class="attr">Metric:1</span></div><div class="line">          <span class="string">RX</span> <span class="attr">packets:0</span> <span class="attr">errors:0</span> <span class="attr">dropped:0</span> <span class="attr">overruns:0</span> <span class="attr">frame:0</span></div><div class="line">          <span class="string">TX</span> <span class="attr">packets:0</span> <span class="attr">errors:0</span> <span class="attr">dropped:0</span> <span class="attr">overruns:0</span> <span class="attr">carrier:0</span></div><div class="line"><span class="attr">          collisions:</span><span class="number">0</span> <span class="attr">txqueuelen:0</span> </div><div class="line">          <span class="string">RX</span> <span class="attr">bytes:0</span> <span class="string">(0.0</span> <span class="string">B)</span>  <span class="string">TX</span> <span class="attr">bytes:0</span> <span class="string">(0.0</span> <span class="string">B)</span></div><div class="line"></div><div class="line"><span class="string">lo</span>        <span class="string">Link</span> <span class="attr">encap:Local</span> <span class="string">Loopback</span>  </div><div class="line">          <span class="string">inet</span> <span class="attr">addr:127.0.0.1</span>  <span class="attr">Mask:255.0.0.0</span></div><div class="line">          <span class="string">UP</span> <span class="string">LOOPBACK</span> <span class="string">RUNNING</span>  <span class="attr">MTU:65536</span>  <span class="attr">Metric:1</span></div><div class="line">          <span class="string">RX</span> <span class="attr">packets:0</span> <span class="attr">errors:0</span> <span class="attr">dropped:0</span> <span class="attr">overruns:0</span> <span class="attr">frame:0</span></div><div class="line">          <span class="string">TX</span> <span class="attr">packets:0</span> <span class="attr">errors:0</span> <span class="attr">dropped:0</span> <span class="attr">overruns:0</span> <span class="attr">carrier:0</span></div><div class="line"><span class="attr">          collisions:</span><span class="number">0</span> <span class="attr">txqueuelen:1</span> </div><div class="line">          <span class="string">RX</span> <span class="attr">bytes:0</span> <span class="string">(0.0</span> <span class="string">B)</span>  <span class="string">TX</span> <span class="attr">bytes:0</span> <span class="string">(0.0</span> <span class="string">B)</span></div></pre></td></tr></table></figure>
+<p>在容器内部，使用<code>ping</code>命令来测试和其它容器的IP连接情况。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/ #<span class="built_in"> ping </span>-w3 172.17.0.3<span class="built_in"></span></div><div class="line">PING 172.17.0.3 (172.17.0.3): 56 data bytes</div><div class="line">64 bytes <span class="keyword">from</span> 172.17.0.3: <span class="attribute">seq</span>=0 <span class="attribute">ttl</span>=64 <span class="attribute">time</span>=0.110 ms</div><div class="line">64 bytes <span class="keyword">from</span> 172.17.0.3: <span class="attribute">seq</span>=1 <span class="attribute">ttl</span>=64 <span class="attribute">time</span>=0.098 ms</div><div class="line">64 bytes <span class="keyword">from</span> 172.17.0.3: <span class="attribute">seq</span>=2 <span class="attribute">ttl</span>=64 <span class="attribute">time</span>=0.098 ms</div><div class="line"></div><div class="line">--- 172.17.0.3<span class="built_in"> ping </span>statistics ---</div><div class="line">3 packets transmitted, 3 packets received, 0% packet loss</div><div class="line">round-trip min/avg/max = 0.098/0.102/0.110 ms</div></pre></td></tr></table></figure>
+<p>使用<code>cat</code>命令查看容器的<code>/etc/hosts</code>文件。这里展示了容器可以识别的主机名和IP地址。</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/ # cat /etc/hosts</div><div class="line"><span class="number">127.0.0.1</span>	localhost</div><div class="line"><span class="number">::1</span>	localhost ip6-localhost ip6-loopback</div><div class="line"><span class="number">fe00::0</span>	ip6-localnet</div><div class="line"><span class="number">ff00::0</span>	ip6-mcastprefix</div><div class="line"><span class="number">ff02::1</span>	ip6-allnodes</div><div class="line"><span class="number">ff02::2</span>	ip6-allrouters</div><div class="line"><span class="number">172.17.0.2</span>	a8d3bd2901a8</div></pre></td></tr></table></figure>
+<p>想要从<code>container1</code>容器中退出来，并且让它继续保持运行状态，可以使用<code>ctrl+p</code>，<code>ctrl+q</code>退出。如果你有兴趣，还可以<code>attach</code>到<code>container2</code>中重复如上命令。</p>
+<p>默认的<code>docker0</code>网桥网络支持使用端口映射，搭配上<code>docker run --link</code>就可以允许容器在<code>docker0</code>网络中交流。但是不推荐这种做法。如果可能的话，你应该使用下面的<strong>用户定义的网桥网络</strong>方式来实现。</p>
+<h2 id="用户定义的网络"><a href="#用户定义的网络" class="headerlink" title="用户定义的网络"></a>用户定义的网络</h2><p>推荐使用用户定义的桥接网络来控制哪些容器可以互相通信，并且以此启用容器名到IP地址的自动DNS解析。Docker提供了默认的<strong>网络驱动</strong>来创建这些网络。你可以创建一个新的<strong><code>bridge</code>网络</strong>，<strong><code>overlay</code>网络</strong>，<strong><code>MACVLAN</code>网络</strong>。你也可以创建一个<strong>网络插件</strong>或者<strong>远程网络</strong>进行完整的个性化和控制。</p>
+<p>你可以创建足够多的网络，并且可以让一个容器在任意时刻连接到0个或多个这些网络中。此外，你可以不需要重启容器，就能将运行中的容器连接或者脱离网络。当一个容器连接到了多个网络上，它的外部连接是由第一个非内部网络来提供的，按照词典排序。下面会更详细的描述Docker中每个内置的网络驱动。</p>
+<h3 id="bridge网络驱动"><a href="#bridge网络驱动" class="headerlink" title="bridge网络驱动"></a><code>bridge</code>网络驱动</h3><p><code>bridge</code>网络是在Docker中最常用的网络类型。用户创建的<code>bridge</code>网络类似于默认的<code>bridge</code>网络，但加上了一些新的特性，并移除掉了一些旧的功能。下面的例子创建了一些<code>bridge</code>网络，并且让容器在这些网络中执行了一些实验。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">$ docker<span class="built_in"> network </span>create --driver<span class="built_in"> bridge </span>isolated_nw</div><div class="line">fb7bdfe0b5495fd8ed3cfd865364ec2bce9a4703fcb84209624aa975676f1b2e</div><div class="line"></div><div class="line">$ docker<span class="built_in"> network </span>inspect isolated_nw</div><div class="line">[</div><div class="line">    &#123;</div><div class="line">        <span class="string">"Name"</span>: <span class="string">"isolated_nw"</span>,</div><div class="line">        <span class="string">"Id"</span>: <span class="string">"fb7bdfe0b5495fd8ed3cfd865364ec2bce9a4703fcb84209624aa975676f1b2e"</span>,</div><div class="line">        <span class="string">"Created"</span>: <span class="string">"2017-07-28T20:42:52.601980497+08:00"</span>,</div><div class="line">        <span class="string">"Scope"</span>: <span class="string">"local"</span>,</div><div class="line">        <span class="string">"Driver"</span>: <span class="string">"bridge"</span>,</div><div class="line">        <span class="string">"EnableIPv6"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"IPAM"</span>: &#123;</div><div class="line">            <span class="string">"Driver"</span>: <span class="string">"default"</span>,</div><div class="line">            <span class="string">"Options"</span>: &#123;&#125;,</div><div class="line">            <span class="string">"Config"</span>: [</div><div class="line">                &#123;</div><div class="line">                    <span class="string">"Subnet"</span>: <span class="string">"172.18.0.0/16"</span>,</div><div class="line">                    <span class="string">"Gateway"</span>: <span class="string">"172.18.0.1"</span></div><div class="line">                &#125;</div><div class="line">            ]</div><div class="line">        &#125;,</div><div class="line">        <span class="string">"Internal"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Attachable"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Ingress"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"ConfigFrom"</span>: &#123;</div><div class="line">            <span class="string">"Network"</span>: <span class="string">""</span></div><div class="line">        &#125;,</div><div class="line">        <span class="string">"ConfigOnly"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Containers"</span>: &#123;&#125;,</div><div class="line">        <span class="string">"Options"</span>: &#123;&#125;,</div><div class="line">        <span class="string">"Labels"</span>: &#123;&#125;</div><div class="line">    &#125;</div><div class="line">]</div><div class="line"></div><div class="line">$ docker<span class="built_in"> network </span>ls<span class="built_in"></span></div><div class="line">NETWORK ID          NAME                DRIVER              SCOPE</div><div class="line">b8ed42a010f8       <span class="built_in"> bridge </span>            <span class="built_in"> bridge </span>             local</div><div class="line">f8c5b547c829        host                host                local</div><div class="line">fb7bdfe0b549        isolated_nw        <span class="built_in"> bridge </span>             local</div><div class="line">58ec52c671cb        none                <span class="literal">null</span>                local</div></pre></td></tr></table></figure>
+<p>创建完网络后，你可以使用<code>docker run --network=&lt;NETWORK&gt;</code>选项将容器连到该网络上。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">$ docker <span class="builtin-name">run</span> <span class="attribute">--network</span>=isolated_nw -itd <span class="attribute">--name</span>=container3 busybox</div><div class="line">20f39ef9cb5dc726e9e24b598619c073094fa637f762a641179bbaccf2d6a362</div><div class="line"></div><div class="line">$ docker<span class="built_in"> network </span>inspect isolated_nw</div><div class="line">[</div><div class="line">    &#123;</div><div class="line">        <span class="string">"Name"</span>: <span class="string">"isolated_nw"</span>,</div><div class="line">        <span class="string">"Id"</span>: <span class="string">"fb7bdfe0b5495fd8ed3cfd865364ec2bce9a4703fcb84209624aa975676f1b2e"</span>,</div><div class="line">        <span class="string">"Created"</span>: <span class="string">"2017-07-28T20:42:52.601980497+08:00"</span>,</div><div class="line">        <span class="string">"Scope"</span>: <span class="string">"local"</span>,</div><div class="line">        <span class="string">"Driver"</span>: <span class="string">"bridge"</span>,</div><div class="line">        <span class="string">"EnableIPv6"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"IPAM"</span>: &#123;</div><div class="line">            <span class="string">"Driver"</span>: <span class="string">"default"</span>,</div><div class="line">            <span class="string">"Options"</span>: &#123;&#125;,</div><div class="line">            <span class="string">"Config"</span>: [</div><div class="line">                &#123;</div><div class="line">                    <span class="string">"Subnet"</span>: <span class="string">"172.18.0.0/16"</span>,</div><div class="line">                    <span class="string">"Gateway"</span>: <span class="string">"172.18.0.1"</span></div><div class="line">                &#125;</div><div class="line">            ]</div><div class="line">        &#125;,</div><div class="line">        <span class="string">"Internal"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Attachable"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Ingress"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"ConfigFrom"</span>: &#123;</div><div class="line">            <span class="string">"Network"</span>: <span class="string">""</span></div><div class="line">        &#125;,</div><div class="line">        <span class="string">"ConfigOnly"</span>: <span class="literal">false</span>,</div><div class="line">        <span class="string">"Containers"</span>: &#123;</div><div class="line">            <span class="string">"20f39ef9cb5dc726e9e24b598619c073094fa637f762a641179bbaccf2d6a362"</span>: &#123;</div><div class="line">                <span class="string">"Name"</span>: <span class="string">"container3"</span>,</div><div class="line">                <span class="string">"EndpointID"</span>: <span class="string">"e4aaf7227a060f6a55e29a416a06cf421d2e6a340dab8fc84715adad99c9127b"</span>,</div><div class="line">                <span class="string">"MacAddress"</span>: <span class="string">"02:42:ac:12:00:02"</span>,</div><div class="line">                <span class="string">"IPv4Address"</span>: <span class="string">"172.18.0.2/16"</span>,</div><div class="line">                <span class="string">"IPv6Address"</span>: <span class="string">""</span></div><div class="line">            &#125;</div><div class="line">        &#125;,</div><div class="line">        <span class="string">"Options"</span>: &#123;&#125;,</div><div class="line">        <span class="string">"Labels"</span>: &#123;&#125;</div><div class="line">    &#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>你部署在这个网络中的容器必须和该网络处于同一个Docker宿主机上。在该网络中的容器可以直接相互通信。但是，网络本身将这些容器和外部网络隔离开。</p>
+<p><img src="/source_code/image/bridge_network.png" alt="Alt text"></p>
+<p>在一个用户定义的<code>bridge</code>网络中，是不支持linking的。你可以在这个网络中的容器上暴露和发布容器端口。这样可以让你从外部网络访问<code>bridge</code>网络中的部分容器。</p>
+<p><img src="/source_code/image/network_access.png" alt="Alt text"></p>
+<p><code>bridge</code>网络对于在单一主机上运行一个规模相对较小的网络是非常适合的。但是，你还可以通过创建<code>overlay</code>网络来搭建一个更加庞大的网络环境。</p>
+<h3 id="docker-gwbridge网络"><a href="#docker-gwbridge网络" class="headerlink" title="docker_gwbridge网络"></a><code>docker_gwbridge</code>网络</h3><p><code>docker_gwbridge</code>是一个本地<code>bridge</code>网络，在如下2种不同的状况下，会由Docker自动创建出来：</p>
+<ul>
+<li>当你初始化或者加入一个<code>swarm</code>时，Docker会创建出<code>docker_gwbridge</code>网络，并使用它在<code>swarm</code>节点的不同机器之间进行通信。</li>
+<li>当一个容器的所有网络都不能提供外部连接时，Docker会将该容器额外再连接到<code>docker_gwbridge</code>网络，以便这个容器可以连接外部网络，或者其它的<code>swarm</code>节点。</li>
 </ul>
+<p>如果你需要一个自定义配置，可以提前创建<code>docker_gwbridge</code>网络，否则Docker就会按需创建。下面的这个例子使用了一些定制选项来创建<code>docker_gwbridge</code>网络。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ docker<span class="built_in"> network </span>create --subnet 172.30.0.0/16 \</div><div class="line">						--opt com.docker.network.bridge.<span class="attribute">name</span>=docker_gwbridge \</div><div class="line">						--opt com.docker.network.bridge.<span class="attribute">enable_icc</span>=<span class="literal">false</span> \</div><div class="line">						docker_gwbridge</div><div class="line">874f358b9cdf3a44c62ada65f2d96976ba6f7c3ad00e976c7849101a9cf0e59f</div></pre></td></tr></table></figure>
+<p><strong>当你使用<code>overlay</code>网络时，<code>docker_gwbridge</code>网络始终存在</strong></p>
+<h3 id="在swarm模式中的overlay网络"><a href="#在swarm模式中的overlay网络" class="headerlink" title="在swarm模式中的overlay网络"></a>在<code>swarm</code>模式中的<code>overlay</code>网络</h3><p>你可以在一个运行<code>swarm</code>模式的管理者节点上创建一个<code>overlay</code>网络，并不需要外部的<code>key-value</code>存储。<code>swarm</code>使<code>overlay</code>网络仅用于需要服务的<code>swarm</code>中的节点。当你创建一个使用<code>overlay</code>网络的服务时，管理者节点会自动将<code>overlay</code>网络扩展到运行服务任务的节点上。</p>
+<p>想要了解更多关于以<code>swarm</code>模式运行Docker引擎的知识，可以参看<a href="https://docs.docker.com/engine/swarm/" target="_blank" rel="external">Swarm mode overview</a>。</p>
+<p>下面的例子展示了如何在<code>swarm</code>中的一个管理节点上，创建一个网络，并将它用于一个服务：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ docker<span class="built_in"> network </span>create \</div><div class="line">  --driver overlay \</div><div class="line">  --subnet 10.0.9.0/24 \</div><div class="line">  my-multi-host-network</div><div class="line">400g6bwzd68jizzdx5pgyoe95</div><div class="line"></div><div class="line">$ docker<span class="built_in"> service </span>create --replicas 2 --network my-multi-host-network --name my-web nginx</div><div class="line">716thylsndqma81j6kkkb5aus</div></pre></td></tr></table></figure>
+<p>只有<code>swarm</code>服务才能连接<code>overlay</code>网络，独立的容器是无法连接的。关于<code>swarm</code>更多信息，可以看<a href="https://docs.docker.com/engine/userguide/networking/overlay-security-model/" target="_blank" rel="external">Docker swarm mode overlay network security model</a> 和 <a href="https://docs.docker.com/engine/swarm/networking/" target="_blank" rel="external">Attach services to an overlay network</a>。</p>
+<h3 id="无swarm模式的overlay网络"><a href="#无swarm模式的overlay网络" class="headerlink" title="无swarm模式的overlay网络"></a>无<code>swarm</code>模式的<code>overlay</code>网络</h3><p>如果你没有以<code>swarm</code>模式运行Docker引擎，那么<code>overlay</code>网络就需要一个合法的<code>key-value</code>存储服务。支持的<code>key-value</code>存储包含<code>Consul</code>, <code>Etcd</code>, <code>ZooKeeper (分布式存储)</code>。在以这种方式创建网络之前，你必须安装和配置好你选中的<code>key-value</code>存储服务。该Docker的宿主机必须能够联网，并且服务必须能够通信。</p>
+<blockquote>
+<p>以<code>swarm</code>模式运行的Docker引擎，不兼容和外部的<code>key-value</code>存储进行网络连接。</p>
+</blockquote>
+<p>这种使用<code>overlay</code>网络的方式对于大多数Docker使用者都<strong>不推荐</strong>。它可以在单一的<code>swarm</code>集群中使用，或者对那些在Docker之上搭建解决方案的系统开发人员有用处。在未来这种方式可能会被废弃。如果你实在需要通过这种方式使用<code>overlay</code>网络，看这篇<a href="https://docs.docker.com/engine/userguide/networking/get-started-overlay/" target="_blank" rel="external">指导文档</a>。</p>
+<h3 id="自定义网络插件"><a href="#自定义网络插件" class="headerlink" title="自定义网络插件"></a>自定义网络插件</h3><p>如果你需要的东西在上文中都没被提到，那么你可以使用Docker的插件基础设施，编写自己的网络驱动插件。插件会以一个单独的进程运行在执行Docker后台的主机上。使用网络插件是一个高阶话题。</p>
+<p>网络插件遵循和其它插件一样的限制和安装规则。所有的插件都使用插件API，并且有一个围绕安装，启动中，停止中，和激活的生命周期。</p>
+<p>当你创建并安装了一个自定义的网络驱动后，你就可以创建一个网络，通过<code>--driver</code>参数使用这个自定义驱动。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker<span class="built_in"> network </span>create --driver weave mynet</div></pre></td></tr></table></figure>
+<p>你可以<code>inspect</code>这个网络，将容器连接上或者脱离开这个网络，甚至移除它。一个特定的插件为了使用可能会有特定的需求依赖。查看插件的文档获取特定的信息。关于编写插件更多内容，可以查看<a href="https://docs.docker.com/engine/extend/legacy_plugins/" target="_blank" rel="external">Extending Docker</a> 和 <a href="https://docs.docker.com/engine/extend/plugins_network/" target="_blank" rel="external">Writing a network driver plugin</a>。</p>
+<h3 id="内置的DNS服务器"><a href="#内置的DNS服务器" class="headerlink" title="内置的DNS服务器"></a>内置的DNS服务器</h3><p>Docker后台运行了一个内置的DNS服务器，为连接在同样的用户定义网络中的容器之间提供DNS解析服务，以便这些容器能够将容器名解析为IP地址。如果内置的DNS服务器无法解析一个请求，它将会转发给为容器配置的任何一个外部DNS服务器。为了在容器创建时促成这些功能，只有<code>127.0.0.11</code>可以访问的内置DNS服务器才会被罗列到容器的<code>resolv.conf</code>文件中。关于用户定义网络中的内置DNS服务器更多信息，可以参看<a href="https://docs.docker.com/engine/userguide/networking/configure-dns/" target="_blank" rel="external">embedded DNS server in user-defined networks</a>。</p>
+<h2 id="暴露和发布容器端口"><a href="#暴露和发布容器端口" class="headerlink" title="暴露和发布容器端口"></a>暴露和发布容器端口</h2><p>在Docker网络中，有2种不同的，都直接涉及到网络端口的运行机制：暴露和发布端口。这个适用于默认的<code>bridge</code>网络和用户定义的<code>bridge</code>网络。</p>
+<ul>
+<li>在Dockerfile中使用<code>EXPOSE</code>关键字，或者在<code>docker run</code>命令行中使用<code>--expose</code>参数，你就可以暴露端口。暴露端口是一种描述哪些端口已被使用的方式，但它实际上并没有映射或者打开任何端口。暴露端口是可选的。</li>
+<li>在Dockerfile中使用<code>PUBLISH</code>关键字，或者在<code>docker run</code>命令行中使用<code>--publish</code>参数，你就可以发布端口。这会告诉Docker在容器的网络接口中要打开哪些端口。当一个容器端口被发布后，它会被映射到宿主机一个可用的高序端口上（端口号高于<code>30000</code>），除非你在运行时指定了要映射到宿主机哪个端口上。不能在Dockerfile中指定映射到宿主机哪个端口，因为没有办法可以保证，当你运行这个镜像时，这个指定的主机端口还依然可用。</li>
+</ul>
+<p>下面这个例子发布了容器的<code>80</code>端口，并映射到主机一个随机的高序端口上（在本例中，是<code>32768</code>）。<code>-d</code>参数使得容器在后台运行，这样你就可以继续输入<code>docker ps</code>命令。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ docker run -it -d -<span class="selector-tag">p</span> <span class="number">80</span> nginx</div><div class="line"></div><div class="line">$ docker ps</div><div class="line"><span class="number">64879472</span>feea	nginx	<span class="string">"nginx -g 'daemon ..."</span>	<span class="number">43</span> hours ago	Up About <span class="selector-tag">a</span> minute	<span class="number">443</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">32768</span>-&gt;<span class="number">80</span>/tcp	blissful_mclean</div></pre></td></tr></table></figure>
+<p>下一个例子指定将容器的<code>80</code>端口映射到宿主机上的<code>8080</code>端口。如果<code>8080</code>端口不可用则将会失败。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ docker <span class="keyword">run</span><span class="bash"> -it -d -p 8080:80 nginx</span></div><div class="line"></div><div class="line">$ docker ps</div><div class="line"></div><div class="line">b9788c7adca3        nginx               <span class="string">"nginx -g 'daemon ..."</span>   <span class="number">43</span> hours ago        Up <span class="number">3</span> seconds        <span class="number">80</span>/tcp, <span class="number">443</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8080</span>-&gt;<span class="number">80</span>/tcp   goofy_brahmagupta</div></pre></td></tr></table></figure>
+<h2 id="Links"><a href="#Links" class="headerlink" title="Links"></a>Links</h2><p>在Docker支持用户定义网络之前，你可以使用Docker的<code>--link</code>特性来让容器将其它容器的名字解析为IP地址，并且还可以访问被链接的容器的环境变量。如果可能，你应该尽量避免使用这个古老的<code>--link</code>参数。</p>
+<p>当你创建链接时，它会和使用默认<code>bridge</code>网络或者使用用户定义<code>bridge</code>网络表现不同。更多信息，可以查看在默认<code>bridge</code>网络中的<a href="https://docs.docker.com/engine/userguide/networking/default_network/dockerlinks/" target="_blank" rel="external">Legacy Links</a>，和在用户定义网络中的<a href="https://docs.docker.com/engine/userguide/networking/work-with-networks/#linking-containers-in-user-defined-networks" target="_blank" rel="external">linking containers in user-defined networks</a>。</p>
+<h2 id="Docker和iptables"><a href="#Docker和iptables" class="headerlink" title="Docker和iptables"></a>Docker和iptables</h2><p>Linux主机使用一个叫<code>iptables</code>的内核模块来管理网络设备的访问，包括路由，端口转发，网络地址转换（NAT），和其它相关的操作。Docker会修改<code>iptables</code>的规则，比如当你启动或停止一个发布端口的容器时，当你创建或修改网络时，当你将容器加入网络时，或者其它网络相关的操作时。</p>
+<p>关于<code>iptables</code>的完整讨论超出了本文范围。随时查看<code>iptables</code>的规则是行之有效的方法，你可以使用<code>iptables -L</code>命令进行查看。会罗列出很多列表，你可以只显示一个特定的列表，比如<code>nat</code>，<code>prerouting</code>，<code>postrouting</code>，用类似这样的命令就能做到：<code>iptables -t nat -L</code>。要查看<code>iptables</code>的全面文档，可以到<a href="https://netfilter.org/documentation/" target="_blank" rel="external">netflilter/iptables</a>。</p>
+<p>一般情况下，<code>iptables</code>规则是由一个初始化脚本或者一个譬如<code>firewalld</code>的守护进程创建。规则在系统重启后会不复存在，所以脚本或者工具必须在系统启动时运行，通常是在运行级别3或者直接是网络初始化完成后运行。也可以查看Linux发行版的对应网络文档，找出合适的方法使得iptables规则持久化。</p>
+<p>Docker动态管理<code>iptables</code>规则用于守护进程，也为容器，服务，网络提供支持。在<code>Docker 17.06以及更高版本</code>，你可以向一个名叫<code>DOCKER-USER</code>的新列表添加规则，这些规则将会在Docker自动创建的任何规则之前被加载。如果你需要在Docker运行之前就启用一些<code>iptables</code>规则，这个正好是你需要的。</p>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
-<li><a href="https://github.com/runningbar/fabric/blob/master/examples/e2e_cli/end-to-end.rst" target="_blank" rel="external">https://github.com/runningbar/fabric/blob/master/examples/e2e_cli/end-to-end.rst</a></li>
+<li><a href="https://docs.docker.com/engine/userguide/networking/" target="_blank" rel="external">https://docs.docker.com/engine/userguide/networking/</a></li>
+<li><a href="https://stackoverflow.com/questions/41083328/what-is-the-use-of-host-and-none-network-in-docker" target="_blank" rel="external">https://stackoverflow.com/questions/41083328/what-is-the-use-of-host-and-none-network-in-docker</a></li>
 </ul>
 <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
@@ -472,7 +675,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/11/30/docker积累/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/07/17/Kubernetes-ReplicationController介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -491,7 +694,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/30/docker积累/" itemprop="url">docker积累</a></h1>
+                <a class="post-title-link" href="/2017/07/17/Kubernetes-ReplicationController介绍/" itemprop="url">Kubernetes ReplicationController介绍</a></h1>
         
 
         <div class="post-meta">
@@ -503,8 +706,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-30T21:48:24+08:00">
-                2017-11-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-17T12:18:28+08:00">
+                2017-07-17
               </time>
             
 
@@ -526,8 +729,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index">
-                    <span itemprop="name">docker</span>
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
                   </a>
                 </span>
 
@@ -543,7 +746,7 @@
 
           
           
-             <span id="/2017/11/30/docker积累/" class="leancloud_visitors" data-flag-title="docker积累">
+             <span id="/2017/07/17/Kubernetes-ReplicationController介绍/" class="leancloud_visitors" data-flag-title="Kubernetes ReplicationController介绍">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -575,17 +778,22 @@
           
             <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+<p>英文原文： <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/" target="_blank" rel="external">https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/</a></p>
 </blockquote>
-<h3 id="解决docker-ps-a的冗长问题"><a href="#解决docker-ps-a的冗长问题" class="headerlink" title="* 解决docker ps -a的冗长问题"></a>* 解决<code>docker ps -a</code>的冗长问题</h3><p><code>docker ps -a</code>的输出结果经常会超过一行，看起来非常杂乱。</p>
-<p><img src="/source_code/image/docker_ps_a.png" alt=""></p>
-<p>这个时候可以加上<code>--format</code>参数，定制输出列，以保证简洁的输出。</p>
-<figure class="highlight tex"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="formula">$ docker ps -a --format "table &#123;&#123;.ID&#125;&#125;: &#123;&#123;.Image&#125;&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.Command&#125;</span></span>&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.RunningFor&#125;</span></span>&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.Status&#125;</span></span>&#125;<span class="tag">\<span class="name">t</span><span class="string">&#123;&#123;.Names&#125;</span></span>&#125;"</span></div></pre></td></tr></table></figure>
-<p><img src="/source_code/image/docker_ps_a_format.png" alt=""></p>
-<p><code>--format</code>更多细节请参考：<a href="https://docs.docker.com/engine/reference/commandline/ps/#formatting" target="_blank" rel="external">docker ps formatting</a></p>
-<h3 id="进入运行中的docker-container"><a href="#进入运行中的docker-container" class="headerlink" title="* 进入运行中的docker container"></a>* 进入运行中的<code>docker container</code></h3><p>假设container ID为<code>39ddc76afbd8</code>，则进入命令为：</p>
-<p><code>docker exec -it 39ddc76afbd8 /bin/bash</code></p>
-<p>需要退出则输入<code>exit</code></p>
-<p>最好不要使用<code>docker attach 39ddc76afbd8</code>这种命令，因为<code>attach</code>只是把本地的<code>input/output/error stream</code>绑定到容器上，看上去就像进入了容器内部一样。<strong>但若该容器正在运行的命令不提供可交互性，那么就无法对容器进行输入，</strong>所以这种进入就没有太大意义。</p>
+<h4 id="ReplicationController是什么？"><a href="#ReplicationController是什么？" class="headerlink" title="ReplicationController是什么？"></a><code>ReplicationController</code>是什么？</h4><p>一个<code>ReplicationController</code>可以保证在任一个时刻都有指定数量的pod副本在运行。换句话说，一个<code>ReplicationController</code>保证了一个或多个相同pod总是运行可用的。如果存在了过多的pod，它会杀掉多余的一些。如果pod数量过少，<code>ReplicationController</code>会启动更多的pod。不同于手动创建pod，被<code>ReplicationController</code>维护的pod，如果遇到了宕机，被删除，被终止的情况，都会被自动替换为新的pod。举个例子，你的pod会在破坏性的维护之后被重建，比如内核升级。基于此，我们推荐即使你的应用只需要一个pod，也使用<code>ReplicationController</code>。你可以把<code>ReplicationController</code>想象成类似一个进程监控的东西，而不是单独节点上的个别进程，<code>ReplicationController</code>监督跨越多个节点的多个pod。在讨论中，<code>ReplicationController</code>常简写为<code>rc</code>或者<code>rcs</code>，并且这也是<code>kubectl</code>命令行中的缩写形式。</p>
+<p>一个简单的场景是创建一个<code>ReplicationController</code>对象用来无限期地可靠运行一个pod实例。更复杂一些的例子是运行一个可复制服务的多个相同副本，例如web服务器。</p>
+<h4 id="运行一个ReplicationController例子"><a href="#运行一个ReplicationController例子" class="headerlink" title="运行一个ReplicationController例子"></a>运行一个<code>ReplicationController</code>例子</h4><p>这里有一个<code>ReplicationController</code>示例配置。它运行了<code>nginx</code>web服务器的3个副本。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># replication.yaml</span></div><div class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></div><div class="line"><span class="attr">kind:</span> <span class="string">ReplicationController</span></div><div class="line"><span class="attr">metadata:</span></div><div class="line"><span class="attr">  name:</span> <span class="string">nginx</span></div><div class="line"><span class="attr">spec:</span></div><div class="line"><span class="attr">  replicas:</span> <span class="number">3</span></div><div class="line"><span class="attr">  selector:</span></div><div class="line"><span class="attr">    app:</span> <span class="string">nginx</span></div><div class="line"><span class="attr">  template:</span></div><div class="line"><span class="attr">    metadata:</span></div><div class="line"><span class="attr">      name:</span> <span class="string">nginx</span></div><div class="line"><span class="attr">      labels:</span></div><div class="line"><span class="attr">        app:</span> <span class="string">nginx</span></div><div class="line"><span class="attr">    spec:</span></div><div class="line"><span class="attr">      containers:</span></div><div class="line"><span class="attr">      - name:</span> <span class="string">nginx</span></div><div class="line"><span class="attr">        image:</span> <span class="string">nginx</span></div><div class="line"><span class="attr">        ports:</span></div><div class="line"><span class="attr">        - containerPort:</span> <span class="number">80</span></div></pre></td></tr></table></figure>
+<p>用如下命令运行这个例子：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ kubectl create -f ./replication<span class="selector-class">.yaml</span></div><div class="line">replicationcontroller <span class="string">"nginx"</span> created</div></pre></td></tr></table></figure>
+<p>查看<code>ReplicationController</code>的状态：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ kubectl describe replicationcontrollers/nginx</div><div class="line">Name:        nginx</div><div class="line">Namespace:  <span class="built_in"> default</span></div><div class="line">Image(s):    nginx</div><div class="line">Selector:    <span class="attribute">app</span>=nginx</div><div class="line">Labels:      <span class="attribute">app</span>=nginx</div><div class="line">Replicas:    3 current / 3 desired</div><div class="line">Pods Status: 0 Running / 3 Waiting / 0 Succeeded / 0 Failed</div><div class="line">Events:</div><div class="line">  FirstSeen       LastSeen     Count    <span class="keyword">From</span>                        SubobjectPath   <span class="built_in"> Type </span>     Reason              Message</div><div class="line">  ---------       --------     -----    ----                        -------------    ----      ------              -------</div><div class="line">  20s             20s          1        &#123;replication-controller &#125;                    Normal    SuccessfulCreate    Created pod: nginx-qrm3m</div><div class="line">  20s             20s          1        &#123;replication-controller &#125;                    Normal    SuccessfulCreate    Created pod: nginx-3ntk0</div><div class="line">  20s             20s          1        &#123;replication-controller &#125;                    Normal    SuccessfulCreate    Created pod: nginx-4ok8v</div></pre></td></tr></table></figure>
+<p>这里，3个pod被创建，但都还没有在运行，可能是因为还在拉取镜像。等一会再运行相同的命令，应该会得到如下的结果：</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Pods Status:   <span class="number"> 3 </span>Running /<span class="number"> 0 </span>Waiting /<span class="number"> 0 </span>Succeeded /<span class="number"> 0 </span>Failed</div></pre></td></tr></table></figure>
+<p>如果想要以一种机器可读的格式，罗列出属于这个rc的所有pod，可以使用如下命令：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ <span class="attribute">pods</span>=$(kubectl <span class="builtin-name">get</span> pods <span class="attribute">--selector</span>=app=nginx <span class="attribute">--output</span>=jsonpath=&#123;.items<span class="built_in">..</span>metadata.name&#125;)</div><div class="line">$ echo <span class="variable">$pods</span></div><div class="line">nginx-3ntk0 nginx-4ok8v nginx-qrm3m</div></pre></td></tr></table></figure>
+<p>这里，<code>selector</code>等同于<code>ReplicationController</code>的<code>selector</code>，<code>--output=jsonpath</code>选项指定了一个表达式，用来只获取返回列表中每个pod的名字。</p>
+<p>书写一个<code>ReplicationController</code></p>
 <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
@@ -623,11 +831,524 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/07/14/Git多仓库追踪更新的方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/14/Git多仓库追踪更新的方法/" itemprop="url">Git多仓库追踪更新的方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-14T15:53:24+08:00">
+                2017-07-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/14/Git多仓库追踪更新的方法/" class="leancloud_visitors" data-flag-title="Git多仓库追踪更新的方法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<p>有时候，我们在github上看到特别棒的项目，忍不住想要深入的研究，对代码进行一些自己的修改，同时又想保持和本源项目的同步更新，此时就面临着两全的问题：既要有自己的修改，又要有作者的更新。</p>
+<p>Git多仓库正好可以解决这个问题，能够在保持修改的同时，追踪本源的更新。下面是解决步骤：</p>
+<ul>
+<li>假如有本源项目仓库：<code>source</code>，首先，需要在github页面，<code>fork</code>一份代码。</li>
+</ul>
+<p><img src="/source_code/image/github-fork.png" alt="Alt text"></p>
+<ul>
+<li>对于<code>fork</code>生成的仓库：<code>mine</code>，将代码<code>clone</code>到本地：</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="keyword">clone</span> <span class="title">mine</span>.git</div></pre></td></tr></table></figure>
+<ul>
+<li>本地做一些自己的修改，保持修改很简单，就是普通的<code>push</code>：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> git add .</span></div><div class="line"><span class="meta">$</span><span class="bash"> git commit -m <span class="string">"commit my change"</span></span></div><div class="line"><span class="meta">$</span><span class="bash"> git push origin master</span></div></pre></td></tr></table></figure>
+<ul>
+<li>如果本源仓库<code>source</code>有更新，想要将更新运用到<code>mine</code>仓库中，需要做如下几步操作：</li>
+</ul>
+<ol>
+<li><p>首先需要将<code>source</code>加入到远程仓库列表中，比如取名为<code>upstream</code>。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git remote add upstream source<span class="selector-class">.git</span> <span class="comment">//只需做一次</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>每次需要追踪并应用<code>source</code>更新的时候，都需要在<code>origin/master</code>分支上做一些操作，当然，如果你想将<code>source</code>的更新应用到其它分支上，也可以在其它分支上做如下操作。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> git fetch upstream //从<span class="built_in">source</span>仓库拉取所有更新</span></div><div class="line"><span class="meta">$</span><span class="bash"> git merge upstream/master //将更新合并到origin/master上</span></div><div class="line"><span class="meta">$</span><span class="bash"> git add . //merge时可能会冲突，解决完所有冲突，使用add消除MERGIG状态</span></div><div class="line"><span class="meta">$</span><span class="bash"> git commit -m <span class="string">"track source update"</span></span></div><div class="line"><span class="meta">$</span><span class="bash"> git push origin master //将应用后的更新提交到mine仓库</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/22/juju-kubernetes修改运行配置的方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/22/juju-kubernetes修改运行配置的方法/" itemprop="url">juju kubernetes修改运行配置的方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T16:44:34+08:00">
+                2017-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/22/juju-kubernetes修改运行配置的方法/" class="leancloud_visitors" data-flag-title="juju kubernetes修改运行配置的方法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>转载请注明出处：www.huamo.online</p>
+</blockquote>
+<p>使用<code>conjure-up</code> + <code>juju</code> + <code>lxd</code>部署的<code>kubernetes</code>集群，如果需要修改<code>master</code>或者<code>worker</code>上的服务运行配置，知道以下几点将会很有帮助。</p>
+<blockquote>
+<ul>
+<li><p><strong>$SNAP_DATA指的就是<code>/var/snap/...</code>路径</strong></p>
+</li>
+<li><p><strong>所有的服务配置都在节点系统中的<code>/var/snap/$app/.../args</code>文件中</strong></p>
+</li>
+<li><p><strong>修改完配置后，直接<code>reboot</code>重启节点系统，就会使改变生效</strong></p>
+</li>
+</ul>
+</blockquote>
+<p>例如，在初始部署的时候，集群的<code>--allow-privileged</code>没有设置为<code>true</code>，在实际使用中，发现需要容器特权，此时就需要修改服务配置。</p>
+<p><strong>解决方法</strong></p>
+<ol>
+<li>需要修改所有<code>worker</code>节点的<code>kubelet</code>运行参数，使其<code>--allow-privileged true</code>。</li>
+<li>同时，需要修改<code>master</code>节点的<code>kube-apiserver</code>运行参数，使其<code>--allow-privileged true</code></li>
+</ol>
+<p><strong>步骤</strong></p>
+<ul>
+<li><code>juju status</code>查看集群状态信息，有类似下文的输出</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Unit                      Workload  Agent  Machine  Public address  Ports           Message</div><div class="line">easyrsa/<span class="number">0</span>*                active    idle   <span class="number">0</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.3</span>                        Certificate Authority connected.</div><div class="line">etcd/<span class="number">0</span>*                   active    idle   <span class="number">1</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.203</span>      <span class="number">2379</span>/tcp        Healthy with <span class="number">3</span> known peers</div><div class="line">etcd/<span class="number">1</span>                    active    idle   <span class="number">2</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.14</span>       <span class="number">2379</span>/tcp        Healthy with <span class="number">3</span> known peers</div><div class="line">etcd/<span class="number">2</span>                    active    idle   <span class="number">3</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.133</span>      <span class="number">2379</span>/tcp        Healthy with <span class="number">3</span> known peers</div><div class="line">kubeapi-load-balancer/<span class="number">0</span>*  active    idle   <span class="number">4</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.234</span>      <span class="number">443</span>/tcp         Loadbalancer ready.</div><div class="line">kubernetes-master/<span class="number">0</span>*      waiting   idle   <span class="number">5</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.77</span>       <span class="number">6443</span>/tcp        Waiting for kube-system pods to start</div><div class="line">  flannel/<span class="number">0</span>*              active    idle            <span class="number">10.0</span><span class="number">.8</span><span class="number">.77</span>                       Flannel subnet <span class="number">10.1</span><span class="number">.66</span><span class="number">.1</span>/<span class="number">24</span></div><div class="line">kubernetes-worker/<span class="number">0</span>       active    idle   <span class="number">6</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.240</span>      <span class="number">80</span>/tcp,<span class="number">443</span>/tcp  Kubernetes worker running.</div><div class="line">  flannel/<span class="number">3</span>               active    idle            <span class="number">10.0</span><span class="number">.8</span><span class="number">.240</span>                      Flannel subnet <span class="number">10.1</span><span class="number">.84</span><span class="number">.1</span>/<span class="number">24</span></div><div class="line">kubernetes-worker/<span class="number">1</span>*      active    idle   <span class="number">7</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.138</span>      <span class="number">80</span>/tcp,<span class="number">443</span>/tcp  Kubernetes worker running.</div><div class="line">  flannel/<span class="number">2</span>               active    idle            <span class="number">10.0</span><span class="number">.8</span><span class="number">.138</span>                      Flannel subnet <span class="number">10.1</span><span class="number">.16</span><span class="number">.1</span>/<span class="number">24</span></div><div class="line">kubernetes-worker/<span class="number">2</span>       active    idle   <span class="number">8</span>        <span class="number">10.0</span><span class="number">.8</span><span class="number">.139</span>      <span class="number">80</span>/tcp,<span class="number">443</span>/tcp  Kubernetes worker running.</div><div class="line">  flannel/<span class="number">1</span>               active    idle            <span class="number">10.0</span><span class="number">.8</span><span class="number">.139</span>                      Flannel subnet <span class="number">10.1</span><span class="number">.46</span><span class="number">.1</span>/<span class="number">24</span></div></pre></td></tr></table></figure>
+<ul>
+<li><p><code>juju ssh 6</code> 进入<code>kuberneter-worker/0</code>节点中</p>
+</li>
+<li><p>修改<code>worker</code>节点的<code>kubelet</code>运行参数</p>
+</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo -s</div><div class="line">vim <span class="regexp">/var/</span>snap<span class="regexp">/kubelet/</span><span class="number">27</span>/args</div><div class="line">添加一行后保存退出： --allow-privileged <span class="literal">true</span></div><div class="line">reboot </div><div class="line"><span class="comment">//改完配置后，直接reboot重启系统，即可使worker节点修改生效。</span></div></pre></td></tr></table></figure>
+<ul>
+<li>同样的方式，修改<code>master</code>节点的<code>kube-apiserver</code>运行参数</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">juju ssh <span class="number">5</span></div><div class="line">sudo -s</div><div class="line">vim <span class="regexp">/var/</span>snap<span class="regexp">/kube-apiserver/</span><span class="number">27</span>/args</div><div class="line">添加一行后保存退出： --allow-privileged <span class="literal">true</span></div><div class="line">reboot <span class="comment">//重启master节点使改变生效</span></div></pre></td></tr></table></figure>
+<ul>
+<li>这样，整个集群就支持容器特权了。OKay！</li>
+</ul>
+<blockquote>
+<p>转载请注明出处：www.huamo.online</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/22/一些不错的网站/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/22/一些不错的网站/" itemprop="url">一些不错的网站</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T13:22:33+08:00">
+                2017-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分享/" itemprop="url" rel="index">
+                    <span itemprop="name">分享</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/22/一些不错的网站/" class="leancloud_visitors" data-flag-title="一些不错的网站">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <ul>
+<li>icon搜索，各种尺寸，各种格式下载：<a href="http://www.flaticon.com/" target="_blank" rel="external">flaticon</a></li>
+</ul>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span><span class="comment">//www.flaticon.com/</span></div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/22/一些不错的网站/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 

@@ -99,7 +99,7 @@
 <meta property="og:url" content="http://www.huamo.online/2017/12/20/Fabric-End-to-End流程/index.html">
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  end-to-end验证提供了一个示例fabric网络，包括2个组织，每个组织包含2个peer节点，以及1个基于Kafka的排序服务。 这个验证用到了2个基础工具，用来创建一个带有数字签名验证的和访问控制的实用交易网络：  cryptogen - 创建x509证书，用来标识和验证网络中的各种组件。 configtxgen - 为orderer节">
-<meta property="og:updated_time" content="2018-04-09T02:55:41.000Z">
+<meta property="og:updated_time" content="2018-04-16T13:30:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fabric End-to-End流程">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  end-to-end验证提供了一个示例fabric网络，包括2个组织，每个组织包含2个peer节点，以及1个基于Kafka的排序服务。 这个验证用到了2个基础工具，用来创建一个带有数字签名验证的和访问控制的实用交易网络：  cryptogen - 创建x509证书，用来标识和验证网络中的各种组件。 configtxgen - 为orderer节">
@@ -370,7 +370,7 @@
 <p>这个验证用到了2个基础工具，用来创建一个带有数字签名验证的和访问控制的实用交易网络：</p>
 <ul>
 <li><code>cryptogen</code> - 创建x509证书，用来标识和验证网络中的各种组件。</li>
-<li><code>configtxgen</code> - 为<code>orderer</code>节点的启动和<code>channel</code>的创建，生成必需的配置文件[artifacts]。</li>
+<li><code>configtxgen</code> - 为<code>orderer</code>节点的启动和<code>channel</code>的创建，生成必需的配置文件(<code>artifacts</code>)。<a id="more"></a></li>
 </ul>
 <p>每一个工具用到一个<code>yaml</code>配置文件，在里面我们指定了网络的拓扑结构（<code>cryptogen</code>需用到），以及用于各种配置操作的证书的位置（<code>configtxgen</code>需用到）。当这些工具都已被成功运行后，我们就可以发布这个网络了。工具的更多细节和网络的架构在下文描述。现在，让我们开始吧…</p>
 <h2 id="前置操作【Prerequisites】"><a href="#前置操作【Prerequisites】" class="headerlink" title="前置操作【Prerequisites】"></a>前置操作【<code>Prerequisites</code>】</h2><h3 id="编译二进制包"><a href="#编译二进制包" class="headerlink" title="编译二进制包"></a>编译二进制包</h3><ul>
@@ -387,12 +387,12 @@
 <blockquote>
 <p>如果在编译过程中失败了，可以修复错误，然后执行<code>make clean</code>，最后再<code>make docker</code>。</p>
 </blockquote>
-<h2 id="Cryptogen工具"><a href="#Cryptogen工具" class="headerlink" title="Cryptogen工具"></a><code>Cryptogen</code>工具</h2><p>我们将使用<code>cryptogen</code>工具来为我们的各种网络实体生成加密内容（x509证书）。证书基于PKI标准实现，通过回溯到一个共同的信任锚点来实现验证。</p>
-<h3 id="它是如何工作的？"><a href="#它是如何工作的？" class="headerlink" title="它是如何工作的？"></a>它是如何工作的？</h3><p><code>Cryptogen</code>使用一个文件 - <code>crypto-config.yaml</code> - 包含了网络的拓扑结构，并且允许我们为组织以及组织中的各种组件，生成一系列的证书。每个组织被提供了一个唯一的根证书（<code>ca-cert</code>），将指定的组件（<code>peers</code>和<code>orderers</code>）绑定到了该组织上。Fabric中的交易和通讯都由一个实体的私钥（<code>keystore</code>）进行签名，然后由相应的公钥（<code>signcerts</code>）进行验证。在这个yaml文件中你会看到一个<code>count</code>变量。我们使用这个值指定了每个组织的<code>peer</code>数量；这里我们指定了2个<code>peer</code>。这个模板的其它部分都是非常浅显易懂的。</p>
+<h2 id="Cryptogen工具"><a href="#Cryptogen工具" class="headerlink" title="Cryptogen工具"></a><code>Cryptogen</code>工具</h2><p>我们将使用<code>cryptogen</code>工具来为我们的各种网络实体生成加密内容（<code>x509</code>证书）。证书基于<code>PKI</code>标准实现，通过回溯到一个共同的信任锚点来实现验证。</p>
+<h3 id="它是如何工作的？"><a href="#它是如何工作的？" class="headerlink" title="它是如何工作的？"></a>它是如何工作的？</h3><p><code>Cryptogen</code>使用一个文件 - <code>crypto-config.yaml</code> - 包含了网络的拓扑结构，并且允许我们为组织以及组织中的各种组件，生成一系列的证书。每个组织被提供了一个唯一的根证书（<code>ca-cert</code>），将指定的组件（<code>peers</code>和<code>orderers</code>）绑定到了该组织上。<code>Fabric</code>中的交易和通讯都由一个实体的私钥（<code>keystore</code>）进行签名，然后由相应的公钥（<code>signcerts</code>）进行验证。在这个<code>yaml</code>文件中你会看到一个<code>count</code>变量。我们使用这个值指定了每个组织的<code>peer</code>数量；这里我们指定了2个<code>peer</code>。这个模板的其它部分都是非常浅显易懂的。</p>
 <p>在我们运行了工具之后，证书会被放在<code>crypto-config</code>目录下。</p>
 <h2 id="Configtxgen工具"><a href="#Configtxgen工具" class="headerlink" title="Configtxgen工具"></a><code>Configtxgen</code>工具</h2><p><code>configtxgen</code>工具用来生成4种文件：orderer节点的启动块（<code>bootstrap block</code>），fabric channel的配置交易（<code>channel configuration transaction</code>），以及2个锚<code>peer</code>交易（<code>anchor peer transactions</code>）– 一个<code>Peer</code>组织一个。</p>
-<p>orderer block是排序服务的创世块，channel交易文件会在channel创建时广播给orderer节点。而锚peer节点交易，就像名字表示的那样，在这个channel上为每个组织指定一个锚peer节点。</p>
-<h3 id="它是如何工作的？-1"><a href="#它是如何工作的？-1" class="headerlink" title="它是如何工作的？"></a>它是如何工作的？</h3><p><code>Configtxgen</code>读取一个文件 - <code>configtx.yaml</code> - 文件中包含了样例网络的定义。有3个成员 - 一个Orderer组织（<code>OrdererOrg</code>），和2个Peer组织(<code>Org1</code>和<code>Org2</code>）每个都管理和维护2个peer节点。这个文件也指定了一个联盟 - <code>SampleConsortium</code> - 包含我们的2个Peer组织的联盟。对文件顶部的<code>Profiles</code>区域中内容多留意下。你会发现我们有2个不同的顶级属性。一个是给orderer创世块用的 - <code>TwoOrgsOrdererGenesis</code> - 另一个是给channel用的 - <code>TwoOrgsChannel</code>。这些顶级属性是很重要的，当我们创建配置文件时我们会把它们作为参数传入进去。这个yaml文件还包含了2个值得注意的额外规范。首先，我们为每一个Peer组织指定了锚peer节点（<code>peer0.org1.example.com</code>和<code>peer0,org2.example.com</code>）。然后，我们为每一个成员指定了MSP文件夹路径，这就使我们可以在<code>orderer</code>创世块中按顺序的存储每个组织的根证书。这是一个很关键的概念。现在任何与排序服务通信的网络实体都能够被<code>orderer</code>验证其数字签名了。</p>
+<p><code>orderer block</code>是排序服务的创世块，<code>channel</code>交易文件会在<code>channel</code>创建时广播给<code>orderer</code>节点。而锚<code>peer</code>节点交易，就像名字表示的那样，在这个<code>channel</code>上为每个组织指定一个锚<code>peer</code>节点。</p>
+<h3 id="它是如何工作的？-1"><a href="#它是如何工作的？-1" class="headerlink" title="它是如何工作的？"></a>它是如何工作的？</h3><p><code>Configtxgen</code>读取一个文件 - <code>configtx.yaml</code> - 文件中包含了样例网络的定义。有3个成员 - 一个<code>Orderer</code>组织（<code>OrdererOrg</code>），和2个<code>Peer</code>组织(<code>Org1</code>和<code>Org2</code>）每个都管理和维护2个<code>peer</code>节点。这个文件也指定了一个联盟 - <code>SampleConsortium</code> - 包含我们的2个Peer组织的联盟。对文件顶部的<code>Profiles</code>区域中内容多留意下。你会发现我们有2个不同的顶级属性。一个是给orderer创世块用的 - <code>TwoOrgsOrdererGenesis</code> - 另一个是给<code>channel</code>用的 - <code>TwoOrgsChannel</code>。这些顶级属性是很重要的，当我们创建配置文件时我们会把它们作为参数传入进去。这个<code>yaml</code>文件还包含了2个值得注意的额外规范。首先，我们为每一个<code>Peer</code>组织指定了锚<code>peer</code>节点（<code>peer0.org1.example.com</code>和<code>peer0,org2.example.com</code>）。然后，我们为每一个成员指定了<code>MSP</code>文件夹路径，这就使我们可以在<code>orderer</code>创世块中按顺序的存储每个组织的根证书。这是一个很关键的概念。现在任何与排序服务通信的网络实体都能够被<code>orderer</code>验证其数字签名了。</p>
 <h3 id="运行shell脚本"><a href="#运行shell脚本" class="headerlink" title="运行shell脚本"></a>运行<code>shell</code>脚本</h3><p>确认你在<code>examples/e2e_cli</code>目录下，这是<code>shell</code>脚本所在的位置。为你的<code>channel</code>起一个独特的名字，然后替换掉下方的<code>&lt;channel-ID&gt;</code>参数。如果你不提供一个名字，那么这个脚本会运行失败。</p>
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cd</span> examples/e2e_cli</div><div class="line">./generateArtifacts.<span class="keyword">sh</span> <span class="symbol">&lt;channel-ID&gt;</span></div></pre></td></tr></table></figure>
 <p>这个脚本的输出有些多，因为它会生成加密库和多个文件。但是，你会在终端里看到5个截然不同的说明信息，如下所示：</p>
@@ -416,7 +416,16 @@
 </li>
 <li><p><code>peer0.org1.example.com</code>和<code>peer1.org1.example.com</code>隶属于<code>Org1</code>；<code>peer0.org2.example.com</code>和<code>peer1.org2.example.com</code>隶属于<code>Org2</code>。</p>
 </li>
-<li></li>
+<li><p>这些关系都定义在<code>crypto-config.yaml</code>文件中，并且<code>MSP</code>路径在我们的<code>docker-compose</code>文件中指定了。</p>
+</li>
+<li><p>Org1MSP(<code>peer0.org1.example.com</code>)和Org2MSP(<code>peer0.org2.example.com</code>)的锚<code>peer</code>随后都会被更新，我们实现这一步是通过将<code>Org1MSPanchors.tx</code>和<code>Org2MSPanchors.tx</code>配置传入到<code>orderer</code>服务中实现的，同时传入的还有我们的<code>channel</code>名称。</p>
+</li>
+<li><p>一个<code>chaincode</code> - <code>chaincode_example02</code> - 被安装在了<code>peer0.org1.example.com</code>和<code>peer0.org2.example.com</code>上。</p>
+</li>
+<li><p>这个<code>chaincode</code>随后在<code>peer0.org2.example.com</code>被<code>instantiate</code>。初始化操作会将这个<code>chaincode</code>添加到<code>channel</code>中，针对目标<code>peer</code>启动<code>docker</code>容器，并且用和<code>chaincode</code>相关的<code>key-value</code>对进行初始化。在这个例子中初始化值为[<code>&quot;a&quot;,&quot;100&quot;,&quot;b&quot;,&quot;200&quot;</code>]。初始化结束后，以<code>dev-peer0.org2.example.com-mycc-1.0</code>为名字的容器开始运行。</p>
+</li>
+<li><p>对<code>a</code>键的<code>query</code>发送到了<code>peer0.org1.example.com</code>上。相关的<code>chaincode</code>前面已经安装在了<code>peer0.org1.example.com</code>上，所以这将会为<code>Org1 peer0</code>运行一个名为<code>dev-peer0.org1.example</code></p>
+</li>
 </ul>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
 <li><a href="https://github.com/runningbar/fabric/blob/master/examples/e2e_cli/end-to-end.rst" target="_blank" rel="external">https://github.com/runningbar/fabric/blob/master/examples/e2e_cli/end-to-end.rst</a></li>
