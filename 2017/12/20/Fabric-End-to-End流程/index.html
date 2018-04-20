@@ -99,7 +99,7 @@
 <meta property="og:url" content="http://www.huamo.online/2017/12/20/Fabric-End-to-End流程/index.html">
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  end-to-end验证提供了一个示例fabric网络，包括2个组织，每个组织包含2个peer节点，以及1个基于Kafka的排序服务。 这个验证用到了2个基础工具，用来创建一个带有数字签名验证的和访问控制的实用交易网络：  cryptogen - 创建x509证书，用来标识和验证网络中的各种组件。 configtxgen - 为orderer节">
-<meta property="og:updated_time" content="2018-04-18T02:56:35.000Z">
+<meta property="og:updated_time" content="2018-04-18T04:09:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fabric End-to-End流程">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  end-to-end验证提供了一个示例fabric网络，包括2个组织，每个组织包含2个peer节点，以及1个基于Kafka的排序服务。 这个验证用到了2个基础工具，用来创建一个带有数字签名验证的和访问控制的实用交易网络：  cryptogen - 创建x509证书，用来标识和验证网络中的各种组件。 configtxgen - 为orderer节">
@@ -444,6 +444,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./network_setup.sh up</div></pre></td></tr></table></figure>
 <p>或者</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./network_setup.sh up &lt;channel-ID&gt; &lt;timeout-value&gt;</div></pre></td></tr></table></figure>
+<p>全部清理可以用以下命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./network_setup.sh down &lt;channel-ID&gt;</div></pre></td></tr></table></figure>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
 <li><a href="https://github.com/runningbar/fabric/blob/master/examples/e2e_cli/end-to-end.rst" target="_blank" rel="external">https://github.com/runningbar/fabric/blob/master/examples/e2e_cli/end-to-end.rst</a></li>
 </ul>
