@@ -93,15 +93,16 @@
 
 
 
-<meta name="description" content="分享即收获">
-<meta property="og:type" content="website">
-<meta property="og:title" content="花木兰">
-<meta property="og:url" content="http://www.huamo.online/archives/2017/12/index.html">
+<meta name="description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ethereum源码阅读笔记-accounts(2)-分层确定性钱包">
+<meta property="og:url" content="http://www.huamo.online/2018/04/20/Ethereum源码阅读笔记-accounts-2-分层确定性钱包/index.html">
 <meta property="og:site_name" content="花木兰">
-<meta property="og:description" content="分享即收获">
+<meta property="og:description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
+<meta property="og:updated_time" content="2018-04-21T08:59:41.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="花木兰">
-<meta name="twitter:description" content="分享即收获">
+<meta name="twitter:title" content="Ethereum源码阅读笔记-accounts(2)-分层确定性钱包">
+<meta name="twitter:description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
 
 
 
@@ -129,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://www.huamo.online/archives/2017/12/"/>
+  <link rel="canonical" href="http://www.huamo.online/2018/04/20/Ethereum源码阅读笔记-accounts-2-分层确定性钱包/"/>
 
 
 
 
 
-  <title>归档 | 花木兰</title>
+  <title>Ethereum源码阅读笔记-accounts(2)-分层确定性钱包 | 花木兰</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -171,7 +172,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -255,65 +256,222 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-       
-      
-      OK! 目前共计 36 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2018/04/20/Ethereum源码阅读笔记-accounts-2-分层确定性钱包/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ethereum源码阅读笔记-accounts(2)-分层确定性钱包</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-20T15:31:36+08:00">
+                2018-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ethereum/" itemprop="url" rel="index">
+                    <span itemprop="name">ethereum</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/20/Ethereum源码阅读笔记-accounts-2-分层确定性钱包/" class="leancloud_visitors" data-flag-title="Ethereum源码阅读笔记-accounts(2)-分层确定性钱包">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<h1 id="分层确定性钱包-HD-Wallets"><a href="#分层确定性钱包-HD-Wallets" class="headerlink" title="分层确定性钱包(HD Wallets)"></a>分层确定性钱包(<code>HD Wallets</code>)</h1><p>在使用钱包，以及看以太坊代码时，都会碰到<code>m/44&#39;/60&#39;/0&#39;/0</code>这样奇怪的字符串，以及派生路径（<code>DerivationPath</code>）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：<strong>分层确定性钱包</strong><a id="more"></a></p>
+<p><code>分层确定性钱包</code>的概念最初来源于<code>bitcoin</code>，出自<code>BIP-0032</code>。其英文叫做<code>Hierarchical Deterministic Wallets</code>，简称为<code>HD Wallets</code>。<strong>一个分层确定性钱包可以部分或全部共享给不同的系统，每一部分都拥有或不拥有花费数字货币的能力。</strong></p>
+<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>比特币早期的钱包是非确定性的，使用随机生成的私钥。中本聪提出了每个交易使用一个地址的概念，为了避免每次交易完后都需要备份钱包（为了备份私钥），早期的钱包会默认预先生成<code>100</code>个私钥放在私钥池里以供使用，但这只是延缓了备份的间隔，需要备份的私钥数量并没有减少，依然不方便管理。另外，早期的钱包并没有打算在多个系统上同时共享使用。他们支持通过钱包的加密功能隐藏私钥而且不共享密码，但这样“阉割过”的钱包也失去了生成公钥的能力。</p>
+<p>而确定性钱包不需要频繁的备份。椭圆曲线数学允许在不暴露私钥的情况下计算出公钥内容。这就可以支持一些场景，比如一个网上商店可以让它的网络服务器，在不接触相应私钥（花费收到的资金时需要用到私钥）的情况下，为每笔订单或每个客户生成新的地址（公钥哈希）。</p>
+<p>一般来说，确定性钱包通常只包含一条由秘钥对构成的链。只有一条链就意味着共享一个钱包时，要么就全共享，要么就什么都不共享。然而，在有些场景下，人们可能只需要其中一些秘钥来共享和回复。在上一段提到的网店例子中，网络服务器并不需要访问卖家钱包中的所有公钥，并且它只需要访问那些接受顾客付款的地址，而不用去访问例如卖家要花钱时生成的地址。分层确定性钱包基于多个秘钥对链来支持选择性共享，这些秘钥对链由同一个根生成。</p>
+<blockquote>
+<p>至此，可以看到，钱包分为非确定性和确定性。所谓非确定性即钱包随机生成多个私钥，而确定性钱包是由一个根（种子）生成多个秘钥对。而分层确定性钱包可以通过一个根生成多个秘钥对的链（即构成了树），来支持选择性共享。</p>
+</blockquote>
+<h2 id="规范：私钥生成"><a href="#规范：私钥生成" class="headerlink" title="规范：私钥生成"></a>规范：私钥生成</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><p><a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki" target="_blank" rel="external">https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki</a></p>
+</li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/30297080" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/30297080</a></p>
+</li>
+</ul>
+<blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>donate me a coffee ~</div>
+    <div id="QR" style="display: block;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat.png" alt="runningbar WeChat Pay"/>
+          <p>微信打赏</p>
         </div>
       
       
+        <div id="eth" style="display: inline-block">
+          <img id="eth_qr" src="/images/eth.png" alt="runningbar eth Pay"/>
+          <p>ETH & ERC20打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.png" alt="runningbar Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
 
       
+    </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/12/20/Fabric-End-to-End流程/" itemprop="url">
-              
-                <span itemprop="name">Fabric End-to-End流程</span>
-              
-            </a>
-        
-      </h2>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-20T10:34:49+08:00"
-              content="2017-12-20" >
-          12-20
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/16/Ethereum源码阅读笔记-eth/" rel="next" title="Ethereum源码阅读笔记-eth">
+                <i class="fa fa-chevron-left"></i> Ethereum源码阅读笔记-eth
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/20/密码学学习笔记/" rel="prev" title="密码学学习笔记">
+                密码学学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
-  </section>
-
-  
-
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -321,6 +479,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODcwNS81Mjc2"></div>
+    
+  </div>
+
 
         </div>
         
@@ -340,8 +504,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -394,6 +567,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#分层确定性钱包-HD-Wallets"><span class="nav-number">1.</span> <span class="nav-text">分层确定性钱包(HD Wallets)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规范：私钥生成"><span class="nav-number">1.2.</span> <span class="nav-text">规范：私钥生成</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -527,11 +716,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
 
 
   
@@ -567,6 +754,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
