@@ -305,7 +305,7 @@ hr {
 }
 blockquote {
   padding: 0 15px;
-  color: #666;
+  color: #888;
   border-left: 4px solid #ddd;
 }
 blockquote cite::before {
@@ -1276,7 +1276,7 @@ pre .javascript .function {
   transition-property: background;
 }
 .posts-collapse .post-header:hover {
-  border-bottom-color: #666;
+  border-bottom-color: #888;
 }
 .posts-collapse .post-header:hover::before {
   background: #222;
@@ -1301,7 +1301,7 @@ pre .javascript .function {
   opacity: 0.6;
 }
 .posts-collapse .post-title a {
-  color: #666;
+  color: #888;
   border-bottom: none;
 }
 .page-home .post-type-quote .post-header,
@@ -1782,7 +1782,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #017095;
+  background: #ffff63;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -1835,7 +1835,7 @@ pre .javascript .function {
 }
 .post-toc-empty {
   font-size: 14px;
-  color: #666;
+  color: #888;
 }
 .post-toc-wrap {
   overflow: hidden;
