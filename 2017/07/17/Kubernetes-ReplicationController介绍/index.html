@@ -93,16 +93,16 @@
 
 
 
-<meta name="description" content="转载请注明出处：www.huamo.online 英文原文： https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/  ReplicationController是什么？一个ReplicationController可以保证在任一个时刻都有指定数量的pod副本在运行。换句话说，一个Repli">
+<meta name="description" content="转载请注明出处：www.huamo.online   英文原文： https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/  ReplicationController是什么？一个ReplicationController可以保证在任一个时刻都有指定数量的pod副本在运行。换句话说，一个Rep">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kubernetes ReplicationController介绍">
 <meta property="og:url" content="http://www.huamo.online/2017/07/17/Kubernetes-ReplicationController介绍/index.html">
 <meta property="og:site_name" content="花木兰">
-<meta property="og:description" content="转载请注明出处：www.huamo.online 英文原文： https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/  ReplicationController是什么？一个ReplicationController可以保证在任一个时刻都有指定数量的pod副本在运行。换句话说，一个Repli">
+<meta property="og:description" content="转载请注明出处：www.huamo.online   英文原文： https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/  ReplicationController是什么？一个ReplicationController可以保证在任一个时刻都有指定数量的pod副本在运行。换句话说，一个Rep">
 <meta property="og:updated_time" content="2017-07-17T12:49:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes ReplicationController介绍">
-<meta name="twitter:description" content="转载请注明出处：www.huamo.online 英文原文： https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/  ReplicationController是什么？一个ReplicationController可以保证在任一个时刻都有指定数量的pod副本在运行。换句话说，一个Repli">
+<meta name="twitter:description" content="转载请注明出处：www.huamo.online   英文原文： https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/  ReplicationController是什么？一个ReplicationController可以保证在任一个时刻都有指定数量的pod副本在运行。换句话说，一个Rep">
 
 
 
@@ -365,6 +365,8 @@
       
         <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<blockquote>
 <p>英文原文： <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/" target="_blank" rel="external">https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/</a></p>
 </blockquote>
 <h4 id="ReplicationController是什么？"><a href="#ReplicationController是什么？" class="headerlink" title="ReplicationController是什么？"></a><code>ReplicationController</code>是什么？</h4><p>一个<code>ReplicationController</code>可以保证在任一个时刻都有指定数量的pod副本在运行。换句话说，一个<code>ReplicationController</code>保证了一个或多个相同pod总是运行可用的。如果存在了过多的pod，它会杀掉多余的一些。如果pod数量过少，<code>ReplicationController</code>会启动更多的pod。不同于手动创建pod，被<code>ReplicationController</code>维护的pod，如果遇到了宕机，被删除，被终止的情况，都会被自动替换为新的pod。举个例子，你的pod会在破坏性的维护之后被重建，比如内核升级。基于此，我们推荐即使你的应用只需要一个pod，也使用<code>ReplicationController</code>。你可以把<code>ReplicationController</code>想象成类似一个进程监控的东西，而不是单独节点上的个别进程，<code>ReplicationController</code>监督跨越多个节点的多个pod。在讨论中，<code>ReplicationController</code>常简写为<code>rc</code>或者<code>rcs</code>，并且这也是<code>kubectl</code>命令行中的缩写形式。</p>

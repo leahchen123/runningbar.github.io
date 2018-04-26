@@ -99,7 +99,7 @@
 <meta property="og:url" content="http://www.huamo.online/2018/04/20/Ethereum源码阅读笔记-accounts-2-分层确定性钱包/index.html">
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
-<meta property="og:updated_time" content="2018-04-21T08:59:41.000Z">
+<meta property="og:updated_time" content="2018-04-25T11:35:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ethereum源码阅读笔记-accounts(2)-分层确定性钱包">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
@@ -374,10 +374,65 @@
 <blockquote>
 <p>至此，可以看到，钱包分为非确定性和确定性。所谓非确定性即钱包随机生成多个私钥，而确定性钱包是由一个根（种子）生成多个秘钥对。而分层确定性钱包可以通过一个根生成多个秘钥对的链（即构成了树），来支持选择性共享。</p>
 </blockquote>
-<h2 id="规范：私钥生成"><a href="#规范：私钥生成" class="headerlink" title="规范：私钥生成"></a>规范：私钥生成</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<h2 id="规范：密钥生成"><a href="#规范：密钥生成" class="headerlink" title="规范：密钥生成"></a>规范：密钥生成</h2><h3 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h3><p>在本文其余部分中，我们假定是基于比特币中使用的公钥密码学，即ECC中用到的由<code>secp256k1</code>(<a href="http://www.secg.org/sec2-v2.pdf" target="_blank" rel="external">http://www.secg.org/sec2-v2.pdf</a>)定义的域和曲线参数。以下变量分别为：</p>
+<ul>
+<li><p>整数取模曲线的阶（这个阶记为n）</p>
+</li>
+<li><p>曲线上点的坐标</p>
+</li>
+<li><p>字节序列。</p>
+</li>
+</ul>
+<p>用两个坐标对的加法（$+$）来表示椭圆曲线群的操作。连接($||$)操作是将一个字节序列加到另一个的尾部。</p>
+<p>作为标准转换函数，我们假设：</p>
+<ul>
+<li><p>$point(p)$：返回对<code>secp256k1</code>基点和整数$p$的EC点乘运算（重复EC群操作实现）得到的坐标对。</p>
+</li>
+<li><p>$ser_{32}(i)$：将一个32位无符号整型<code>i</code>序列化为一个4字节的序列，大端优先。</p>
+</li>
+<li><p>$ser_{256}(p)$：将整数<code>p</code>序列化为一个32字节序列，大端优先。</p>
+</li>
+<li><p>$ser_P(P)$：将点$P = (x, y)$序列化为一个字节序列，使用的方法为<code>SEC1</code>压缩格式：$(0x02 \ or \ 0x03) || ser_{256}(x)$，其中头部字节取决于省略的$y$坐标的奇偶性。</p>
+</li>
+<li><p>$parse_{256}(p)$：将一个32字节序列转化为一个256位整数，大端优先。</p>
+</li>
+</ul>
+<h3 id="扩展的密钥"><a href="#扩展的密钥" class="headerlink" title="扩展的密钥"></a>扩展的密钥</h3><p>接下来，我们将会定义一个函数，用来从一个父密钥生成一系列的子密钥。为了防止结果仅依赖于父密钥本身，我们首先会用一个额外的256位调节数(<code>entropy</code>)同时扩展私钥和公钥。这个扩展用到的调节数，称为链码（<code>chain code</code>），对于相应的私钥和公钥是相同的，并且由32个字节构成。</p>
+<p>我们将扩展后的私钥记为<code>(k, c)</code>，其中<code>k</code>是原本普通的私钥，<code>c</code>是链码。将扩展后的公钥记为<code>(K, c)</code>，其中<code>K = point(k)</code>，并且<code>c</code>同样是链码。</p>
+<p><strong>每一个扩展后的密钥都有$2^{31}$个普通的子密钥，以及$2^{31}$个强化的子密钥。每一个子密钥都有一个索引序号。其中普通子密钥使用索引$0 \sim 2^{31}-1$，强化的子密钥使用索引$2^{31} \sim 2^{32} - 1$。为了方便强化子密钥的索引记法，数字$i_H$表示的就是$i + 2^{31}$。</strong></p>
+<h3 id="子密钥生成函数（Child-key-derivation-CKD-）"><a href="#子密钥生成函数（Child-key-derivation-CKD-）" class="headerlink" title="子密钥生成函数（Child key derivation[CKD]）"></a>子密钥生成函数（<code>Child key derivation</code>[<code>CKD</code>]）</h3><p>给定一个父扩展密钥和一个索引<code>i</code>，可以计算出对应的子扩展密钥。实现这个的算法取决于子密钥是否是强化密钥（或者说，是否$i \geqslant 2^{31}$），以及我们讨论的是私钥还是公钥</p>
+<h4 id="父私钥-longrightarrow-子私钥"><a href="#父私钥-longrightarrow-子私钥" class="headerlink" title="父私钥 $\longrightarrow$ 子私钥"></a>父私钥 $\longrightarrow$ 子私钥</h4><p>函数$CKDpriv((k_{par}, c_{par}), i) \rightarrow (k_i, c_i)$基于父扩展私钥计算出一个子扩展私钥，以下是算法流程：</p>
+<ul>
+<li><p>检查是否$i \geqslant 2^{31}$（即子密钥是否是一个强化密钥）。</p>
+<ul>
+<li><p>如果是强化子私钥：令</p>
+<p>  $$I = HMAC-SHA512(Key = c_{par}, \ Data = 0x00 || ser_{256}(k_{par}) || ser_{32}(i))$$<br>  （注意：<code>0x00</code>填充了私钥将其扩展为33字节）。</p>
+</li>
+<li><p>如果是普通子私钥：令</p>
+<p>  $$I = HMAC-SHA512(Key = c_{par}, \ Data = ser_{P}(point(k_{par})) || ser_{32}(i))$$</p>
+</li>
+</ul>
+</li>
+<li><p>将$I$分割为2个32字节序列，分别记为$I_L$和$I_R$</p>
+</li>
+<li><p>返回的子私钥$k_i$为$k_i = parse_{256}(I_L) + k_{par}(mod \ n)$。</p>
+</li>
+<li><p>返回的子链码$c_i$为$c_i = I_R$。</p>
+</li>
+<li><p>在$parse_{256}(I_L) \geqslant n $或者$k_i = 0$的情况下，得到的密钥无效，此时应该为$i$处理下一个值。（这个概率低于$1 / 2^{127}$）。</p>
+</li>
+</ul>
+<blockquote>
+<p>上面提到的<code>HMAC-SHA512</code>函数定义于<a href="http://tools.ietf.org/html/rfc4231" target="_blank" rel="external">RFC 4231</a></p>
+</blockquote>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><p><a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki" target="_blank" rel="external">https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki</a></p>
 </li>
 <li><p><a href="https://zhuanlan.zhihu.com/p/30297080" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/30297080</a></p>
+</li>
+<li><p><a href="http://www.secg.org/sec2-v2.pdf" target="_blank" rel="external">http://www.secg.org/sec2-v2.pdf</a></p>
+</li>
+<li><p><a href="http://tools.ietf.org/html/rfc4231" target="_blank" rel="external">http://tools.ietf.org/html/rfc4231</a></p>
 </li>
 </ul>
 <blockquote>
@@ -453,8 +508,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/20/密码学学习笔记/" rel="prev" title="密码学学习笔记">
-                密码学学习笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/20/密码学基础知识/" rel="prev" title="密码学基础知识">
+                密码学基础知识 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -577,7 +632,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#分层确定性钱包-HD-Wallets"><span class="nav-number">1.</span> <span class="nav-text">分层确定性钱包(HD Wallets)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规范：私钥生成"><span class="nav-number">1.2.</span> <span class="nav-text">规范：私钥生成</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#分层确定性钱包-HD-Wallets"><span class="nav-number">1.</span> <span class="nav-text">分层确定性钱包(HD Wallets)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规范：密钥生成"><span class="nav-number">1.2.</span> <span class="nav-text">规范：密钥生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#约定"><span class="nav-number">1.2.1.</span> <span class="nav-text">约定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展的密钥"><span class="nav-number">1.2.2.</span> <span class="nav-text">扩展的密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子密钥生成函数（Child-key-derivation-CKD-）"><span class="nav-number">1.2.3.</span> <span class="nav-text">子密钥生成函数（Child key derivation[CKD]）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#父私钥-longrightarrow-子私钥"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">父私钥 $\longrightarrow$ 子私钥</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>

@@ -418,7 +418,7 @@
 </li>
 </ol>
 <pre><code>这将会把`Nix`安装在`/nix`下。该安装脚本将会使用`sudo`权限创建`/nix`目录，所以确定一下你拥有足够的权限。（想看其它安装方式，查看[`Installation`](https://nixos.org/nix/manual/#chap-installation)）。
-</code></pre><ol>
+</code></pre><ol start="2">
 <li><p>在<code>channel</code>中查看哪些安装包目前可用：</p>
  <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ nix-env -qa</div><div class="line">docbook-xml<span class="number">-4.3</span></div><div class="line">docbook-xml<span class="number">-4.5</span></div><div class="line">firefox<span class="number">-33.0</span><span class="number">.2</span></div><div class="line">hello<span class="number">-2.9</span></div><div class="line">libxslt<span class="number">-1.1</span><span class="number">.28</span></div><div class="line">...</div></pre></td></tr></table></figure>
 </li>
