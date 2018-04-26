@@ -100,7 +100,7 @@
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  Kerckhoffs原理 Kerckhoffs原理：即使除秘钥外的整个系统的一切都是公开的，这个密码体制也必须是安全的。尤其是即使攻击者知道系统的加密算法和解密算法，此系统也必须是安全的。   Auguste Kerckhoffs于1883年提出">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/ecc.png">
-<meta property="og:updated_time" content="2018-04-24T13:02:22.000Z">
+<meta property="og:updated_time" content="2018-04-26T03:28:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="密码学基础知识">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  Kerckhoffs原理 Kerckhoffs原理：即使除秘钥外的整个系统的一切都是公开的，这个密码体制也必须是安全的。尤其是即使攻击者知道系统的加密算法和解密算法，此系统也必须是安全的。   Auguste Kerckhoffs于1883年提出">
@@ -383,25 +383,15 @@
 </ol>
 <h1 id="整数环"><a href="#整数环" class="headerlink" title="整数环"></a>整数环</h1><h2 id="整数环的定义"><a href="#整数环的定义" class="headerlink" title="整数环的定义"></a>整数环的定义</h2><blockquote>
 <p><strong>定义 环</strong></p>
-</blockquote>
-<blockquote>
 <p>整数环$\mathbb{Z}_m$由以下两部分组成：</p>
-</blockquote>
-<blockquote>
 <ol>
-<li>集合$\mathbb{Z}_m$ = {0, 1, 2, …, m-1}</li>
+<li><p>集合$\mathbb{Z}_m$ = {0, 1, 2, …, m-1}</p>
+</li>
+<li><p>两种操作<code>+</code>和<code>x</code>，使得对所有的$a, b \in \mathbb{Z}_m$有：</p>
+<p>1) $a + b \equiv c \ mod \ m, (c \in \mathbb{Z}_m)$</p>
+<p>2) $a \times b \equiv d \ mod \ m, (d \in \mathbb{Z}_m)$</p>
+</li>
 </ol>
-</blockquote>
-<blockquote>
-<ol start="2">
-<li>两种操作<code>+</code>和<code>x</code>，使得对所有的$a, b \in \mathbb{Z}_m$有：</li>
-</ol>
-</blockquote>
-<blockquote>
-<p>   1) $a + b \equiv c \ mod \ m, (c \in \mathbb{Z}_m)$</p>
-</blockquote>
-<blockquote>
-<p>   2) $a \times b \equiv d \ mod \ m, (d \in \mathbb{Z}_m)$</p>
 </blockquote>
 <h2 id="乘法逆元"><a href="#乘法逆元" class="headerlink" title="乘法逆元"></a>乘法逆元</h2><p>整数环有一个特性：不是所有元素都存在乘法逆元。假设$a \in \mathbb{Z}$，乘法逆元$a^{-1}$可以定义为：</p>
 <p>$a \cdot a^{-1} \equiv 1 \ mod \ m$。</p>
@@ -412,52 +402,31 @@
 <h1 id="群"><a href="#群" class="headerlink" title="群"></a>群</h1><h2 id="群的定义"><a href="#群的定义" class="headerlink" title="群的定义"></a>群的定义</h2><p>对于离散对数问题来说，群，循环群等概念很重要，先来看看群的定义。</p>
 <blockquote>
 <p><strong>定义 群</strong></p>
-</blockquote>
-<blockquote>
 <p>群指的是一个元素集合$G$以及联合$G$内两个元素的操作$o$的集合。群具有以下属性：</p>
-</blockquote>
-<blockquote>
 <ol>
-<li>群操作$o$是封闭的，即对所有的$a, b \in G, aob = c \in G$始终成立。</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="2">
-<li>群操作是可结合的，即对所有的$a, b, c \in G$，都有$ao(boc) = (aob)oc$。</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="3">
-<li>存在一个元素$1 \in G$，对所有的$a \in G$均满足$ao1 = 1oa = a$，这个元素成为中性元或单位元。</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="4">
-<li>对每个元素$a \in G$，存在一个元素$a^{-1} \in G$，满足$aoa^{-1} = a^{-1}oa = 1$，则$a^{-1}$称为$a$的逆元。</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="5">
-<li>如果所有$a, b \in G$都额外满足$aob = boa$，则称群$G$为<strong>阿贝尔群</strong>或<strong>可交换群</strong>。</li>
+<li><p>群操作$o$是封闭的，即对所有的$a, b \in G, aob = c \in G$始终成立。</p>
+</li>
+<li><p>群操作是可结合的，即对所有的$a, b, c \in G$，都有$ao(boc) = (aob)oc$。</p>
+</li>
+<li><p>存在一个元素$1 \in G$，对所有的$a \in G$均满足$ao1 = 1oa = a$，这个元素成为中性元或单位元。</p>
+</li>
+<li><p>对每个元素$a \in G$，存在一个元素$a^{-1} \in G$，满足$aoa^{-1} = a^{-1}oa = 1$，则$a^{-1}$称为$a$的逆元。</p>
+</li>
+<li><p>如果所有$a, b \in G$都额外满足$aob = boa$，则称群$G$为<strong>阿贝尔群</strong>或<strong>可交换群</strong>。</p>
+</li>
 </ol>
 </blockquote>
 <h2 id="有限群"><a href="#有限群" class="headerlink" title="有限群"></a>有限群</h2><p>在密码学中，我们总是关注有限的结构，下面给出<strong>有限群</strong>的简单定义：</p>
 <blockquote>
 <p><strong>定义 有限群</strong></p>
-</blockquote>
-<blockquote>
 <p>一个群$(G, o)$是有限的，仅当它拥有有限个元素。群$G$的基或阶可以表示为$|G|$。</p>
 </blockquote>
 <h2 id="群的阶或基"><a href="#群的阶或基" class="headerlink" title="群的阶或基"></a>群的阶或基</h2><p><strong>群的基其实就是这个群内元素的个数。</strong>即例如：</p>
 <p>对于群$(\mathbb{Z}_n, +)$：$\mathbb{Z}_n$的基为$|\mathbb{Z}_n| = n$，因为$\mathbb{Z}_n = \lbrace 0, 1, 2, …, n-1 \rbrace$。</p>
-<p>请记住，<strong>群$\mathbb{Z}^*_n$是由小于$n$且与$n$互素的正整数组成的集合。</strong>因此，$\mathbb{Z}^<em>_n$的基等于$n$的欧拉函数，即$|\mathbb{Z}^</em>_n| = \Phi(n)$。</p>
+<p>请记住，<strong>群$\mathbb{Z}^*_n$是由小于$n$且与$n$互素的正整数组成的集合。</strong>因此，$\mathbb{Z}^*_n$的基等于$n$的欧拉函数，即$|\mathbb{Z}^*_n| = \Phi(n)$。</p>
 <h2 id="元素的阶"><a href="#元素的阶" class="headerlink" title="元素的阶"></a>元素的阶</h2><blockquote>
 <p><strong>定义 元素的阶</strong></p>
-</blockquote>
-<blockquote>
 <p>群$(G, o)$内某个元素$a$的阶$ord(a)$指的是满足以下条件的最小正整数$k$：</p>
-</blockquote>
-<blockquote>
 <p>$a^{k} = \underbrace{aoao \ldots oa}_{k次} = 1$，</p>
 <p>其中$1$是$G$的单位元</p>
 </blockquote>
@@ -497,7 +466,7 @@
 <h1 id="离散对数问题（DLP）"><a href="#离散对数问题（DLP）" class="headerlink" title="离散对数问题（DLP）"></a>离散对数问题（DLP）</h1><h2 id="素数域内的离散对数问题"><a href="#素数域内的离散对数问题" class="headerlink" title="素数域内的离散对数问题"></a>素数域内的离散对数问题</h2><p>首先介绍基于$\mathbb{Z}^*_p$的<code>DLP</code>，其中$p$为素数。</p>
 <blockquote>
 <p><strong>定义 基于$\mathbb{Z}^*_p$的离散对数问题（<code>DLP</code>）</strong></p>
-<p>给定一个阶为$p-1$的有限循环群$\mathbb{Z}^<em>_p$，一个本原元 $\alpha \in \mathbb{Z}^</em>_p$和另一个元素 $\beta \in \mathbb{Z}^*_p$。<code>DLP</code>是确定满足以下条件的整数$x$（其中$1 \leqslant x \leqslant p-1$）的问题：</p>
+<p>给定一个阶为$p-1$的有限循环群$\mathbb{Z}^*_p$，一个本原元$\alpha \in \mathbb{Z}^*_p$和另一个元素$\beta \in \mathbb{Z}^*_p$。<code>DLP</code>是确定满足以下条件的整数$x$（其中$1 \leqslant x \leqslant p-1$）的问题：</p>
 <p>$\alpha^x \equiv \beta \ mod \ p$</p>
 <p>这个整数$x$也称为以$\alpha$为基的$\beta$的离散对数，可以正式地写作：</p>
 <p>$x = log_\alpha\beta \ mod \ p$</p>
