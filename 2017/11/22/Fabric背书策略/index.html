@@ -99,7 +99,7 @@
 <meta property="og:url" content="http://www.huamo.online/2017/11/22/Fabric背书策略/index.html">
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  背书策略背书策略是用来指导一个peer如何确定一笔交易是否被正确的背书。当一个peer接收到一笔交易后，它会invoke与该交易的chaincode相关的VSCC(Validation System Chaincode)，作为交易确认流程的一部分来确定交易的有效性。回想一下，一个交易包含了一个或多个背书peer的认可。VSCC的任务是做出如下决">
-<meta property="og:updated_time" content="2017-11-24T10:43:23.000Z">
+<meta property="og:updated_time" content="2018-04-27T04:05:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fabric背书策略">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  背书策略背书策略是用来指导一个peer如何确定一笔交易是否被正确的背书。当一个peer接收到一笔交易后，它会invoke与该交易的chaincode相关的VSCC(Validation System Chaincode)，作为交易确认流程的一部分来确定交易的有效性。回想一下，一个交易包含了一个或多个背书peer的认可。VSCC的任务是做出如下决">
@@ -370,7 +370,7 @@
 <ul>
 <li>所有的背书都是有效的（比如：它们是有效的证书在预期的消息上做了有效的签名）。</li>
 <li>拥有合适数量的背书认可。</li>
-<li>背书都来自于预期的来源。</li>
+<li>背书都来自于预期的来源。<a id="more"></a></li>
 </ul>
 <p>背书策略是指定第2点和第3点的一种方式。</p>
 <h3 id="背书策略设计"><a href="#背书策略设计" class="headerlink" title="背书策略设计"></a>背书策略设计</h3><p>背书策略有2个重要组件： 1. 一个原则。 2. 一个门槛</p>

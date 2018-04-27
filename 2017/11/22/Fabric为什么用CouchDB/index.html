@@ -99,7 +99,7 @@
 <meta property="og:url" content="http://www.huamo.online/2017/11/22/Fabric为什么用CouchDB/index.html">
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  Why CouchDBCouchDB是一种NoSQL解决方案。它是一个面向文档的数据库，文档中的字段都以key-value映射的形式存储在数据库中。字段可以是一个简单的key-value对，list或者map。除了LevelDB支持的keyed / composite-key / key-range查询之外，CouchDB还能支持所有数据富查询">
-<meta property="og:updated_time" content="2017-11-22T15:19:57.000Z">
+<meta property="og:updated_time" content="2018-04-27T04:05:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fabric为什么用CouchDB">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  Why CouchDBCouchDB是一种NoSQL解决方案。它是一个面向文档的数据库，文档中的字段都以key-value映射的形式存储在数据库中。字段可以是一个简单的key-value对，list或者map。除了LevelDB支持的keyed / composite-key / key-range查询之外，CouchDB还能支持所有数据富查询">
@@ -366,7 +366,7 @@
         <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
-<h3 id="Why-CouchDB"><a href="#Why-CouchDB" class="headerlink" title="Why CouchDB"></a>Why CouchDB</h3><p><code>CouchDB</code>是一种<code>NoSQL</code>解决方案。它是一个面向文档的数据库，文档中的字段都以<code>key-value</code>映射的形式存储在数据库中。字段可以是一个简单的<code>key-value对</code>，<code>list</code>或者<code>map</code>。除了<code>LevelDB</code>支持的<code>keyed / composite-key / key-range</code>查询之外，<code>CouchDB</code>还能支持所有数据富查询的能力，比如相对于区块链数据的<code>non-key</code>查询，因为它的数据内容都以<code>JSON</code>格式存储并且是全部可查询的。因此，<code>CouchDB</code>可以满足<code>chaincode</code>，审计，以及在很多应用场景遇到的<code>LevelDB</code>不能支持的需求。</p>
+<h3 id="Why-CouchDB"><a href="#Why-CouchDB" class="headerlink" title="Why CouchDB"></a>Why CouchDB</h3><p><code>CouchDB</code>是一种<code>NoSQL</code>解决方案。它是一个面向文档的数据库，文档中的字段都以<code>key-value</code>映射的形式存储在数据库中。字段可以是一个简单的<code>key-value对</code>，<code>list</code>或者<code>map</code>。除了<code>LevelDB</code>支持的<code>keyed / composite-key / key-range</code>查询之外，<code>CouchDB</code>还能支持所有数据富查询的能力，比如相对于区块链数据的<code>non-key</code>查询，因为它的数据内容都以<code>JSON</code>格式存储并且是全部可查询的。因此，<code>CouchDB</code>可以满足<code>chaincode</code>，审计，以及在很多应用场景遇到的<code>LevelDB</code>不能支持的需求。<a id="more"></a></p>
 <p><code>CouchDB</code>还可以增强区块链中合规性和数据保护的安全性。因为它可以通过过滤和屏蔽事务中的各个属性来实现字段级的安全性，并且如果需要，可以只授权只读权限。</p>
 <p>此外，<code>CouchDB</code>属于CAP定理中的AP类型（可用性和分区容错性）。它使用了一种具有<strong>最终一致性</strong>的主-主备份模型。更多详情可以参看<a href="http://docs.couchdb.org/en/latest/intro/consistency.html" target="_blank" rel="external">Eventual Consistency page of the CouchDB documentation</a>。然而，在每一个<code>fabric peer</code>中，并没有数据库备份，写数据库是保证一致并持久化的（不是最终一致性）。</p>
 <p><code>CouchDB</code>是<code>Fabric</code>第一个外部可插拔的状态数据库，并且可以也应该有其它外部的数据库选择。比如，IBM为它的区块链实现了关系型数据库。并且CP类型（一致性和分区容错性）的数据库可能也是需要的，以便在没有应用级保证的情况下实现数据一致性。</p>
