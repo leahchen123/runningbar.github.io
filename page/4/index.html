@@ -267,6 +267,161 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/07/17/Kubernetes-ReplicationController介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="runningbar">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/17/Kubernetes-ReplicationController介绍/" itemprop="url">Kubernetes ReplicationController介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-17T12:18:28+08:00">
+                2017-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/17/Kubernetes-ReplicationController介绍/" class="leancloud_visitors" data-flag-title="Kubernetes ReplicationController介绍">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<blockquote>
+<p>英文原文： <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/" target="_blank" rel="external">https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/</a></p>
+</blockquote>
+<h4 id="ReplicationController是什么？"><a href="#ReplicationController是什么？" class="headerlink" title="ReplicationController是什么？"></a><code>ReplicationController</code>是什么？</h4><p>一个<code>ReplicationController</code>可以保证在任一个时刻都有指定数量的pod副本在运行。换句话说，一个<code>ReplicationController</code>保证了一个或多个相同pod总是运行可用的。如果存在了过多的pod，它会杀掉多余的一些。如果pod数量过少，<code>ReplicationController</code>会启动更多的pod。不同于手动创建pod，被<code>ReplicationController</code>维护的pod，如果遇到了宕机，被删除，被终止的情况，都会被自动替换为新的pod。举个例子，你的pod会在破坏性的维护之后被重建，比如内核升级。基于此，我们推荐即使你的应用只需要一个pod，也使用<code>ReplicationController</code>。你可以把<code>ReplicationController</code>想象成类似一个进程监控的东西，而不是单独节点上的个别进程，<code>ReplicationController</code>监督跨越多个节点的多个pod。在讨论中，<code>ReplicationController</code>常简写为<code>rc</code>或者<code>rcs</code>，并且这也是<code>kubectl</code>命令行中的缩写形式。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/17/Kubernetes-ReplicationController介绍/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/07/14/Git多仓库追踪更新的方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1079,163 +1234,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/14/使用kubeadm搭建通用的Kubernetes集群/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="runningbar">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花木兰">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/14/使用kubeadm搭建通用的Kubernetes集群/" itemprop="url">使用kubeadm搭建通用的Kubernetes集群</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-14T10:30:44+08:00">
-                2017-06-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
-                    <span itemprop="name">Kubernetes</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/06/14/使用kubeadm搭建通用的Kubernetes集群/" class="leancloud_visitors" data-flag-title="使用kubeadm搭建通用的Kubernetes集群">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p><code>kubeadm</code>尚处于alpha阶段，安装中会卡住，目前尚未解决</p>
-</blockquote>
-<h2 id="安装kubeadm"><a href="#安装kubeadm" class="headerlink" title="安装kubeadm"></a>安装<code>kubeadm</code></h2><h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><ul>
-<li><p>一台或多台运行<code>Ubuntu 16.04+</code>，<code>CentOS 7</code>或者<code>HypriotOS v1.0.1+</code>系统的机器。</p>
-</li>
-<li><p>每台机器拥有1GB及以上容量的内存（否则的话，留给你的应用空间就会很少了）</p>
-</li>
-<li><p>集群中的所有机器都能完全相连（公网互联还是私网互联都行）
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/06/14/使用kubeadm搭建通用的Kubernetes集群/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1285,7 +1283,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
