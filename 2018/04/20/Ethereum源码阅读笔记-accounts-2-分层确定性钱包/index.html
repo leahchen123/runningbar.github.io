@@ -99,7 +99,7 @@
 <meta property="og:url" content="http://www.huamo.online/2018/04/20/Ethereum源码阅读笔记-accounts-2-分层确定性钱包/index.html">
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
-<meta property="og:updated_time" content="2018-05-03T02:16:37.000Z">
+<meta property="og:updated_time" content="2018-05-03T09:15:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ethereum源码阅读笔记-accounts(2)-分层确定性钱包">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
@@ -471,12 +471,12 @@
 <li><p>$N(m/a_H/b/c) = N(m/a_H/b)/c = N(m/a_H)/b/c$。然而，再往后，$N(m/a_H)$不能等价于$N(m)/a_H$，因为这是不可能实现的：$CKD_{pub}(N(m), i)$只适用于非强化的子公钥。</p>
 </li>
 </ul>
-<h1 id="BIP-43"><a href="#BIP-43" class="headerlink" title="BIP-43"></a><code>BIP-43</code></h1><p>在BIP-32的算法基础上，BIP-43引入了<code>Purpose</code>域。</p>
+<h1 id="BIP-43"><a href="#BIP-43" class="headerlink" title="BIP-43"></a>BIP-43</h1><p>在BIP-32的算法基础上，BIP-43引入了<code>Purpose</code>域。</p>
 <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>由于<code>BIP-32</code>规范给予实现者太多的自由，很多实现都可以声称是<code>BIP-32</code>兼容的，但它们实际上可以采用不同的逻辑架构，最终导致这些钱包无法互操作，这有悖于<code>BIP-32</code>设计的初衷。</p>
-<h2 id="Purpose"><a href="#Purpose" class="headerlink" title="Purpose"></a><code>Purpose</code></h2><p>提议<code>BIP-32</code>密钥树的第一层为<code>purpose</code>段，它定义了未来在该节点下方的结构的用处。</p>
+<h2 id="Purpose"><a href="#Purpose" class="headerlink" title="Purpose"></a>Purpose</h2><p>提议<code>BIP-32</code>密钥树的第一层为<code>purpose</code>段，它定义了未来在该节点下方的结构的用处。</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">m <span class="regexp">/ purpose' /</span> *</div></pre></td></tr></table></figure>
 <p>撇号<code>&#39;</code>表示使用了<code>BIP-32</code>的强化派生。</p>
-<h1 id="BIP-44"><a href="#BIP-44" class="headerlink" title="BIP-44"></a><code>BIP-44</code></h1><p>在<code>BIP-43</code>提议的<code>purpose</code>模式基础上，<code>BIP-44</code>做了大幅扩展，提出了相当全面的层次结构。可以处理多种货币，多个账户，一个账户上的内部外部链，以及每个链上的数百万个地址。</p>
+<h1 id="BIP-44"><a href="#BIP-44" class="headerlink" title="BIP-44"></a>BIP-44</h1><p>在<code>BIP-43</code>提议的<code>purpose</code>模式基础上，<code>BIP-44</code>做了大幅扩展，提出了相当全面的层次结构。可以处理多种货币，多个账户，一个账户上的内部外部链，以及每个链上的数百万个地址。</p>
 <h2 id="路径层级"><a href="#路径层级" class="headerlink" title="路径层级"></a>路径层级</h2><p>在BIP-32路径格式下，定义5个层级：</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">m <span class="regexp">/ purpose' /</span> coin_type<span class="string">' / account'</span> <span class="regexp">/ change /</span> address_index</div></pre></td></tr></table></figure>
 <p>撇号<code>&#39;</code>表示使用了<code>BIP-32</code>的强化派生。</p>
