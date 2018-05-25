@@ -104,7 +104,7 @@
 <meta property="og:image" content="http://www.huamo.online/source_code/image/k8s_3.png">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/k8s_4.png">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/k8s_5.png">
-<meta property="og:updated_time" content="2018-04-24T13:02:24.000Z">
+<meta property="og:updated_time" content="2018-05-25T03:30:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu下搭建Kubernetes产品环境集群">
 <meta name="twitter:description" content="以下过程在Ubuntu 16.04裸机上完全跑通  本文展示了在Ubuntu 16.04系统上搭建Kubernetes集群的方法，用到了Canonical Kubernetes的发行版本，这是一种快捷搭建本地Kubernetes集群的方法，并能够支持动态增删node节点。 主要搭建步骤是，使用conjure-up工具，结合juju，基于LXD搭建Kubernetes集群，并使用kubelet和k">
@@ -374,7 +374,7 @@
 </blockquote>
 <p>本文展示了在<code>Ubuntu 16.04</code>系统上搭建Kubernetes集群的方法，用到了Canonical Kubernetes的发行版本，这是一种快捷搭建本地Kubernetes集群的方法，并能够支持动态增删node节点。</p>
 <p>主要搭建步骤是，使用<code>conjure-up</code>工具，结合<code>juju</code>，基于<code>LXD</code>搭建Kubernetes集群，并使用<code>kubelet</code>和<code>kube-proxy</code>将其他机器作为node节点，注册入该集群中。</p>
-<p>以下为详细步骤（最好已经翻墙）</p>
+<p>以下为详细步骤（最好已经翻墙）<a id="more"></a></p>
 <h2 id="安装snapd"><a href="#安装snapd" class="headerlink" title="安装snapd"></a>安装<code>snapd</code></h2><p><code>conjure-up</code>工具需要使用<code>Ubuntu 16.04</code>新的包管理器<code>snapd</code>安装，所以先安装<code>snapd</code>。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt <span class="keyword">update</span></div><div class="line">sudo apt <span class="keyword">install</span> snapd</div></pre></td></tr></table></figure>
 <h2 id="安装LXD"><a href="#安装LXD" class="headerlink" title="安装LXD"></a>安装<code>LXD</code></h2><p><code>conjure-up</code>是基于<code>LXD</code>搭建集群的，所以要先安装<code>LXD</code>，并做好初始化配置。这里面涉及到<code>lxd</code>用户组的操作。下面先简单介绍下其用法。</p>
@@ -615,7 +615,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

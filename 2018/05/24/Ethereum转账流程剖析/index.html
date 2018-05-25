@@ -93,16 +93,18 @@
 
 
 
-<meta name="description" content="icon搜索，各种尺寸，各种格式下载：flaticon  1http://www.flaticon.com/">
+<meta name="description" content="转载请注明出处：www.huamo.online  在js console中转账ETH在我之前的文章《Ethereum初探》中，已经详述了在以太坊私链中转账的操作，可以在那里细细查看。 背后流程Geth Console执行JS通用流程在探讨sendTransaction转账流程之前，让我们先看下JS执行的通用流程。如下图所示。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一些不错的网站">
-<meta property="og:url" content="http://www.huamo.online/2017/06/22/一些不错的网站/index.html">
+<meta property="og:title" content="Ethereum转账流程剖析">
+<meta property="og:url" content="http://www.huamo.online/2018/05/24/Ethereum转账流程剖析/index.html">
 <meta property="og:site_name" content="花木兰">
-<meta property="og:description" content="icon搜索，各种尺寸，各种格式下载：flaticon  1http://www.flaticon.com/">
-<meta property="og:updated_time" content="2018-04-16T10:30:34.000Z">
+<meta property="og:description" content="转载请注明出处：www.huamo.online  在js console中转账ETH在我之前的文章《Ethereum初探》中，已经详述了在以太坊私链中转账的操作，可以在那里细细查看。 背后流程Geth Console执行JS通用流程在探讨sendTransaction转账流程之前，让我们先看下JS执行的通用流程。如下图所示。">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/geth-console执行js通用流程.png">
+<meta property="og:updated_time" content="2018-05-25T08:12:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一些不错的网站">
-<meta name="twitter:description" content="icon搜索，各种尺寸，各种格式下载：flaticon  1http://www.flaticon.com/">
+<meta name="twitter:title" content="Ethereum转账流程剖析">
+<meta name="twitter:description" content="转载请注明出处：www.huamo.online  在js console中转账ETH在我之前的文章《Ethereum初探》中，已经详述了在以太坊私链中转账的操作，可以在那里细细查看。 背后流程Geth Console执行JS通用流程在探讨sendTransaction转账流程之前，让我们先看下JS执行的通用流程。如下图所示。">
+<meta name="twitter:image" content="http://www.huamo.online/source_code/image/geth-console执行js通用流程.png">
 
 
 
@@ -130,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://www.huamo.online/2017/06/22/一些不错的网站/"/>
+  <link rel="canonical" href="http://www.huamo.online/2018/05/24/Ethereum转账流程剖析/"/>
 
 
 
 
 
-  <title>一些不错的网站 | 花木兰</title>
+  <title>Ethereum转账流程剖析 | 花木兰</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -266,7 +268,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2017/06/22/一些不错的网站/">
+    <link itemprop="mainEntityOfPage" href="http://www.huamo.online/2018/05/24/Ethereum转账流程剖析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="runningbar">
@@ -283,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">一些不错的网站</h1>
+          <h1 class="post-title" itemprop="name headline">Ethereum转账流程剖析</h1>
         
 
         <div class="post-meta">
@@ -295,8 +297,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T13:22:33+08:00">
-                2017-06-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-24T11:22:40+08:00">
+                2018-05-24
               </time>
             
 
@@ -318,8 +320,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分享/" itemprop="url" rel="index">
-                    <span itemprop="name">分享</span>
+                  <a href="/categories/ethereum/" itemprop="url" rel="index">
+                    <span itemprop="name">ethereum</span>
                   </a>
                 </span>
 
@@ -335,7 +337,7 @@
 
           
           
-             <span id="/2017/06/22/一些不错的网站/" class="leancloud_visitors" data-flag-title="一些不错的网站">
+             <span id="/2018/05/24/Ethereum转账流程剖析/" class="leancloud_visitors" data-flag-title="Ethereum转账流程剖析">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -363,11 +365,41 @@
       
 
       
-        <ul>
-<li>icon搜索，各种尺寸，各种格式下载：<a href="http://www.flaticon.com/" target="_blank" rel="external">flaticon</a></li>
+        <blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+<h1 id="在js-console中转账ETH"><a href="#在js-console中转账ETH" class="headerlink" title="在js console中转账ETH"></a>在<code>js console</code>中转账<code>ETH</code></h1><p>在我之前的文章《<a href="http://www.huamo.online/2018/02/07/Ethereum%E5%88%9D%E6%8E%A2/">Ethereum初探</a>》中，已经详述了在以太坊私链中转账的操作，可以在那里细细查看。</p>
+<h1 id="背后流程"><a href="#背后流程" class="headerlink" title="背后流程"></a>背后流程</h1><h2 id="Geth-Console执行JS通用流程"><a href="#Geth-Console执行JS通用流程" class="headerlink" title="Geth Console执行JS通用流程"></a>Geth Console执行JS通用流程</h2><p>在探讨<code>sendTransaction</code>转账流程之前，让我们先看下JS执行的通用流程。如下图所示。<a id="more"></a></p>
+<p><img src="/source_code/image/geth-console执行js通用流程.png" alt=""></p>
+<p>图中展示了从<code>geth console</code>启动<code>jsre</code>，到用户输入js代码，解释器执行代码，并通过RPC调用实际的go方法的完整流程。这个流程是通用的，即无论你输入什么js代码，刚开始的阶段都是如此，下面让我来详细剖析一下各个环节。</p>
+<h3 id="监听命令阶段"><a href="#监听命令阶段" class="headerlink" title="监听命令阶段"></a>监听命令阶段</h3><ul>
+<li>[1]当用户在命令行输入<code>geth console</code>启动客户端时，会调用<code>localConsole()</code>方法，启动一个全新的geth节点，同时附加上一个JS console，亦即JSRE。</li>
 </ul>
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">http:</span><span class="comment">//www.flaticon.com/</span></div></pre></td></tr></table></figure>
-<a id="more"></a>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// cmd/geth/consolecmd.go</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">localConsole</span><span class="params">(ctx *cli.Context)</span> <span class="title">error</span></span> &#123;</div><div class="line">	console, err := console.New(config)</div><div class="line">	console.Welcome() <span class="comment">// 打印欢迎信息</span></div><div class="line">	console.Interactive()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码中列出了3个比较关键的方法。<code>console.New()</code>会启动一个console实例，这个console实例包含了一个JSRE对象。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Console <span class="keyword">struct</span> &#123;</div><div class="line">	client   *rpc.Client  <span class="comment">// RPC client to execute Ethereum requests through</span></div><div class="line">	jsre     *jsre.JSRE   <span class="comment">// JavaScript runtime environment running the interpreter</span></div><div class="line">	prompt   <span class="keyword">string</span>       <span class="comment">// Input prompt prefix string</span></div><div class="line">	prompter UserPrompter <span class="comment">// Input prompter to allow interactive user feedback</span></div><div class="line">	histPath <span class="keyword">string</span>       <span class="comment">// Absolute path to the console scrollback history</span></div><div class="line">	history  []<span class="keyword">string</span>     <span class="comment">// Scroll history maintained by the console</span></div><div class="line">	printer  io.Writer    <span class="comment">// Output writer to serialize any display strings to</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>同时，<code>console.New()</code>中还包含了<code>console</code>的初始化工作：<code>console.init()</code>。这个初始化工作有2点比较重要：</p>
+<ol>
+<li><p>加载<code>web3.js</code>文件，并注入到<code>JSRE</code>中</p>
+</li>
+<li><p>将<code>rpc</code>传输接口注入到<code>JSRE</code>中：<code>jethObj.Object().Set(&quot;send&quot;, bridge.Send)</code>，这为之后执行JS代码提供了通信基础。其中<code>bridge.go</code>正如名字表示的那样，是一个工具方法集合，将js运行时环境和Go RPC调用桥接起来。</p>
+</li>
+</ol>
+<p><code>Welcome()</code>没什么好说，打印欢迎信息。</p>
+<ul>
+<li><p>[2]接下来的console.Interactive()则是略为关键，它开启了一个交互式会话，包含2个关键的通道(<code>chan</code>)：<code>scheduler</code>, <code>abort</code>。前者监听用户输入，后者则接受用户强行结束会话的信号。</p>
+<p>  Interactive()单独启动一个goroutine，将用户的输入放在scheduler通道中，然后在主进程中使用select获取两个通道的输出。</p>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// console/console.go</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Console)</span> <span class="title">Interactive</span><span class="params">()</span></span> &#123;&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>[3]在获取到用户的输入后，接下来就开始执行代码，这里面借用了一个第三方库<code>github.com/robertkrimen/otto</code>，它是一个<code>golang</code>实现的<code>js</code>解释器。在<code>scheduler</code>通道获取用户输入后，会使用<code>jsre.Evaluate()</code>方法执行<code>input</code>内容，该方法内部直接调用<code>otto</code>的<code>vm.Run()</code>方法，传入解释器并运行。如前所述，在<code>console.init()</code>过程中，<code>jsre</code>中已经注入了<code>web3.js</code>和<code>send</code>，所以实际执行过程中，都会通过<code>bridge.Send()</code>将方法<code>RPC</code>到以太坊的<code>API</code>服务中去执行，并返回执行结果。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// 调用栈</span></div><div class="line">c.Evaluate(input) -&gt; c.jsre.Evaluate(statement, c.printer) -&gt; vm.Run(code)</div><div class="line"></div><div class="line"><span class="comment">// console/console.go</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Console)</span> <span class="title">Evaluate</span><span class="params">(statement <span class="keyword">string</span>)</span> <span class="title">error</span></span> &#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">// internal/jsre/jsre.go</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(self *JSRE)</span> <span class="title">Evaluate</span><span class="params">(code <span class="keyword">string</span>, w io.Writer)</span> <span class="title">error</span></span> &#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">// vendor/github.com/robertkrimen/otto/otto.go</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(self Otto)</span> <span class="title">Run</span><span class="params">(src <span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(Value, error)</span></span> &#123;&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
+</blockquote>
+
       
     </div>
 
@@ -427,8 +459,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/17/curl使用参数引用的方式发送POST请求/" rel="next" title="curl使用参数引用的方式发送POST请求">
-                <i class="fa fa-chevron-left"></i> curl使用参数引用的方式发送POST请求
+              <a href="/2018/04/26/Ethereum源码阅读笔记-accounts-3-创建账号背后的故事/" rel="next" title="Ethereum源码阅读笔记-accounts-3-创建账号背后的故事">
+                <i class="fa fa-chevron-left"></i> Ethereum源码阅读笔记-accounts-3-创建账号背后的故事
               </a>
             
           </div>
@@ -436,10 +468,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/22/juju-kubernetes修改运行配置的方法/" rel="prev" title="juju kubernetes修改运行配置的方法">
-                juju kubernetes修改运行配置的方法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -499,8 +527,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -553,6 +590,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在js-console中转账ETH"><span class="nav-number">1.</span> <span class="nav-text">在js console中转账ETH</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#背后流程"><span class="nav-number">2.</span> <span class="nav-text">背后流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Geth-Console执行JS通用流程"><span class="nav-number">2.1.</span> <span class="nav-text">Geth Console执行JS通用流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监听命令阶段"><span class="nav-number">2.1.1.</span> <span class="nav-text">监听命令阶段</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
