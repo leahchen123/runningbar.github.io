@@ -100,7 +100,8 @@
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  在js console中转账ETH在我之前的文章《Ethereum初探》中，已经详述了在以太坊私链中转账的操作，可以在那里细细查看。 背后流程Geth Console执行JS通用流程在探讨sendTransaction转账流程之前，让我们先看下JS执行的通用流程。如下图所示。">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/geth-console执行js通用流程.png">
-<meta property="og:updated_time" content="2018-05-25T08:31:13.000Z">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/otto注入Go方法示例.jpeg">
+<meta property="og:updated_time" content="2018-05-25T08:46:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ethereum转账流程剖析">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  在js console中转账ETH在我之前的文章《Ethereum初探》中，已经详述了在以太坊私链中转账的操作，可以在那里细细查看。 背后流程Geth Console执行JS通用流程在探讨sendTransaction转账流程之前，让我们先看下JS执行的通用流程。如下图所示。">
@@ -385,6 +386,10 @@
 <li><p>将<code>rpc</code>传输接口注入到<code>JSRE</code>中：<code>jethObj.Object().Set(&quot;send&quot;, bridge.Send)</code>，这为之后执行JS代码提供了通信基础。其中<code>bridge.go</code>正如名字表示的那样，是一个工具方法集合，将js运行时环境和Go RPC调用桥接起来。</p>
 </li>
 </ol>
+<blockquote>
+<p>注入的方式为<code>otto</code>原生提供，它允许你自定义Go方法，并注入到解释器中，这样你就可以直接在js代码中调用这个go方法。如下图所示</p>
+</blockquote>
+<p><img src="/source_code/image/otto注入Go方法示例.jpeg" alt=""></p>
 <p><code>Welcome()</code>没什么好说，打印欢迎信息。</p>
 <ul>
 <li><p>[2]接下来的console.Interactive()则是略为关键，它开启了一个交互式会话，包含2个关键的通道(<code>chan</code>)：<code>scheduler</code>, <code>abort</code>。前者监听用户输入，后者则接受用户强行结束会话的信号。</p>
