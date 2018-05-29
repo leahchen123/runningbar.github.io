@@ -7,7 +7,7 @@
 
 <html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -136,7 +136,7 @@
 
 
 
-  <title>Fabric End-to-End流程 | 花木兰</title>
+  <title>Fabric End-to-End流程 | 花木兰</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -147,7 +147,7 @@
 
 
 
-  <script type="text/javascript">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -390,7 +390,7 @@
 <h2 id="Cryptogen工具"><a href="#Cryptogen工具" class="headerlink" title="Cryptogen工具"></a><code>Cryptogen</code>工具</h2><p>我们将使用<code>cryptogen</code>工具来为我们的各种网络实体生成加密内容（<code>x509</code>证书）。证书基于<code>PKI</code>标准实现，通过回溯到一个共同的信任锚点来实现验证。</p>
 <h3 id="它是如何工作的？"><a href="#它是如何工作的？" class="headerlink" title="它是如何工作的？"></a>它是如何工作的？</h3><p><code>Cryptogen</code>使用一个文件 - <code>crypto-config.yaml</code> - 包含了网络的拓扑结构，并且允许我们为组织以及组织中的各种组件，生成一系列的证书。每个组织被提供了一个唯一的根证书（<code>ca-cert</code>），将指定的组件（<code>peers</code>和<code>orderers</code>）绑定到了该组织上。<code>Fabric</code>中的交易和通讯都由一个实体的私钥（<code>keystore</code>）进行签名，然后由相应的公钥（<code>signcerts</code>）进行验证。在这个<code>yaml</code>文件中你会看到一个<code>count</code>变量。我们使用这个值指定了每个组织的<code>peer</code>数量；这里我们指定了2个<code>peer</code>。这个模板的其它部分都是非常浅显易懂的。</p>
 <p>在我们运行了工具之后，证书会被放在<code>crypto-config</code>目录下。</p>
-<h2 id="Configtxgen工具"><a href="#Configtxgen工具" class="headerlink" title="Configtxgen工具"></a><code>Configtxgen</code>工具</h2><p><code>configtxgen</code>工具用来生成4种文件：orderer节点的启动块（<code>bootstrap block</code>），fabric channel的配置交易（<code>channel configuration transaction</code>），以及2个锚<code>peer</code>交易（<code>anchor peer transactions</code>）– 一个<code>Peer</code>组织一个。</p>
+<h2 id="Configtxgen工具"><a href="#Configtxgen工具" class="headerlink" title="Configtxgen工具"></a><code>Configtxgen</code>工具</h2><p><code>configtxgen</code>工具用来生成4种文件：orderer节点的启动块（<code>bootstrap block</code>），fabric channel的配置交易（<code>channel configuration transaction</code>），以及2个锚<code>peer</code>交易（<code>anchor peer transactions</code>）— 一个<code>Peer</code>组织一个。</p>
 <p><code>orderer block</code>是排序服务的创世块，<code>channel</code>交易文件会在<code>channel</code>创建时广播给<code>orderer</code>节点。而锚<code>peer</code>节点交易，就像名字表示的那样，在这个<code>channel</code>上为每个组织指定一个锚<code>peer</code>节点。</p>
 <h3 id="它是如何工作的？-1"><a href="#它是如何工作的？-1" class="headerlink" title="它是如何工作的？"></a>它是如何工作的？</h3><p><code>Configtxgen</code>读取一个文件 - <code>configtx.yaml</code> - 文件中包含了样例网络的定义。有3个成员 - 一个<code>Orderer</code>组织（<code>OrdererOrg</code>），和2个<code>Peer</code>组织(<code>Org1</code>和<code>Org2</code>）每个都管理和维护2个<code>peer</code>节点。这个文件也指定了一个联盟 - <code>SampleConsortium</code> - 包含我们的2个Peer组织的联盟。对文件顶部的<code>Profiles</code>区域中内容多留意下。你会发现我们有2个不同的顶级属性。一个是给orderer创世块用的 - <code>TwoOrgsOrdererGenesis</code> - 另一个是给<code>channel</code>用的 - <code>TwoOrgsChannel</code>。这些顶级属性是很重要的，当我们创建配置文件时我们会把它们作为参数传入进去。这个<code>yaml</code>文件还包含了2个值得注意的额外规范。首先，我们为每一个<code>Peer</code>组织指定了锚<code>peer</code>节点（<code>peer0.org1.example.com</code>和<code>peer0,org2.example.com</code>）。然后，我们为每一个成员指定了<code>MSP</code>文件夹路径，这就使我们可以在<code>orderer</code>创世块中按顺序的存储每个组织的根证书。这是一个很关键的概念。现在任何与排序服务通信的网络实体都能够被<code>orderer</code>验证其数字签名了。</p>
 <h3 id="运行shell脚本"><a href="#运行shell脚本" class="headerlink" title="运行shell脚本"></a>运行<code>shell</code>脚本</h3><p>确认你在<code>examples/e2e_cli</code>目录下，这是<code>shell</code>脚本所在的位置。为你的<code>channel</code>起一个独特的名字，然后替换掉下方的<code>&lt;channel-ID&gt;</code>参数。如果你不提供一个名字，那么这个脚本会运行失败。</p>
@@ -991,7 +991,7 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 

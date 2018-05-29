@@ -7,7 +7,7 @@
 
 <html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -136,7 +136,7 @@
 
 
 
-  <title>Ethereum初探 | 花木兰</title>
+  <title>Ethereum初探 | 花木兰</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -147,7 +147,7 @@
 
 
 
-  <script type="text/javascript">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -443,7 +443,7 @@
  <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eth.sendTransaction(&#123;<span class="attr">from</span>: eth.accounts[<span class="number">0</span>], <span class="attr">to</span>: eth.accounts[<span class="number">1</span>], <span class="attr">value</span>: eth.toWei(<span class="number">1</span>, <span class="string">"ether"</span>)&#125;)</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="Nix"><a href="#Nix" class="headerlink" title="Nix"></a>Nix</h2><h3 id="关于Nix"><a href="#关于Nix" class="headerlink" title="关于Nix"></a>关于Nix</h3><p><code>Nix</code>是一个纯粹的函数式包管理工具，这意味着它对待包的方式，就像类似于<code>Haskell</code>这种纯函数式编程语言对待值一样 – 这些包由函数编译而成并且没有其它副作用。并且一旦编译完成不会再改变。<code>Nix</code>将包存储在<code>Nix store</code>中，一般都在<code>/nix/store</code>目录中，每一个包都有它自己独有的子目录，比如：</p>
+<h2 id="Nix"><a href="#Nix" class="headerlink" title="Nix"></a>Nix</h2><h3 id="关于Nix"><a href="#关于Nix" class="headerlink" title="关于Nix"></a>关于Nix</h3><p><code>Nix</code>是一个纯粹的函数式包管理工具，这意味着它对待包的方式，就像类似于<code>Haskell</code>这种纯函数式编程语言对待值一样 — 这些包由函数编译而成并且没有其它副作用。并且一旦编译完成不会再改变。<code>Nix</code>将包存储在<code>Nix store</code>中，一般都在<code>/nix/store</code>目录中，每一个包都有它自己独有的子目录，比如：</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="regexp">/nix/</span>store<span class="regexp">/b6gvzjyb2pg0kjfwrjmg1vfhh54ad73z-firefox-33.1/</span></div></pre></td></tr></table></figure>
 <p>其中<code>b6gvzjyb2pg0...</code>是这个包的唯一标识符，包含了它的一切依赖（是包编译依赖图的一个加密哈希值）。这种方式具有很多很强的特性。</p>
 <h3 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h3><p>这部分是为那些没有耐心读文档的人准备的。更多更深度的信息，你可以阅读<a href="https://nixos.org/nix/manual/#chap-quick-start" target="_blank" rel="external">后续的章节</a>。</p>
@@ -453,7 +453,7 @@
 </li>
 </ol>
 <pre><code>这将会把`Nix`安装在`/nix`下。该安装脚本将会使用`sudo`权限创建`/nix`目录，所以确定一下你拥有足够的权限。（想看其它安装方式，查看[`Installation`](https://nixos.org/nix/manual/#chap-installation)）。
-</code></pre><ol start="2">
+</code></pre><ol>
 <li><p>在<code>channel</code>中查看哪些安装包目前可用：</p>
  <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ nix-env -qa</div><div class="line">docbook-xml<span class="number">-4.3</span></div><div class="line">docbook-xml<span class="number">-4.5</span></div><div class="line">firefox<span class="number">-33.0</span><span class="number">.2</span></div><div class="line">hello<span class="number">-2.9</span></div><div class="line">libxslt<span class="number">-1.1</span><span class="number">.28</span></div><div class="line">...</div></pre></td></tr></table></figure>
 </li>
@@ -1011,7 +1011,7 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 

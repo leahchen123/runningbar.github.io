@@ -7,7 +7,7 @@
 
 <html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -136,7 +136,7 @@
 
 
 
-  <title>为Git仓库瘦身 | 花木兰</title>
+  <title>为Git仓库瘦身 | 花木兰</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -147,7 +147,7 @@
 
 
 
-  <script type="text/javascript">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -407,7 +407,7 @@
  <figure class="highlight perl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="keyword">for</span>-<span class="keyword">each</span>-<span class="keyword">ref</span> --<span class="keyword">format</span>=<span class="string">'delete %(refname)'</span> refs/original | git update-<span class="keyword">ref</span> --stdin</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<ol start="6">
+<ol>
 <li><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">git</span> <span class="comment">verify</span><span class="literal">-</span><span class="comment">pack</span> <span class="literal">-</span><span class="comment">v</span> <span class="string">.</span><span class="comment">git/objects/pack/pack</span><span class="literal">-</span><span class="comment">7b03cc896f31b2441f3a791ef760bd28495697e6</span><span class="string">.</span><span class="comment">idx</span> <span class="comment">\</span></div><div class="line"><span class="comment">|</span> <span class="comment">sort</span> <span class="literal">-</span><span class="comment">k</span> <span class="comment">3</span> <span class="literal">-</span><span class="comment">n</span> <span class="comment">\</span></div><div class="line"><span class="comment">|</span> <span class="comment">tail</span> <span class="literal">-</span><span class="comment">10</span></div><div class="line"></div><div class="line"><span class="comment">git</span> <span class="comment">rev</span><span class="literal">-</span><span class="comment">list</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">objects</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">all</span> <span class="comment">|</span> <span class="comment">grep</span> <span class="comment">185ab8d</span></div><div class="line"></div><div class="line"><span class="comment">git</span> <span class="comment">log</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">pretty=oneline</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">branches</span> <span class="literal">-</span><span class="literal">-</span> <span class="comment">spark</span><span class="literal">-</span><span class="comment">assembly</span><span class="literal">-</span><span class="comment">1</span><span class="string">.</span><span class="comment">3</span><span class="string">.</span><span class="comment">1</span><span class="literal">-</span><span class="comment">hadoop2</span><span class="string">.</span><span class="comment">4</span><span class="string">.</span><span class="comment">0</span><span class="string">.</span><span class="comment">jar</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">git</span> <span class="comment">filter</span><span class="literal">-</span><span class="comment">branch</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">force</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">index</span><span class="literal">-</span><span class="comment">filter</span> <span class="comment">\</span></div><div class="line"><span class="comment">'git</span> <span class="comment">rm</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">cached</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">ignore</span><span class="literal">-</span><span class="comment">unmatch</span> <span class="comment">spark</span><span class="literal">-</span><span class="comment">assembly</span><span class="literal">-</span><span class="comment">1</span><span class="string">.</span><span class="comment">3</span><span class="string">.</span><span class="comment">1</span><span class="literal">-</span><span class="comment">hadoop2</span><span class="string">.</span><span class="comment">4</span><span class="string">.</span><span class="comment">0</span><span class="string">.</span><span class="comment">jar'</span> <span class="comment">\</span></div><div class="line"><span class="literal">-</span><span class="literal">-</span><span class="comment">prune</span><span class="literal">-</span><span class="comment">empty</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">tag</span><span class="literal">-</span><span class="comment">name</span><span class="literal">-</span><span class="comment">filter</span> <span class="comment">cat</span> <span class="literal">-</span><span class="literal">-</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">all</span></div><div class="line"></div><div class="line"><span class="comment">git</span> <span class="comment">for</span><span class="literal">-</span><span class="comment">each</span><span class="literal">-</span><span class="comment">ref</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">format='delete</span> <span class="comment">%(refname)'</span> <span class="comment">refs/original</span> <span class="comment">|</span> <span class="comment">git</span> <span class="comment">update</span><span class="literal">-</span><span class="comment">ref</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">stdin</span></div><div class="line"></div><div class="line"><span class="comment">git</span> <span class="comment">reflog</span> <span class="comment">expire</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">expire=now</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">all</span></div><div class="line"></div><div class="line"><span class="comment">git</span> <span class="comment">gc</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">prune=now</span></div><div class="line"></div><div class="line"><span class="comment">git</span> <span class="comment">count</span><span class="literal">-</span><span class="comment">objects</span> <span class="literal">-</span><span class="comment">v</span></div><div class="line"></div><div class="line"><span class="comment">git</span> <span class="comment">push</span> <span class="comment">origin</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">force</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">all</span></div></pre></td></tr></table></figure>
 </li>
 </ol>
@@ -966,7 +966,7 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 

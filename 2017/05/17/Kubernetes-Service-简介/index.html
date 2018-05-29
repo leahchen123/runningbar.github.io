@@ -7,7 +7,7 @@
 
 <html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -139,7 +139,7 @@
 
 
 
-  <title>Kubernetes Service 简介 | 花木兰</title>
+  <title>Kubernetes Service 简介 | 花木兰</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -150,7 +150,7 @@
 
 
 
-  <script type="text/javascript">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -373,13 +373,13 @@
 <p>Kubernetes Pods不是永恒的，实际上它有一个生命周期。当一个工作节点挂掉的时候，运行在上面的Pods也会消失。一个复制操控程序将会通过创建新的Pods使你的应用保持运行，来动态地驱动集群恢复到期望的状态。再举一个例子，考虑一个拥有3个副本的镜像处理后台。这些副本是可以互相替代的；前端系统不需要关注后端的副本，甚至也不需要关注一个Pod是消失还是被重建。即便如此，每一个Kubernetes集群中的Pod都有一个唯一的IP地址，即使在同一个节点上的多个Pods也是这样，所以需要有一种方法能够使Pods中的变化自动保持一致，以保证你的应用持续正常运行。这就要提到服务了。在Kubernetes中，一个服务也是一个抽象概念，它定义了一个逻辑意义上的Pods集合，以及一个控制谁能访问它们的协议[policy]。服务可以使Pods之间的依赖很松散的耦合。一个服务使用YAML（优先）或者JSON来定义，就像所有的Kubernetes对象一样。一个服务标定的Pods集合通常由一个<strong>LabelSelector</strong>来决定（关于为什么在属性集中你也许不想让服务包含<code>selector</code>，可以看下面的内容）。</p>
 <p>即使Pods每个都有一个唯一的IP地址，但是没有服务，这些IP就不会暴露在集群外面。服务允许你的应用接收通讯。服务可以在ServiceSpec中指定一个<code>type</code>来以不同的方式向外部暴露：</p>
 <ul>
-<li><p><code>ClusterIP</code>（默认的） – 在集群中将服务暴露在一个内部IP上。这种类型使得服务只能在集群内部访问。</p>
+<li><p><code>ClusterIP</code>（默认的） — 在集群中将服务暴露在一个内部IP上。这种类型使得服务只能在集群内部访问。</p>
 </li>
-<li><p><code>NodePort</code> – 使用NAT，对于集群中每一个选中的节点，将服务暴露在同一个端口上。这样可以使用<code>:</code>来从集群外部访问服务。NodePort是ClusterIP的超集。</p>
+<li><p><code>NodePort</code> — 使用NAT，对于集群中每一个选中的节点，将服务暴露在同一个端口上。这样可以使用<code>:</code>来从集群外部访问服务。NodePort是ClusterIP的超集。</p>
 </li>
-<li><p><code>LoadBalancer</code> – 在当前云环境中创建一个外部的负载均衡器（如果支持的话），并且为服务指定一个固定的外部IP。LoadBalancer是NodePort的超集。</p>
+<li><p><code>LoadBalancer</code> — 在当前云环境中创建一个外部的负载均衡器（如果支持的话），并且为服务指定一个固定的外部IP。LoadBalancer是NodePort的超集。</p>
 </li>
-<li><p><code>ExternalName</code> – 使用一个任意的名字，通过返回一个包含该名字的CNAME记录来暴露服务（在属性集中通过<code>externalName</code>指定名字）。不使用任何协议。这个类型需要<code>kube-dns</code>版本为v1.7及以上。</p>
+<li><p><code>ExternalName</code> — 使用一个任意的名字，通过返回一个包含该名字的CNAME记录来暴露服务（在属性集中通过<code>externalName</code>指定名字）。不使用任何协议。这个类型需要<code>kube-dns</code>版本为v1.7及以上。</p>
 </li>
 </ul>
 <p>关于服务的不同类型更多信息，可以参看<a href="https://kubernetes.io/docs/tutorials/services/source-ip/" target="_blank" rel="external">Using Source IP</a>教程。也可以参看<a href="https://kubernetes.io/docs/concepts/services-networking/connect-applications-service" target="_blank" rel="external">Connecting Applications with Services</a>。</p>
@@ -940,7 +940,7 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
