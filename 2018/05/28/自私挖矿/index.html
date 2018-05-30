@@ -109,7 +109,7 @@
 <meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-8.png">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-9.png">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-10.png">
-<meta property="og:updated_time" content="2018-05-30T11:19:58.000Z">
+<meta property="og:updated_time" content="2018-05-30T11:26:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自私挖矿">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  背景这是康奈尔大学的一篇论文《Majority is not Enough: Bitcoin Mining is Vulnerable》，分析了简单多数原则在比特币挖矿中比较脆弱，分析指出并不需要51%算力才能实施有效攻击，而只需要1/3的算力就能够进行作恶。 在ethereum代码中，在写入块和数据库的过程中，有避免这一漏洞的处理，参考了这篇">
@@ -383,7 +383,7 @@
 <a id="more"></a>
 <h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>传统观点认为比特币的挖矿协议是<a href="https://baike.baidu.com/item/%E6%BF%80%E5%8A%B1%E7%9B%B8%E5%AE%B9/2361065?fr=aladdin" target="_blank" rel="external">激励相容</a>的，并能够避免少数群体互相勾结。</p>
 <p>我们会阐明比特币挖矿协议不是激励相容的。本文会提出一种攻击：勾结的矿工会比正常挖矿获得更大的收益。这会导致正常的矿工们更愿意加入自私挖矿，勾结团体的规模会越来越大，直至成为大多数，至此，比特币系统将不再是一个去中心化的货币。</p>
-<p>除非做出一些假设，否则这种攻击是可行的，我们对比特币协议提出了一种可行的修改。它假设可控制的矿池少于资源【即<code>mining power</code>，算力】的1/4来禁止自私挖矿。这个门槛低于容错假设的1/2界限，但总比目前的事实下，任何规模的团体都可以危及系统要好。</p>
+<p>除非做出一些假设，否则这种攻击是可行的，我们对比特币协议提出了一种可行的修改。它可以禁止算力少于全网1/4d的矿池进行自私挖矿获利。这个门槛低于容错假设的1/2界限，但总比目前的事实下，任何规模的团体都可以危及系统要好。</p>
 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>比特币运行在$42 \times 10^{18}$的<a href="https://baike.baidu.com/item/Gflops" target="_blank" rel="external">FLOPS</a>环境中，矿工贡献的算力越大，它解题并获取收益的可能就越大。这种奖励结构促使矿工对整个系统贡献自己的算力，这也是去中心化的关键保障。</p>
 <p>比特币协议要求大多数矿工是诚实的，即遵循既定的协议，若矿工们相互勾结，开始掌握全网大多数的算力后，它们就可以主宰整个网络。因此，协议的关键设计是使矿工们没有动力去形成一个如此大规模的勾结团体。</p>
 <p>经验证据显示，比特币网络中的矿工都是策略性的建立矿池，因为挖矿奖励是以不频繁的随机间隔分配，所以矿工们搭建矿池来减少收入的差异率，在矿池中，每个成员贡献算力进行解题，然后根据贡献按比例分享奖励。</p>
