@@ -100,7 +100,16 @@
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  背景这是康奈尔大学的一篇论文《Majority is not Enough: Bitcoin Mining is Vulnerable》，分析了简单多数原则在比特币挖矿中比较脆弱，分析指出并不需要51%算力才能实施有效攻击，而只需要1/3的算力就能够进行作恶。 在ethereum代码中，在写入块和数据库的过程中，有避免这一漏洞的处理，参考了这篇">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-1.png">
-<meta property="og:updated_time" content="2018-05-29T11:49:18.000Z">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-2.png">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-3.png">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-4.png">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-5.png">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-6.png">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-7.png">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-8.png">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-9.png">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/selfish-mining-10.png">
+<meta property="og:updated_time" content="2018-05-30T11:19:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自私挖矿">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  背景这是康奈尔大学的一篇论文《Majority is not Enough: Bitcoin Mining is Vulnerable》，分析了简单多数原则在比特币挖矿中比较脆弱，分析指出并不需要51%算力才能实施有效攻击，而只需要1/3的算力就能够进行作恶。 在ethereum代码中，在写入块和数据库的过程中，有避免这一漏洞的处理，参考了这篇">
@@ -424,8 +433,8 @@
 </ol>
 <h3 id="状态概率"><a href="#状态概率" class="headerlink" title="状态概率"></a>状态概率</h3><p>我们分析这个状态机来计算它的概率分布状态空间，得到如下等式：</p>
 <script type="math/tex; mode=display">
-\left\{
-\begin{array}{c}
+\left \{
+\begin{array}{l}
 \alpha p_0 = (1-\alpha)p_1 + (1-\alpha)p_2 \\
 p_{0'} = (1-\alpha)p_1 \\
 \alpha p_1 = (1-\alpha)p_2 \\
@@ -434,12 +443,69 @@ p_{0'} = (1-\alpha)p_1 \\
 \end{array}
 \right.
 \tag{1}</script><p>解方程组(1)，可得：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+& p_0 = \frac{\alpha - 2\alpha^2}{\alpha(2\alpha^3-4\alpha^2+1)} \tag{2} \\
+& p_{0'} = \frac{(1-\alpha)(\alpha-2\alpha^2)}{1-4\alpha^2+2\alpha^3} \tag{3} \\
+& p_1 = \frac{\alpha-2\alpha^2}{2\alpha^3-4\alpha^2+1} \tag{4} \\
+& \forall k \geq 2: p_k = \left( \frac{\alpha}{1-\alpha} \right)^{k-1} \frac{\alpha-2\alpha^2}{2\alpha^3-4\alpha^2+1} \tag{5}
+\end{align}</script><h3 id="收益分析"><a href="#收益分析" class="headerlink" title="收益分析"></a>收益分析</h3><p>只有当区块纳入了主链后，挖掘这个区块的矿工才会拿到收益，根据上面的概率分布方程，我们详述每个事件的收益情况。</p>
+<ol>
+<li><p>除了2个长度为1的分支外的其它状态下，自私矿池挖出一个区块。它会将这个区块追加到秘密分支上，这个区块的收益会被延迟决定。</p>
+<p> <img src="/source_code/image/selfish-mining-2.png" alt=""></p>
+</li>
+<li><p>在两个长度为1的分支状态下，自私矿池挖出一个区块。它会发布这个长度为2的秘密分支，这样就拿到了2个区块的收益。</p>
+<p> <img src="/source_code/image/selfish-mining-3.png" alt=""></p>
+</li>
+<li><p>在两个长度为1的分支状态下，诚实矿工在秘密分支上挖出了一个区块。此时自私矿池拿到第1个块的奖励，第2个块的奖励归挖掘它的诚实矿工所有。</p>
+<p> <img src="/source_code/image/selfish-mining-4.png" alt=""></p>
+</li>
+<li><p>在2个长度为1的分支状态下，诚实矿工在诚实分支上挖出了一个区块。2个区块奖励都被挖掘出它们的诚实矿工获取，自私矿池拿不到任何奖励。</p>
+<p> <img src="/source_code/image/selfish-mining-5.png" alt=""></p>
+</li>
+<li><p>没有秘密分支的状态下，诚实矿工挖出一个区块。挖掘者获得奖励，双方阵营都切换到这个新区块上挖矿。</p>
+</li>
+<li><p>领先优势为1的状态下，诚实矿工挖到1个区块。此时产生了2个长度为1的分支，自私矿池会立即发布曾经领先的那个区块，诚实矿工选择诚实分支继续挖矿的比例记为$\gamma$（这个和上文的记法恰好相反）。这种情况下的区块奖励也是处于暂定。</p>
+<p> <img src="/source_code/image/selfish-mining-6.png" alt=""></p>
+</li>
+<li><p>领先优势为2个状态下，诚实矿工挖到1个区块。此时领先优势降为1，诚实矿工马上就赶上来了，所以自私矿池会发布它的秘密分支所有区块，因为它更长，所以所有人都会接纳这个秘密分支，于是自私矿池获取2个区块的收益。</p>
+<p> <img src="/source_code/image/selfish-mining-7.png" alt=""></p>
+</li>
+<li><p>领先优势大于2的状态下，诚实矿工挖到1个区块。这会削减领先优势，但优势仍大于2（如果等于2，就进入第7种情况了）。一旦自私矿池公布整个秘密分支，那么诚实矿工挖到的新区块（记为编号$i$）就会排挤在主链之外。然而，自私矿池只公布同样编号为$i$的区块，并一个一个的拿奖励。</p>
+<p> <img src="/source_code/image/selfish-mining-8.png" alt=""></p>
+</li>
+</ol>
+<p>我们从状态概率和转换概率上算出自私矿池和诚实矿工的收益如下：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+& r_{others} = \overbrace{p_{0'} \cdot \gamma(1-\alpha) \cdot 1}^{Case (3)} + \overbrace{p_{0'} \cdot (1-\gamma)(1-\alpha)\cdot2}^{Case(4)} + \overbrace{p_{0} \cdot (1-\alpha) \cdot 1}^{Case(5)} \tag{6} \\
+& r_{pool} = \overbrace{p_{0'} \cdot \alpha \cdot 2}^{Case (2)} + \overbrace{p_{0'} \cdot \gamma(1-\alpha) \cdot 1}^{Case(3)} + \overbrace{p_{2} \cdot (1-\alpha) \cdot 2}^{Case(7)} + \overbrace{P[i > 2](1-\alpha) \cdot 1}^{Case (8)}\tag{7} \\
+\end{align}</script><p>如预期所示，自私挖矿带来的故意分叉会浪费掉诚实矿工的部分工作。转而导致整个区块的生成速度下降，即$r<em>{pool} + r</em>{others} &lt; 1$。于是协议会自动调整难度以保证主链平均每10分钟产出一个区块。每个矿工实际的收益效率记做<strong>收益率比例，它等价于矿工挖出的区块在主链中所有区块的比例</strong>。将(2)-(5)式代入(6)-(7)式中，在$0 \leq \alpha \leq \frac{1}{2}$时，解得自私矿池的收益比例为：</p>
+<script type="math/tex; mode=display">
+R_{pool} = \frac{r_{pool}}{r_{pool} + r_{others}} = \cdots = \frac{\alpha(1-\alpha)^{2}(4\alpha + \gamma(1-2\alpha)) - \alpha^{3}}{1-\alpha(1+(2-\alpha)\alpha)} \tag{8}</script><h3 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h3><p>为了验证分析，康奈尔大学的研究小组将结果和一个比特币协议模拟器进行了对比。这个模拟器很有意思，实现了大部分的比特币挖矿协议细节，但把计算解密问题换成了蒙特卡罗模拟，来模拟区块发现，而不需要真正的耗费大量计算资源。在这个实验中，模拟了1000个矿工以相同的速度挖矿。其中$1000\alpha$的矿工组成一个矿池运行自私挖矿算法，其它矿工遵循比特币协议。并假设区块传播时间相对于挖掘时间可以忽略不计，这个和现实情况一致。为了避免出现两条同样长度的主链，人为的设置了分歧时的$\gamma$值，即当自私矿池发布秘密分支时，有$\gamma(1-\alpha)1000$个诚实矿工会选择在秘密分支上挖矿，剩余的则在诚实分支上挖矿。图2显示模拟结果与理论分析相符（不是相符，是完全一致，OMG！）。</p>
+<p><img src="/source_code/image/selfish-mining-9.png" alt=""></p>
+<h3 id="alpha-和-gamma-的影响"><a href="#alpha-和-gamma-的影响" class="headerlink" title="$\alpha$和$\gamma$的影响"></a>$\alpha$和$\gamma$的影响</h3><p>从上图可以看到，当$\alpha$越大，自私矿池获取到的超算力份额收益就越大，但要记得(8)式成立的前提是$0 \leq \alpha \leq \frac{1}{2}$，我们通过如下观察分析这个不等式并叙述结果：</p>
+<p><strong>观察1</strong> 对于给定的$\gamma$，一个矿池获取到超份额收益的区间为：</p>
+<script type="math/tex; mode=display">
+\frac{1-\gamma}{3-2\gamma} < \alpha < \frac{1}{2} \tag {9}</script><p>我们用图2对此进行说明。首先需要说明的是，纵观整个分析过程，我们发现自私矿池只有1个区块优势的时候才会有风险，此时诚实矿工可能挖到区块并与其竞争。当$\gamma = 1$时，图中蓝色线所示，所有的诚实矿工在竞争时都会选择在秘密分支上挖矿，等于都在为自私矿池抬轿子，所以在这种情况下，自私矿池一点风险都没有了，它总能得到超份额收益，无关算力大小，所以此时自私阈值（即$\alpha$）为0；当$\gamma = 0$时，这是另一种极端，此时，自私阈值为1/3，只有超过这个算力比例，自私矿池才能获得超份额收益。当$\gamma = 1/2$时，自私阈值为1/4。图3列出了自私阈值和$\gamma$的函数关系。</p>
+<p><img src="/source_code/image/selfish-mining-10.png" alt=""></p>
+<p>观察图2，我们还注意到自私矿池收益函数的斜率，即$R_pool$，是一个关于自私矿池算力的函数，并且在超过自私阈值后，$R_pool$会越来越大，从图中也可以看到曲线越来越陡峭。这就得到了下面第2个观察。</p>
+<p><strong>观察2</strong> 对于运行自私挖矿的矿池，在超越自私阈值后，矿池中每个成员的收益都会随着矿池算力的增加而增加。</p>
+<h2 id="矿池的形成"><a href="#矿池的形成" class="headerlink" title="矿池的形成"></a>矿池的形成</h2><p>研究已经表明，一旦自私矿池超过了自私阈值算力，它就能够通过自私挖矿增加收入（参照观察1），并且，理性的矿工也会倾向于加入这个矿池增加收入，而矿池也会欢迎新成员的加入（参照观察2）。于是，自私矿池的算力会越来越大，变成大多数。一旦一个矿池，无论自私与否，掌握了大多数算力，它就可以控制整个区块链。自私挖矿算力这时就变得没有必要，因为它能够做的事情已不仅限于获取收益了，这个时候，比特币就不再是最初设想的去中心化货币。</p>
+<h2 id="加固比特币协议"><a href="#加固比特币协议" class="headerlink" title="加固比特币协议"></a>加固比特币协议</h2><p>理想情况下，一个强大的货币体系应该被设计为能够抵抗各种攻击。由于自私挖矿攻击在超越自私阈值后能够得到超额收入，应该修改协议把这个自私阈值设的越高越好。但是目前的比特币协议并没有保证$\gamma$最小值的措施。这就意味着自私阈值可能会低至0，那么任何算力的矿池都能够自私挖矿获取超额收益。我们建议比特币协议做一个简单修改，将$\gamma$设为1/2，如果所有的诚实矿工都采纳这种修改，那么自私阈值可以升至1/4。这个修改是向后兼容的，任何矿工都可以采纳它，并且不妨碍协议的运行。并且，它是逐步演化的，即只要采纳它的矿工降低$\gamma$值，都会升高自私阈值。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>比特币协议规定，当矿工知道多个相同长度的分支时，它总是选择在第一个接受到分支上挖矿。当自私矿池领先优势为1时，一旦它监听到诚实矿工挖出了新区块<code>X</code>，它就立即发布自己的秘密区块<code>P</code>。乍一看，自私矿池总是监听后才发布，处于滞后劣势。但是一个精明的自私矿池可以对诚实矿工发动<a href="https://blog.csdn.net/qq_35056292/article/details/60480292" target="_blank" rel="external">女巫攻击</a>。它会在比特币挖矿网络中增加一定数量的零算力矿工，这些虚拟矿工可以看成是参与数据传播的高级媒介，但并不挖掘区块。当它们监听到区块<code>X</code>，它们就忽略掉这个区块，并开始广播区块<code>P</code>，虽然P2P网络最终会保证区块<code>X</code>可以广播给所有矿工，但是在这种情况下，区块<code>X</code>的传播速度一定比区块<code>P</code>的传播速度慢。零算力矿工的数量足够大时，这种精明操作就可以增加$\gamma$值，结果就是如公式(9)那样，自私阈值趋于于0。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>我们提出一种简单的，向后兼容的协议更改方案来提高自私阈值。具体来说，当一个矿工收到同样长度的分支时，它应该把它们都广播出去，并且随机选择在哪个分支上挖矿。在两个分支的情况下，期望有一半的矿工在A分支，另一半的矿工在B分支，这就会使$\gamma = 1/2$，并转而将自私阈值升为1/4。</p>
+<p>每一个矿工实现我们的更改，都会降低自私矿池掌控信息传播提升$\gamma$的能力。这种修改是独立的并不会影响其它矿工，因此也不需要因分叉。也没有对协议引入新的漏洞：目前，如果出现两个同样长度的分支，每个矿工的选择是随意的，主要依赖于网络拓扑和延时。我们的修改只是明确化了这种随机性，因此不会引入新的漏洞。</p>
+<h1 id="再看以太坊代码"><a href="#再看以太坊代码" class="headerlink" title="再看以太坊代码"></a>再看以太坊代码</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// core/blockchain.go</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> !reorg &amp;&amp; externTd.Cmp(localTd) == <span class="number">0</span> &#123;</div><div class="line">		<span class="comment">// Split same-difficulty blocks by number, then at random</span></div><div class="line">		reorg = block.NumberU64() &lt; currentBlock.NumberU64() || (block.NumberU64() == currentBlock.NumberU64() &amp;&amp; mrand.Float64() &lt; <span class="number">0.5</span>)</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>所以这句话就是为了在同样难度的区块上，随机选择一个进行挖矿，降低$\gamma$，提升自私阈值<code>\alpha</code>。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><p><a href="http://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf" target="_blank" rel="external">http://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf</a></p>
 </li>
 <li><p><a href="https://baike.baidu.com/item/%E6%BF%80%E5%8A%B1%E7%9B%B8%E5%AE%B9/2361065?fr=aladdin" target="_blank" rel="external">https://baike.baidu.com/item/%E6%BF%80%E5%8A%B1%E7%9B%B8%E5%AE%B9/2361065?fr=aladdin</a></p>
 </li>
 <li><p><a href="https://baike.baidu.com/item/Gflops" target="_blank" rel="external">https://baike.baidu.com/item/Gflops</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_35056292/article/details/60480292" target="_blank" rel="external">https://blog.csdn.net/qq_35056292/article/details/60480292</a></p>
 </li>
 </ul>
 <blockquote>
@@ -646,7 +712,7 @@ p_{0'} = (1-\alpha)p_1 \\
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#笔记"><span class="nav-number">2.</span> <span class="nav-text">笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">2.1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">2.2.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自私挖矿策略"><span class="nav-number">2.3.</span> <span class="nav-text">自私挖矿策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建模矿工和矿池"><span class="nav-number">2.3.1.</span> <span class="nav-text">建模矿工和矿池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自私挖矿"><span class="nav-number">2.3.2.</span> <span class="nav-text">自私挖矿</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">2.4.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#状态概率"><span class="nav-number">2.4.1.</span> <span class="nav-text">状态概率</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#笔记"><span class="nav-number">2.</span> <span class="nav-text">笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">2.1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">2.2.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自私挖矿策略"><span class="nav-number">2.3.</span> <span class="nav-text">自私挖矿策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建模矿工和矿池"><span class="nav-number">2.3.1.</span> <span class="nav-text">建模矿工和矿池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自私挖矿"><span class="nav-number">2.3.2.</span> <span class="nav-text">自私挖矿</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">2.4.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#状态概率"><span class="nav-number">2.4.1.</span> <span class="nav-text">状态概率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#收益分析"><span class="nav-number">2.4.2.</span> <span class="nav-text">收益分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模拟"><span class="nav-number">2.4.3.</span> <span class="nav-text">模拟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alpha-和-gamma-的影响"><span class="nav-number">2.4.4.</span> <span class="nav-text">$\alpha$和$\gamma$的影响</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矿池的形成"><span class="nav-number">2.5.</span> <span class="nav-text">矿池的形成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加固比特币协议"><span class="nav-number">2.6.</span> <span class="nav-text">加固比特币协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">2.6.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">2.6.2.</span> <span class="nav-text">解决方案</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#再看以太坊代码"><span class="nav-number">3.</span> <span class="nav-text">再看以太坊代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
