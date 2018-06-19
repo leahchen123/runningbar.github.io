@@ -99,7 +99,7 @@
 <meta property="og:url" content="http://www.huamo.online/2018/04/20/Ethereum源码阅读笔记-accounts-2-分层确定性钱包/index.html">
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
-<meta property="og:updated_time" content="2018-05-03T09:15:07.000Z">
+<meta property="og:updated_time" content="2018-06-14T02:13:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ethereum源码阅读笔记-accounts(2)-分层确定性钱包">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
@@ -393,7 +393,7 @@
 </li>
 <li><p>$ser_{256}(p)$：将整数<code>p</code>序列化为一个32字节序列，大端优先。</p>
 </li>
-<li><p>$ser<em>P(P)$：将点$P = (x, y)$序列化为一个字节序列，使用的方法为<code>SEC1</code>压缩格式：$(0x02 \ or \ 0x03) || ser</em>{256}(x)$，其中头部字节取决于省略的$y$坐标的奇偶性。</p>
+<li><p><script type="math/tex">ser_P(P)</script>：将点<script type="math/tex">P = (x, y)</script>序列化为一个字节序列，使用的方法为<code>SEC1</code>压缩格式：<script type="math/tex">(0x02 \ or \ 0x03) || ser_{256}(x)</script>，其中头部字节取决于省略的$y$坐标的奇偶性。</p>
 </li>
 <li><p>$parse_{256}(p)$：将一个32字节序列转化为一个256位整数，大端优先。</p>
 </li>
@@ -402,7 +402,7 @@
 <p>我们将扩展后的私钥记为<code>(k, c)</code>，其中<code>k</code>是原本普通的私钥，<code>c</code>是链码。将扩展后的公钥记为<code>(K, c)</code>，其中<code>K = point(k)</code>，并且<code>c</code>同样是链码。</p>
 <p><strong>每一个扩展后的密钥都有$2^{31}$个普通的子密钥，以及$2^{31}$个强化的子密钥。每一个子密钥都有一个索引序号。其中普通子密钥使用索引$0 \sim 2^{31}-1$，强化的子密钥使用索引$2^{31} \sim 2^{32} - 1$。为了方便强化子密钥的索引记法，数字$i_H$表示的就是$i + 2^{31}$。</strong></p>
 <h3 id="子密钥生成函数（Child-key-derivation-CKD-）"><a href="#子密钥生成函数（Child-key-derivation-CKD-）" class="headerlink" title="子密钥生成函数（Child key derivation[CKD]）"></a>子密钥生成函数（<code>Child key derivation</code>[<code>CKD</code>]）</h3><p>给定一个父扩展密钥和一个索引<code>i</code>，可以计算出对应的子扩展密钥。实现这个的算法取决于子密钥是否是强化密钥（或者说，是否$i \geqslant 2^{31}$），以及我们讨论的是私钥还是公钥</p>
-<h4 id="父私钥-longrightarrow-子私钥"><a href="#父私钥-longrightarrow-子私钥" class="headerlink" title="父私钥 $\longrightarrow$ 子私钥"></a>父私钥 $\longrightarrow$ 子私钥</h4><p>函数$CKDpriv((k<em>{par}, c</em>{par}), i) \rightarrow (k_i, c_i)$基于父扩展私钥计算出一个子扩展私钥，以下是算法流程：</p>
+<h4 id="父私钥-longrightarrow-子私钥"><a href="#父私钥-longrightarrow-子私钥" class="headerlink" title="父私钥 $\longrightarrow$ 子私钥"></a>父私钥 $\longrightarrow$ 子私钥</h4><p>函数<script type="math/tex">CKDpriv((k_{par}, c_{par}), i) \rightarrow (k_i, c_i)</script>基于父扩展私钥计算出一个子扩展私钥，以下是算法流程：</p>
 <ul>
 <li><p>检查是否$i \geqslant 2^{31}$（即子密钥是否是一个强化密钥）。</p>
 <ul>
@@ -415,7 +415,7 @@
 </li>
 <li><p>将$I$分割为2个32字节序列，分别记为$I_L$和$I_R$</p>
 </li>
-<li><p>返回的子私钥$k<em>i$为$k_i = parse</em>{256}(I<em>L) + k</em>{par}(mod \ n)$。</p>
+<li><p>返回的子私钥<script type="math/tex">k_i</script>为<script type="math/tex">k_i = parse_{256}(I_L) + k_{par}(mod \ n)</script>。</p>
 </li>
 <li><p>返回的子链码$c_i$为$c_i = I_R$。</p>
 </li>
@@ -425,7 +425,7 @@
 <blockquote>
 <p>上面提到的<code>HMAC-SHA512</code>函数定义于<a href="http://tools.ietf.org/html/rfc4231" target="_blank" rel="external">RFC 4231</a></p>
 </blockquote>
-<h4 id="父公钥-longrightarrow-子公钥"><a href="#父公钥-longrightarrow-子公钥" class="headerlink" title="父公钥 $\longrightarrow$ 子公钥"></a>父公钥 $\longrightarrow$ 子公钥</h4><p>函数$CKD<em>{pub}((K</em>{par}, c<em>{par}), i) \rightarrow (K</em>{i}, c_{i})$基于父扩展公钥计算出一个子扩展公钥。<strong>该函数只定义于非强化的子公钥。</strong>以下是算法流程：</p>
+<h4 id="父公钥-longrightarrow-子公钥"><a href="#父公钥-longrightarrow-子公钥" class="headerlink" title="父公钥 $\longrightarrow$ 子公钥"></a>父公钥 $\longrightarrow$ 子公钥</h4><p>函数<script type="math/tex">CKD_{pub}((K_{par}, c_{par}), i) \rightarrow (K_{i}, c_{i})</script>基于父扩展公钥计算出一个子扩展公钥。<strong>该函数只定义于非强化的子公钥。</strong>以下是算法流程：</p>
 <ul>
 <li><p>检查是否$i \geqslant 2^{31}$（即子密钥是否是一个强化密钥）。</p>
 <ul>
@@ -437,7 +437,7 @@
 </li>
 <li><p>将$I$分割为2个32字节序列，分别记为$I_L$和$I_R$。</p>
 </li>
-<li><p>返回的子公钥$K<em>i$为$K_i = point(parse</em>{256}(I<em>L)) + K</em>{par}$。</p>
+<li><p>返回的子公钥<script type="math/tex">K_i</script>为<script type="math/tex">K_i = point(parse_{256}(I_L)) + K_{par}</script>。</p>
 </li>
 <li><p>返回的链码为$c_i = I_R$</p>
 </li>
@@ -453,19 +453,19 @@
 </ul>
 <p>为了计算一个父私钥的子公钥，可以用以下2种方式：</p>
 <ul>
-<li><p>$N(CKD<em>{priv}((k</em>{par}, c_{par}), i))$该方式总是可行的。</p>
+<li><p><script type="math/tex">N(CKD_{priv}((k_{par}, c_{par}), i))</script>该方式总是可行的。</p>
 </li>
-<li><p>$CKD<em>{pub}(N(k</em>{par}, c_{par}), i)$，该方式只适用于生成非强化的子公钥。</p>
+<li><p><script type="math/tex">CKD_{pub}(N(k_{par}, c_{par}), i)</script>，该方式只适用于生成非强化的子公钥。</p>
 </li>
 </ul>
 <p>两者等价意味着非强化的密钥很有实用意义：可以使用一个给定的父公钥生成一系列子公钥，而无需知道任何私钥。同时在强化密钥方面两者又是有区别的，通常不使用非强化密钥的原因是考虑到安全性，下面有更多这方面的信息。</p>
 <h4 id="父公钥-longrightarrow-子私钥"><a href="#父公钥-longrightarrow-子私钥" class="headerlink" title="父公钥 $\longrightarrow$ 子私钥"></a>父公钥 $\longrightarrow$ 子私钥</h4><p>这是不可能实现的！</p>
-<h3 id="密钥树"><a href="#密钥树" class="headerlink" title="密钥树"></a>密钥树</h3><p>下一步就是级联多个<code>CKD</code>结构来构造出一颗树。首先以一个根开始，这个根就是主扩展私钥<code>m</code>。通过对多个<code>i</code>值计算$CKD<em>{priv}(m, i)$，可以得到一系列的1级派生节点。这些节点的每一个也是一个扩展私钥，$CKD</em>{priv}$函数也同样适用于它们。</p>
-<p>为了记法简单，我们将$CKD<em>{priv}(CKD</em>{priv}(CKD<em>{priv}(m, 3_H),2),5)$记为$m/3_H/2/5$。这种方式同样适用于公钥衍生，例如$CKD</em>{pub}(CKD<em>{pub}(CKD</em>{pub}(M,3),2),5)$记为<code>M/3/2/5</code>。这将会具有以下特性：</p>
+<h3 id="密钥树"><a href="#密钥树" class="headerlink" title="密钥树"></a>密钥树</h3><p>下一步就是级联多个<code>CKD</code>结构来构造出一颗树。首先以一个根开始，这个根就是主扩展私钥<code>m</code>。通过对多个<code>i</code>值计算<script type="math/tex">CKD_{priv}(m, i)</script>，可以得到一系列的1级派生节点。这些节点的每一个也是一个扩展私钥，<script type="math/tex">CKD_{priv}</script>函数也同样适用于它们。</p>
+<p>为了记法简单，我们将<script type="math/tex">CKD_{priv}(CKD_{priv}(CKD_{priv}(m, 3_H),2),5)</script>记为<script type="math/tex">m/3_H/2/5</script>。这种方式同样适用于公钥衍生，例如<script type="math/tex">CKD_{pub}(CKD_{pub}(CKD_{pub}(M,3),2),5)</script>记为<script type="math/tex">M/3/2/5</script>。这将会具有以下特性：</p>
 <ul>
-<li><p><code>N(m/a/b/c) = N(m/a/b)/c = N(m/a)/b/c = N(m)/a/b/c = M/a/b/c</code>(从数学上证明了，用父私钥生成子公钥，可以用父公钥生成子公钥代替，这样就可以不暴露父私钥) </p>
+<li><p><script type="math/tex">N(m/a/b/c) = N(m/a/b)/c = N(m/a)/b/c = N(m)/a/b/c = M/a/b/c</script>(从数学上证明了，用父私钥生成子公钥，可以用父公钥生成子公钥代替，这样就可以不暴露父私钥) </p>
 </li>
-<li><p>$N(m/a<em>H/b/c) = N(m/a_H/b)/c = N(m/a_H)/b/c$。然而，再往后，$N(m/a_H)$不能等价于$N(m)/a_H$，因为这是不可能实现的：$CKD</em>{pub}(N(m), i)$只适用于非强化的子公钥。</p>
+<li><p><script type="math/tex">N(m/a_H/b/c) = N(m/a_H/b)/c = N(m/a_H)/b/c</script>。然而，再往后，<script type="math/tex">N(m/a_H)</script>不能等价于<script type="math/tex">N(m)/a_H</script>，因为这是不可能实现的：<script type="math/tex">CKD_{pub}(N(m), i)</script>只适用于非强化的子公钥。</p>
 </li>
 </ul>
 <h1 id="BIP-43"><a href="#BIP-43" class="headerlink" title="BIP-43"></a>BIP-43</h1><p>在BIP-32的算法基础上，BIP-43引入了<code>Purpose</code>域。</p>
@@ -685,7 +685,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-count">41</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -696,7 +696,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
