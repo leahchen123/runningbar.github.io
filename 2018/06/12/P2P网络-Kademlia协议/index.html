@@ -104,7 +104,7 @@
 <meta property="og:image" content="http://www.huamo.online/source_code/image/kademlia-3.png">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/kademlia-4.png">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/kademlia-5.png">
-<meta property="og:updated_time" content="2018-06-19T10:05:57.000Z">
+<meta property="og:updated_time" content="2018-06-19T10:08:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="P2P网络--Kademlia协议">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  Kademlia：一种基于异或指标的P2P信息系统概述Kademlia是一种点对点分布式哈希表（DHT），它在容易出错的环境中也具有可证明的一致性和性能。使用一种基于异或指标的拓扑结构来路由查询和定位节点，这简化了算法并有助于证明。该拓扑结构有一个特点：每次消息交换都能够传递或强化有效信息。系统利用这些信息进行并发的异步查询，可以容忍节点故障，">
@@ -324,8 +324,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/尚未分类/" itemprop="url" rel="index">
-                    <span itemprop="name">尚未分类</span>
+                  <a href="/categories/ethereum/" itemprop="url" rel="index">
+                    <span itemprop="name">ethereum</span>
                   </a>
                 </span>
 
@@ -372,7 +372,7 @@
         <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
-<h1 id="Kademlia：一种基于异或指标的P2P信息系统"><a href="#Kademlia：一种基于异或指标的P2P信息系统" class="headerlink" title="Kademlia：一种基于异或指标的P2P信息系统"></a>Kademlia：一种基于异或指标的P2P信息系统</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Kademlia是一种点对点分布式哈希表（DHT），它在容易出错的环境中也具有可证明的一致性和性能。使用一种基于异或指标的拓扑结构来路由查询和定位节点，这简化了算法并有助于证明。该拓扑结构有一个特点：<strong>每次消息交换都能够传递或强化有效信息</strong>。系统利用这些信息进行并发的异步查询，可以容忍节点故障，并且故障不会导致用户超时。</p>
+<h1 id="Kademlia：一种基于异或指标的P2P信息系统"><a href="#Kademlia：一种基于异或指标的P2P信息系统" class="headerlink" title="Kademlia：一种基于异或指标的P2P信息系统"></a>Kademlia：一种基于异或指标的P2P信息系统</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Kademlia是一种点对点分布式哈希表（DHT），它在容易出错的环境中也具有可证明的一致性和性能。使用一种基于异或指标的拓扑结构来路由查询和定位节点，这简化了算法并有助于证明。该拓扑结构有一个特点：<strong>每次消息交换都能够传递或强化有效信息</strong>。系统利用这些信息进行并发的异步查询，可以容忍节点故障，并且故障不会导致用户超时。<a id="more"></a></p>
 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Kademlia有许多之前DTH无法同时提供的理想特性。它将节点为了彼此了解而必须发送的配置消息减至最少。查找key时附带的自动广播配置信息。节点具有足够的知识和灵活性能通过低延迟路径来路由查询。Kademlia使用并发异步查询来避免节点故障导致的超时。节点会记录彼此的存在性来抵抗某些基本的拒绝服务攻击。</p>
 <p>Kademlia采用了许多DHT的基本做法，主键（<code>keys</code>）是无规律的160位空间。每个参与的计算机在这个160位主键空间中都有一个nodeID。键值对存储在那些nodeID“接近”主键的节点上。最终，这种基于nodeID的路由算法可以让每个人都能有效定位到接近指定主键的服务器。</p>
 <p><strong>Kademlia的许多优点都来源于其使用了新颖的XOR度量标准来定义主键空间两点之间的距离。</strong>XOR是对称的，这就允许Kademlia参与者能够接收来自于其路由表中包含的完全相同的节点分布的查询请求。没有这个特性，像Chord之类的系统就无法从它们收到的查询中学习到有用的路由信息。更糟糕的是，不对称会导致路由表不够灵活。比如在Chord中，节点指纹表的每一条都必须存储ID空间中某个间隔之前的精确节点，而实际上，在间隔内的任何节点与相同间隔之前的那些节点都可能会实际距离很远。相比之下，Kademlia可以对一个间隔内的任意节点发送查询，这使它能根据延迟选择最优的路由，甚至能够并行异步查询几个同样合适的节点。</p>
@@ -444,37 +444,6 @@
 <h3 id="Key的高效再发布"><a href="#Key的高效再发布" class="headerlink" title="Key的高效再发布"></a>Key的高效再发布</h3><p>为了保证<code>&lt;key, value&gt;</code>对的持久化，节点必须定期重新发布keys。否则，两种情况可能会导致查找一个本来有效的key，结果去失败了。第一种：当<code>&lt;key, value&gt;</code>对发布的时候，初始得到它们的$k$个节点中的一部分节点离开了网络。第二种：新加入节点的nodeID较之前节点距离key更近。在这两种情况下，一个存储了<code>&lt;key, value&gt;</code>的节点都必须重新发布，以再次确保距离key最近的$k$个节点能获取到这个键值对内容。</p>
 <p>为了弥补节点离开网络的情况，Kademlia每隔1小时对每个键值对进行再发布。这个策略的简易实现会带来很多消息开销 — 存储<code>&lt;key, value&gt;</code>对的$k$个节点每小时都会先进行一次节点查询，然后再进行$k - 1$次<code>STORE</code>调用。幸运的是，<strong>再发布过程可以被高度优化。首先，当一个节点收到一个指定<code>&lt;key, value&gt;</code>对的<code>STORE</code>调用时，它可以假设这个调用同时也发送给了另外$k - 1$个最近节点上，因此这个接收者下一个小时就不需要再发布该键值对。这就确保了只要再发布间隔不是完全同步的，那么每个小时对于一个指定的键值对，只会有一个节点重新发布。</strong></p>
 <p>第二个优化则是在重新发布之前避免执行节点查找。如之前所述，为了处理不平衡树，节点会分裂一个不平衡子树的K桶，以保证它能对周围节点有一个完全掌握。如果，在重新发布键值对之前，一个节点<code>u</code>更新了这个子树下的所有K桶，它就会对指定的key自动发现最近的$k$个节点。所以对这些K桶的更新代价可以分摊到许多key的再发布过程中。</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<p>f</p>
-<a id="more"></a>
 <h2 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h2><ul>
 <li><p><a href="http://www.ic.unicamp.br/~bit/ensino/mo809_1s13/papers/P2P/Kademlia-%20A%20Peer-to-Peer%20Information%20System%20Based%20on%20the%20XOR%20Metric%20.pdf" target="_blank" rel="external">http://www.ic.unicamp.br/~bit/ensino/mo809_1s13/papers/P2P/Kademlia-%20A%20Peer-to-Peer%20Information%20System%20Based%20on%20the%20XOR%20Metric%20.pdf</a></p>
 </li>
@@ -648,7 +617,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
