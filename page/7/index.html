@@ -552,40 +552,19 @@
 
       
         
-          
-            <ul>
-<li><p>配置用户名和邮箱</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//全局配置</div><div class="line"><span class="meta">$</span><span class="bash"> git config --global user.name <span class="string">"xxx"</span></span></div><div class="line"><span class="meta">$</span><span class="bash"> git config --global user.email <span class="string">"test@xxx.com"</span></span></div><div class="line"></div><div class="line">//清除配置</div><div class="line"><span class="meta">$</span><span class="bash"> git config --<span class="built_in">unset</span> --global user.name</span></div><div class="line"><span class="meta">$</span><span class="bash"> git config --<span class="built_in">unset</span> --global user.email</span></div><div class="line"></div><div class="line">//查看配置</div><div class="line"><span class="meta">$</span><span class="bash"> git config --list</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>修改最近一次的commit message：</p>
-  <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit <span class="params">--amend</span> <span class="string">//</span>会进入一个编辑器，可以对最近一次的commit message进行修改</div></pre></td></tr></table></figure>
-</li>
-<li><p>丢弃掉<code>test.txt</code>文件在工作区的修改：</p>
-  <figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout <span class="comment">-- test.txt</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>切换到本地的<code>dev</code>分支：</p>
-  <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">git checkout dev</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>将<code>dev</code>分支上的指定文件<code>./main.go</code>合并到当前分支中：</p>
-  <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git checkout dev ./main<span class="selector-class">.go</span> </div><div class="line"><span class="comment">//在当前分支运行该命令</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>撤销版本号为<code>fde6085a</code>的提交，这会完全撤销<code>fde6085a</code>的改动，在本地产生一次撤销改动的commit，将这个commit push上去即可完成回退全过程：</p>
-  <figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">revert</span> fde6085a</div><div class="line">git <span class="built_in">push</span> <span class="built_in">origin</span> master</div></pre></td></tr></table></figure>
-</li>
-<li><p>拉取远程<code>test</code>分支，并在本地建立<code>test</code>分支以跟踪远程的<code>test</code>分支：</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout origin/<span class="built_in">test</span> -b <span class="built_in">test</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>在与别人协作时，想将远程仓库<code>origin</code>的<code>master</code>分支，完全回滚到<code>fde6085a</code>版本，即<code>HEAD ~ fde6085a</code>之间的提交全部废除。</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> git reset fde6085a</span></div><div class="line"><span class="meta">$</span><span class="bash"> git push -f origin master</span></div></pre></td></tr></table></figure>
-<blockquote>
-<p>gitlab默认不允许向<code>protected</code>分支强制push，需要在页面上将该分支设为<code>unprotected</code></p>
-</blockquote>
-<p>  当其他合作者想应用该更改时，需要先将本地代码回退到更早的版本，比如<code>a35de69c</code>版本，然后再<code>git pull</code>拉取最新代码</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> git reset a35de69c</span></div><div class="line"><span class="meta">$</span><span class="bash"> git pull origin master</span></div></pre></td></tr></table></figure>
-</li>
+          <h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
+<li><code>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</code></li>
 </ul>
-
-          
+<p>git pull的作用是：取回远程主机某个分支的更新，再与本地指定分支合并。</p>
+<p>如果远程分支是与当前分支合并，则&lt;本地分支名&gt;可以省略，即常见的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git pull origin master</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/06/Git常用命令积累/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

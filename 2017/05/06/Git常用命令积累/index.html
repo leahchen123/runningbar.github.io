@@ -93,16 +93,16 @@
 
 
 
-<meta name="description" content="配置用户名和邮箱   12345678910//全局配置$ git config --global user.name &quot;xxx&quot;$ git config --global user.email &quot;test@xxx.com&quot;//清除配置$ git config --unset --global user.name$ git config --unset --global user.email//">
+<meta name="description" content="常用命令 git pull &amp;lt;远程主机名&amp;gt; &amp;lt;远程分支名&amp;gt;:&amp;lt;本地分支名&amp;gt;  git pull的作用是：取回远程主机某个分支的更新，再与本地指定分支合并。 如果远程分支是与当前分支合并，则&amp;lt;本地分支名&amp;gt;可以省略，即常见的 1$ git pull origin master">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git常用命令积累">
 <meta property="og:url" content="http://www.huamo.online/2017/05/06/Git常用命令积累/index.html">
 <meta property="og:site_name" content="花木兰">
-<meta property="og:description" content="配置用户名和邮箱   12345678910//全局配置$ git config --global user.name &quot;xxx&quot;$ git config --global user.email &quot;test@xxx.com&quot;//清除配置$ git config --unset --global user.name$ git config --unset --global user.email//">
-<meta property="og:updated_time" content="2017-12-19T02:02:20.000Z">
+<meta property="og:description" content="常用命令 git pull &amp;lt;远程主机名&amp;gt; &amp;lt;远程分支名&amp;gt;:&amp;lt;本地分支名&amp;gt;  git pull的作用是：取回远程主机某个分支的更新，再与本地指定分支合并。 如果远程分支是与当前分支合并，则&amp;lt;本地分支名&amp;gt;可以省略，即常见的 1$ git pull origin master">
+<meta property="og:updated_time" content="2018-06-19T11:42:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git常用命令积累">
-<meta name="twitter:description" content="配置用户名和邮箱   12345678910//全局配置$ git config --global user.name &quot;xxx&quot;$ git config --global user.email &quot;test@xxx.com&quot;//清除配置$ git config --unset --global user.name$ git config --unset --global user.email//">
+<meta name="twitter:description" content="常用命令 git pull &amp;lt;远程主机名&amp;gt; &amp;lt;远程分支名&amp;gt;:&amp;lt;本地分支名&amp;gt;  git pull的作用是：取回远程主机某个分支的更新，再与本地指定分支合并。 如果远程分支是与当前分支合并，则&amp;lt;本地分支名&amp;gt;可以省略，即常见的 1$ git pull origin master">
 
 
 
@@ -363,7 +363,26 @@
       
 
       
-        <ul>
+        <h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
+<li><code>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</code></li>
+</ul>
+<p>git pull的作用是：取回远程主机某个分支的更新，再与本地指定分支合并。</p>
+<p>如果远程分支是与当前分支合并，则&lt;本地分支名&gt;可以省略，即常见的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git pull origin master</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li><code>git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</code></li>
+</ul>
+<blockquote>
+<p>分支推送顺序的写法是&lt;来源地&gt;:&lt;目的地&gt;，所以<code>git pull</code>是&lt;远程分支&gt;:&lt;本地分支&gt;，而<code>git push</code>是&lt;本地分支&gt;:&lt;远程分支&gt;</p>
+</blockquote>
+<p>如果省略&lt;远程分支名&gt;，则表示将本地分支推送与之同名的远程分支。如果远程分支不存在，则会被新建。即常见的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git push origin master</div></pre></td></tr></table></figure>
+<ul>
+<li>查看分支的追踪关系</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git branch -vv</div><div class="line"></div><div class="line">  master aabfcc771 [origin/master] [delete]ignore my own <span class="built_in">test</span> folder</div><div class="line">* dev    eae63c511 [inside/master] params: release feature</div></pre></td></tr></table></figure>
+<ul>
 <li><p>配置用户名和邮箱</p>
   <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//全局配置</div><div class="line"><span class="meta">$</span><span class="bash"> git config --global user.name <span class="string">"xxx"</span></span></div><div class="line"><span class="meta">$</span><span class="bash"> git config --global user.email <span class="string">"test@xxx.com"</span></span></div><div class="line"></div><div class="line">//清除配置</div><div class="line"><span class="meta">$</span><span class="bash"> git config --<span class="built_in">unset</span> --global user.name</span></div><div class="line"><span class="meta">$</span><span class="bash"> git config --<span class="built_in">unset</span> --global user.email</span></div><div class="line"></div><div class="line">//查看配置</div><div class="line"><span class="meta">$</span><span class="bash"> git config --list</span></div></pre></td></tr></table></figure>
 </li>
@@ -393,6 +412,9 @@
 <p>  当其他合作者想应用该更改时，需要先将本地代码回退到更早的版本，比如<code>a35de69c</code>版本，然后再<code>git pull</code>拉取最新代码</p>
   <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> git reset a35de69c</span></div><div class="line"><span class="meta">$</span><span class="bash"> git pull origin master</span></div></pre></td></tr></table></figure>
 </li>
+</ul>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
+<li><a href="http://www.ruanyifeng.com/blog/2014/06/git_remote.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2014/06/git_remote.html</a></li>
 </ul>
 
       
@@ -526,8 +548,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -580,6 +611,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常用命令"><span class="nav-number">1.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number">2.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
