@@ -99,7 +99,7 @@
 <meta property="og:url" content="http://www.huamo.online/2018/04/20/Ethereum源码阅读笔记-accounts-2-分层确定性钱包/index.html">
 <meta property="og:site_name" content="花木兰">
 <meta property="og:description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
-<meta property="og:updated_time" content="2018-06-14T02:13:31.000Z">
+<meta property="og:updated_time" content="2018-10-16T03:19:29.692Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ethereum源码阅读笔记-accounts(2)-分层确定性钱包">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  分层确定性钱包(HD Wallets)在使用钱包，以及看以太坊代码时，都会碰到m/44&amp;#39;/60&amp;#39;/0&amp;#39;/0这样奇怪的字符串，以及派生路径（DerivationPath）这样的术语，决定搞个明白，随后发现这些奇怪的东西都与一个名词有关：分层确定性钱包">
@@ -417,6 +417,11 @@
 </li>
 <li><p>返回的子私钥<script type="math/tex">k_i</script>为<script type="math/tex">k_i = parse_{256}(I_L) + k_{par}(mod \ n)</script>。</p>
 </li>
+</ul>
+<blockquote>
+<p>n为曲线中的一个常数，表示基点的阶</p>
+</blockquote>
+<ul>
 <li><p>返回的子链码$c_i$为$c_i = I_R$。</p>
 </li>
 <li><p>在$parse_{256}(I_L) \geqslant n $或者$k_i = 0$的情况下，得到的密钥无效，此时应该为$i$处理下一个值。（这个概率低于$\frac{1}{2^{127}}$）</p>
@@ -468,6 +473,38 @@
 <li><p><script type="math/tex">N(m/a_H/b/c) = N(m/a_H/b)/c = N(m/a_H)/b/c</script>。然而，再往后，<script type="math/tex">N(m/a_H)</script>不能等价于<script type="math/tex">N(m)/a_H</script>，因为这是不可能实现的：<script type="math/tex">CKD_{pub}(N(m), i)</script>只适用于非强化的子公钥。</p>
 </li>
 </ul>
+<h3 id="密钥标识"><a href="#密钥标识" class="headerlink" title="密钥标识"></a>密钥标识</h3><p>扩展密钥可以用<code>ECDSA</code>的公钥<code>K</code>序列化之后的<code>Hash160</code>（先对序列化结果进行<code>SHA256</code>，然后再进行<code>RIPEMD160</code>）结果进行标识，忽略链码。这样完全对应于传统的比特币地址数据。但不建议用<code>base58</code>格式来表达该数据，因为这样它就可能会被解释为一个地址（但其实它只是个扩展密钥）。</p>
+<p>这种标识符的前32位被称为密钥指纹。</p>
+<h3 id="序列化格式"><a href="#序列化格式" class="headerlink" title="序列化格式"></a>序列化格式</h3><p>扩展的私钥和公钥按照如下格式进行序列化：</p>
+<ul>
+<li><p>4字节：version字节（在比特币主网上，扩展公钥为<code>0x0488B21E</code>， 扩展私钥为<code>0x0488ADE4</code>； 在比特币测试网络上，扩展公钥为<code>0x043587CF</code>， 扩展私钥为<code>0x04358394</code>）</p>
+</li>
+<li><p>1字节：depth字节， <code>0x00</code>表示主节点， <code>0x01</code>表示一级衍生密钥， 以此类推下去。</p>
+</li>
+<li><p>4字节：父密钥的指纹（从上节可知为父扩展密钥的前32位取出传到这里），如果是主密钥，则该字段为<code>0x00000000</code>。</p>
+</li>
+<li><p>4字节：孩子编号。即<script type="math/tex">ser_{32}(i)</script>，如果是主密钥，则该字段为<code>0x00000000</code>。</p>
+</li>
+<li><p>32字节：链码</p>
+</li>
+<li><p>33字节：待扩展的公钥是<script type="math/tex">ser_p{(K)}</script>，而若是待扩展的私钥，则是<script type="math/tex">0x00 || ser_{256}{(k)}</script></p>
+</li>
+</ul>
+<p>这78个字节的结构可以像其它比特币数据一样进行<code>Base58</code>编码：先加上32位的校验和（通过2次SHA256校验和得到），然后转化为<code>Base58</code>表述。结果就是编码后的字符串达到112个字符。由于version字节的不同，这种<code>Base58</code>表达的字符串，如果是主网，则以<code>xprv</code>或者<code>xpub</code>开头， 如果是测试网络，则以<code>tprv</code>或者<code>tpub</code>开头。</p>
+<p>密钥指纹只是用来快速检测父亲和孩子节点的，软件必须愿意去处理冲突。在内部实现中，可以使用完整的160位标识符。</p>
+<p>当导入一个序列化的扩展公钥时，实现必须验证公钥中的X坐标是否是曲线上的点，如果不是，则认为扩展公钥无效。</p>
+<h3 id="主私钥生成"><a href="#主私钥生成" class="headerlink" title="主私钥生成"></a>主私钥生成</h3><p>主私钥不是直接生成的，而是通过一个种子得到的，主要是出于安全方面的考虑。</p>
+<ul>
+<li><p>从一个<code>(P)RNG</code>【(伪)随机数产生器】生成一个选定长度的种子序列<code>S</code>（128 ~ 512位， 推荐256位）</p>
+</li>
+<li><p>计算 <code>I = HMAC-SHA512(Key = &quot;Bitcoin seed&quot;, Data = S)</code></p>
+</li>
+<li><p>将I拆分为2个32字节序列：<script type="math/tex">I_{L}, I_{R}</script></p>
+</li>
+<li><p>将$parse_{256}{(I_L)}$作为主私钥， $I_R$作为主链码。</p>
+</li>
+</ul>
+<p>如果$I_L = 0 or I_L \geqslant n$，则认为主私钥无效</p>
 <h1 id="BIP-43"><a href="#BIP-43" class="headerlink" title="BIP-43"></a>BIP-43</h1><p>在BIP-32的算法基础上，BIP-43引入了<code>Purpose</code>域。</p>
 <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>由于<code>BIP-32</code>规范给予实现者太多的自由，很多实现都可以声称是<code>BIP-32</code>兼容的，但它们实际上可以采用不同的逻辑架构，最终导致这些钱包无法互操作，这有悖于<code>BIP-32</code>设计的初衷。</p>
 <h2 id="Purpose"><a href="#Purpose" class="headerlink" title="Purpose"></a>Purpose</h2><p>提议<code>BIP-32</code>密钥树的第一层为<code>purpose</code>段，它定义了未来在该节点下方的结构的用处。</p>
@@ -523,6 +560,14 @@
 <li><p><a href="https://github.com/bitcoin/bips/blob/master/bip-0043.mediawiki" target="_blank" rel="external">https://github.com/bitcoin/bips/blob/master/bip-0043.mediawiki</a></p>
 </li>
 <li><p><a href="https://github.com/satoshilabs/slips/blob/master/slip-0044.md" target="_blank" rel="external">https://github.com/satoshilabs/slips/blob/master/slip-0044.md</a></p>
+</li>
+<li><p><a href="https://eprint.iacr.org/2014/848.pdf" target="_blank" rel="external">https://eprint.iacr.org/2014/848.pdf</a></p>
+</li>
+<li><p>强化子密钥存在的必要性：<a href="https://bitcoin.stackexchange.com/questions/56916/derivation-of-parent-private-key-from-non-hardened-child" target="_blank" rel="external">https://bitcoin.stackexchange.com/questions/56916/derivation-of-parent-private-key-from-non-hardened-child</a></p>
+</li>
+<li><p><a href="https://bitcointalk.org/index.php?topic=679487.0" target="_blank" rel="external">https://bitcointalk.org/index.php?topic=679487.0</a></p>
+</li>
+<li><p><a href="https://bitcoinmagazine.com/articles/deterministic-wallets-advantages-flaw-1385450276/" target="_blank" rel="external">https://bitcoinmagazine.com/articles/deterministic-wallets-advantages-flaw-1385450276/</a></p>
 </li>
 </ul>
 <blockquote>
@@ -685,7 +730,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">46</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -696,7 +741,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -733,7 +778,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#分层确定性钱包-HD-Wallets"><span class="nav-number">1.</span> <span class="nav-text">分层确定性钱包(HD Wallets)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规范：密钥生成"><span class="nav-number">1.2.</span> <span class="nav-text">规范：密钥生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#约定"><span class="nav-number">1.2.1.</span> <span class="nav-text">约定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展的密钥"><span class="nav-number">1.2.2.</span> <span class="nav-text">扩展的密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子密钥生成函数（Child-key-derivation-CKD-）"><span class="nav-number">1.2.3.</span> <span class="nav-text">子密钥生成函数（Child key derivation[CKD]）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#父私钥-longrightarrow-子私钥"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">父私钥 $\longrightarrow$ 子私钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#父公钥-longrightarrow-子公钥"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">父公钥 $\longrightarrow$ 子公钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#父私钥-longrightarrow-子公钥"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">父私钥 $\longrightarrow$ 子公钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#父公钥-longrightarrow-子私钥"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">父公钥 $\longrightarrow$ 子私钥</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#密钥树"><span class="nav-number">1.2.4.</span> <span class="nav-text">密钥树</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BIP-43"><span class="nav-number">2.</span> <span class="nav-text">BIP-43</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">2.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Purpose"><span class="nav-number">2.2.</span> <span class="nav-text">Purpose</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BIP-44"><span class="nav-number">3.</span> <span class="nav-text">BIP-44</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#路径层级"><span class="nav-number">3.1.</span> <span class="nav-text">路径层级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#账户发现"><span class="nav-number">3.2.</span> <span class="nav-text">账户发现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#地址间隔极限"><span class="nav-number">3.2.1.</span> <span class="nav-text">地址间隔极限</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#分层确定性钱包-HD-Wallets"><span class="nav-number">1.</span> <span class="nav-text">分层确定性钱包(HD Wallets)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规范：密钥生成"><span class="nav-number">1.2.</span> <span class="nav-text">规范：密钥生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#约定"><span class="nav-number">1.2.1.</span> <span class="nav-text">约定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展的密钥"><span class="nav-number">1.2.2.</span> <span class="nav-text">扩展的密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子密钥生成函数（Child-key-derivation-CKD-）"><span class="nav-number">1.2.3.</span> <span class="nav-text">子密钥生成函数（Child key derivation[CKD]）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#父私钥-longrightarrow-子私钥"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">父私钥 $\longrightarrow$ 子私钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#父公钥-longrightarrow-子公钥"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">父公钥 $\longrightarrow$ 子公钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#父私钥-longrightarrow-子公钥"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">父私钥 $\longrightarrow$ 子公钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#父公钥-longrightarrow-子私钥"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">父公钥 $\longrightarrow$ 子私钥</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#密钥树"><span class="nav-number">1.2.4.</span> <span class="nav-text">密钥树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#密钥标识"><span class="nav-number">1.2.5.</span> <span class="nav-text">密钥标识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化格式"><span class="nav-number">1.2.6.</span> <span class="nav-text">序列化格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主私钥生成"><span class="nav-number">1.2.7.</span> <span class="nav-text">主私钥生成</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BIP-43"><span class="nav-number">2.</span> <span class="nav-text">BIP-43</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">2.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Purpose"><span class="nav-number">2.2.</span> <span class="nav-text">Purpose</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BIP-44"><span class="nav-number">3.</span> <span class="nav-text">BIP-44</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#路径层级"><span class="nav-number">3.1.</span> <span class="nav-text">路径层级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#账户发现"><span class="nav-number">3.2.</span> <span class="nav-text">账户发现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#地址间隔极限"><span class="nav-number">3.2.1.</span> <span class="nav-text">地址间隔极限</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>

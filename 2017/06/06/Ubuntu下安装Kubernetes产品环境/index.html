@@ -387,7 +387,7 @@
 <p>OK，现在开始安装<code>LXD</code></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sudo apt-get <span class="keyword">install</span> lxd</div><div class="line"><span class="keyword">groups</span> <span class="keyword">test</span></div><div class="line">sudo gpasswd -a <span class="keyword">test</span> lxd</div><div class="line"><span class="keyword">groups</span> <span class="keyword">test</span></div><div class="line">newgrp lxd</div><div class="line">sudo lxd init //配置一大堆，都可以选默认，但<span class="string">"Setup an ipv6 subnet"</span>要选<span class="string">"NO"</span></div></pre></td></tr></table></figure>
 <h2 id="安装conjure-up"><a href="#安装conjure-up" class="headerlink" title="安装conjure-up"></a>安装<code>conjure-up</code></h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt install software-properties-common //安装<span class="built_in">add</span>-apt-repository命令</div><div class="line">sudo apt-<span class="built_in">add</span>-repository <span class="keyword">pp</span><span class="variable">a:juju</span>/stable</div><div class="line">sudo apt-<span class="built_in">add</span>-repository <span class="keyword">pp</span><span class="variable">a:conjure</span>-<span class="keyword">up</span>/<span class="keyword">next</span></div><div class="line">sudo apt <span class="keyword">update</span></div><div class="line">sudo snap install conjure-<span class="keyword">up</span> --classic</div></pre></td></tr></table></figure>
-<h2 id="安装Kubernetes"><a href="#安装Kubernetes" class="headerlink" title="安装Kubernetes"></a>安装<code>Kubernetes</code></h2><figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conjure-up kubernetes</div><div class="line"></div><div class="line"><span class="comment">//选择localhost安装，即可在本地搭建一个集群</span></div></pre></td></tr></table></figure>
+<h2 id="安装Kubernetes"><a href="#安装Kubernetes" class="headerlink" title="安装Kubernetes"></a>安装<code>Kubernetes</code></h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conjure-up kubernetes</div><div class="line"></div><div class="line"><span class="comment">//选择localhost安装，即可在本地搭建一个集群</span></div></pre></td></tr></table></figure>
 <ul>
 <li><p>如果有提示<code>Missing dependencies for SOCKS support</code>，是因为系统的全局代理和<code>conjure-up</code>冲突，需要<code>unset all_proxy</code>。但是这样又会导致安装过程中，因为没有翻墙，有些镜像下载失败导致卡住，所以建议修改hosts翻墙。</p>
 </li>
@@ -442,7 +442,7 @@
 <li><p>在master节点删除node</p>
 </li>
 </ul>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">~<span class="regexp">/bin/</span>kubectl <span class="keyword">delete</span> no worker1 <span class="regexp">//</span>worker1为该node节点名称</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">~<span class="regexp">/bin/</span>kubectl <span class="keyword">delete</span> no worker1 <span class="comment">//worker1为该node节点名称</span></div></pre></td></tr></table></figure>
 <h2 id="SSH连接cluster"><a href="#SSH连接cluster" class="headerlink" title="SSH连接cluster"></a><code>SSH</code>连接<code>cluster</code></h2><p><strong>十分有用</strong>：对于这种方式部署的<code>kubernetes</code>集群，如果需要进入到<code>master</code>节点，或者<code>node</code>节点，进行数据查看或调试。有极其简单的SSH方法：</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">juju ssh <span class="number">5</span></div></pre></td></tr></table></figure>
 <p>数字5表示5号<code>machine</code>，具体可以通过<code>juju status</code>查看所有服务都运行在哪个<code>machine</code>上，当然了，还有很多花式的<code>SSH</code>连接参数，都可以帮助你连接到需要的节点上，具体可以参看<code>juju ssh --help</code></p>
@@ -615,7 +615,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">46</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -626,7 +626,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

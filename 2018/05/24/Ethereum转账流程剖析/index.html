@@ -101,7 +101,8 @@
 <meta property="og:description" content="转载请注明出处：www.huamo.online  在js console中转账ETH在我之前的文章《Ethereum初探》中，已经详述了在以太坊私链中转账的操作，可以在那里细细查看。 背后流程Geth Console执行JS通用流程在探讨sendTransaction转账流程之前，让我们先看下JS执行的通用流程。如下图所示。">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/geth-console执行js通用流程.png">
 <meta property="og:image" content="http://www.huamo.online/source_code/image/otto注入Go方法示例.png">
-<meta property="og:updated_time" content="2018-05-25T09:18:14.000Z">
+<meta property="og:image" content="http://www.huamo.online/source_code/image/eth-sendTransaction1.png">
+<meta property="og:updated_time" content="2018-07-27T12:39:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ethereum转账流程剖析">
 <meta name="twitter:description" content="转载请注明出处：www.huamo.online  在js console中转账ETH在我之前的文章《Ethereum初探》中，已经详述了在以太坊私链中转账的操作，可以在那里细细查看。 背后流程Geth Console执行JS通用流程在探讨sendTransaction转账流程之前，让我们先看下JS执行的通用流程。如下图所示。">
@@ -401,6 +402,16 @@
 <li>[3]在获取到用户的输入后，接下来就开始执行代码，这里面借用了一个第三方库<code>github.com/robertkrimen/otto</code>，它是一个<code>golang</code>实现的<code>js</code>解释器。在<code>scheduler</code>通道获取用户输入后，会使用<code>jsre.Evaluate()</code>方法执行<code>input</code>内容，该方法内部直接调用<code>otto</code>的<code>vm.Run()</code>方法，传入解释器并运行。如前所述，在<code>console.init()</code>过程中，<code>jsre</code>中已经注入了<code>web3.js</code>和<code>send</code>，所以实际执行过程中，都会通过<code>bridge.Send()</code>将方法<code>RPC</code>到以太坊的<code>API</code>服务中去执行，并返回执行结果。</li>
 </ul>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// 调用栈</span></div><div class="line">c.Evaluate(input) -&gt; c.jsre.Evaluate(statement, c.printer) -&gt; vm.Run(code)</div><div class="line"></div><div class="line"><span class="comment">// console/console.go</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Console)</span> <span class="title">Evaluate</span><span class="params">(statement <span class="keyword">string</span>)</span> <span class="title">error</span></span> &#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">// internal/jsre/jsre.go</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(self *JSRE)</span> <span class="title">Evaluate</span><span class="params">(code <span class="keyword">string</span>, w io.Writer)</span> <span class="title">error</span></span> &#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">// vendor/github.com/robertkrimen/otto/otto.go</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(self Otto)</span> <span class="title">Run</span><span class="params">(src <span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(Value, error)</span></span> &#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">// console/bridge.go</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(b *bridge)</span> <span class="title">Send</span><span class="params">(call otto.FunctionCall)</span> <span class="params">(response otto.Value)</span></span> &#123;&#125;</div></pre></td></tr></table></figure>
+<h3 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h3><p>上面说过，基本上所有的方法都是通过<code>console/bridge.go</code>中的<code>bridge.Send()</code>方法发送出去，我在该方法中加了一条调试语句，可以看到在请求发送前，数据包是什么样的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// console/bridge.go</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(b *bridge)</span> <span class="title">Send</span><span class="params">(call otto.FunctionCall)</span> <span class="params">(response otto.Value)</span></span> &#123;</div><div class="line">	<span class="comment">//...</span></div><div class="line">	log.Info(<span class="string">"--&gt;[my]check bridge send"</span>, <span class="string">"reqs"</span>, reqs)</div><div class="line">	<span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="/source_code/image/eth-sendTransaction1.png" alt=""></p>
+<p>从图中可以看出，例如<code>eth.accounts</code>，<code>personal.unlockAccount()</code>，<code>eth.sendTransaction()</code>这些方法都走到了<code>Send()</code>中。其中<code>eth.sendTransaction()</code>这个js方法对应于<code>eth_sendTransaction()</code>的golang方法，而传参是一个结构体对象。</p>
+<blockquote>
+<p>请求reqs其实是一个数组，也就是说可以支持批量发送请求，在<code>Send()</code>代码中，也是用一个for循环遍历发送请求的。</p>
+<p><code>reqs</code>中的<code>ID</code>用以标记请求编号，这样收到<code>resp</code>后，可以用同样的<code>ID</code>标记它，这样好对应起来。</p>
+</blockquote>
+<p>如果你在<code>go-ethereum</code>搜<code>eth_sendTransaction()</code>这个方法，会很失望，并没有想要的方法声明。问题的关键是<code>bridge</code>是如何将<code>reqs</code>请求<code>send</code>出去的，看起来是又做了一层处理，发送代码为<code>b.client.Call(&amp;result, req.Method, req.Params...)</code>。所以我们需要看看<code>Call()</code>的实现。<strong>好吧，失算了，Call()并没有做什么特殊处理，只是包装了一个msg，并将其发送了出去。</strong></p>
+<h3 id="接受请求"><a href="#接受请求" class="headerlink" title="接受请求"></a>接受请求</h3><p>ok，既然走到<code>rpc/client.go</code>中的<code>send()</code>方法也并没有什么特殊处理，那么只能到<code>rpc/server.go</code>中寻找<code>eth_sendTransaction()</code>的答案了。</p>
 <blockquote>
 <p>转载请注明出处：<a href="http://www.huamo.online/">www.huamo.online</a></p>
 </blockquote>
@@ -561,7 +572,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">46</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -572,7 +583,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -609,7 +620,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在js-console中转账ETH"><span class="nav-number">1.</span> <span class="nav-text">在js console中转账ETH</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#背后流程"><span class="nav-number">2.</span> <span class="nav-text">背后流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Geth-Console执行JS通用流程"><span class="nav-number">2.1.</span> <span class="nav-text">Geth Console执行JS通用流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监听命令阶段"><span class="nav-number">2.1.1.</span> <span class="nav-text">监听命令阶段</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在js-console中转账ETH"><span class="nav-number">1.</span> <span class="nav-text">在js console中转账ETH</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#背后流程"><span class="nav-number">2.</span> <span class="nav-text">背后流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Geth-Console执行JS通用流程"><span class="nav-number">2.1.</span> <span class="nav-text">Geth Console执行JS通用流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监听命令阶段"><span class="nav-number">2.1.1.</span> <span class="nav-text">监听命令阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发送请求"><span class="nav-number">2.1.2.</span> <span class="nav-text">发送请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接受请求"><span class="nav-number">2.1.3.</span> <span class="nav-text">接受请求</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
